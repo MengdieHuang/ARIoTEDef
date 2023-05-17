@@ -1,0 +1,1577 @@
+2023-05-13 17:34:46.187321: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2023-05-13 17:34:47.605387: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2023-05-13 17:34:47.605487: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2023-05-13 17:34:47.613139: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.613321: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:41:00.0 name: NVIDIA GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2023-05-13 17:34:47.613339: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2023-05-13 17:34:47.613366: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2023-05-13 17:34:47.613382: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2023-05-13 17:34:47.613397: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2023-05-13 17:34:47.613411: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2023-05-13 17:34:47.614246: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2023-05-13 17:34:47.614277: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2023-05-13 17:34:47.614297: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2023-05-13 17:34:47.614350: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.614527: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.614668: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2023-05-13 17:34:47.614833: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-05-13 17:34:47.615739: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2023-05-13 17:34:47.615806: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.615961: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:41:00.0 name: NVIDIA GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2023-05-13 17:34:47.615977: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2023-05-13 17:34:47.615988: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2023-05-13 17:34:47.615998: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2023-05-13 17:34:47.616006: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2023-05-13 17:34:47.616023: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2023-05-13 17:34:47.616033: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2023-05-13 17:34:47.616043: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2023-05-13 17:34:47.616052: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2023-05-13 17:34:47.616092: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.616263: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:47.616438: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2023-05-13 17:34:47.616632: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2023-05-13 17:34:48.339730: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-05-13 17:34:48.339774: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 
+2023-05-13 17:34:48.339781: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N 
+2023-05-13 17:34:48.340014: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.340235: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.340427: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.340598: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22043 MB memory) -> physical GPU (device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:41:00.0, compute capability: 8.6)
+WARNING:tensorflow:Layer lstm will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_1 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+2023-05-13 17:34:48.768240: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2023-05-13 17:34:48.768448: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.768660: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:41:00.0 name: NVIDIA GeForce RTX 3090 computeCapability: 8.6
+coreClock: 1.695GHz coreCount: 82 deviceMemorySize: 23.70GiB deviceMemoryBandwidth: 871.81GiB/s
+2023-05-13 17:34:48.768723: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2023-05-13 17:34:48.768760: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2023-05-13 17:34:48.768783: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2023-05-13 17:34:48.768809: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2023-05-13 17:34:48.768825: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2023-05-13 17:34:48.768853: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2023-05-13 17:34:48.768871: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2023-05-13 17:34:48.768887: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2023-05-13 17:34:48.768966: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.769171: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.769328: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2023-05-13 17:34:48.769351: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-05-13 17:34:48.769357: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0 
+2023-05-13 17:34:48.769362: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N 
+2023-05-13 17:34:48.769445: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.769641: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2023-05-13 17:34:48.769805: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22043 MB memory) -> physical GPU (device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:41:00.0, compute capability: 8.6)
+2023-05-13 17:34:48.785103: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:196] None of the MLIR optimization passes are enabled (registered 0 passes)
+2023-05-13 17:34:48.828076: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 3792855000 Hz
+2023-05-13 17:34:49.366268: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2023-05-13 17:34:49.797766: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2023-05-13 17:34:49.802645: I tensorflow/stream_executor/cuda/cuda_blas.cc:1838] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+the count of label lines 20084
+(20084,)
+args: Namespace(eps=1.0, eps_step=0.5, max_iter=20, patience=None, permute_truncated=False, ps_epochs=50, relabel_rounds=1, retrain_seq2seq=False, rv=1, seed=1, sequence_length=10, use_prob_embedding=False)
+features len is  41
+------------------------------------
+Training ps-detector-attack detector
+------------------------------------
+kind: 
+ps-detector-attack  trainset_min:-3.0454362462748454
+ps-detector-attack  trainset_max:138.38713813073164
+the info of dataset, (19152, 1, 41)
+shuffle is enabled for training
+Early stopping: NO.
+Train on 17236 samples, validate on 1916 samples
+Epoch 1/50
+17236/17236 - 2s - loss: 0.1336 - accuracy: 0.9563 - auc: 0.9897 - recall: 0.9659 - precision: 0.9479 - val_loss: 0.0706 - val_accuracy: 0.9708 - val_auc: 0.9964 - val_recall: 0.9743 - val_precision: 0.9661
+Epoch 2/50
+17236/17236 - 2s - loss: 0.0634 - accuracy: 0.9762 - auc: 0.9968 - recall: 0.9854 - precision: 0.9677 - val_loss: 0.0559 - val_accuracy: 0.9796 - val_auc: 0.9975 - val_recall: 0.9893 - val_precision: 0.9696
+Epoch 3/50
+17236/17236 - 2s - loss: 0.0564 - accuracy: 0.9796 - auc: 0.9972 - recall: 0.9903 - precision: 0.9696 - val_loss: 0.0523 - val_accuracy: 0.9796 - val_auc: 0.9982 - val_recall: 0.9829 - val_precision: 0.9756
+Epoch 4/50
+17236/17236 - 2s - loss: 0.0535 - accuracy: 0.9802 - auc: 0.9976 - recall: 0.9892 - precision: 0.9718 - val_loss: 0.0505 - val_accuracy: 0.9817 - val_auc: 0.9982 - val_recall: 0.9936 - val_precision: 0.9697
+Epoch 5/50
+17236/17236 - 2s - loss: 0.0511 - accuracy: 0.9811 - auc: 0.9978 - recall: 0.9917 - precision: 0.9713 - val_loss: 0.0445 - val_accuracy: 0.9833 - val_auc: 0.9986 - val_recall: 0.9979 - val_precision: 0.9688
+Epoch 6/50
+17236/17236 - 2s - loss: 0.0477 - accuracy: 0.9820 - auc: 0.9980 - recall: 0.9921 - precision: 0.9724 - val_loss: 0.0421 - val_accuracy: 0.9833 - val_auc: 0.9987 - val_recall: 0.9914 - val_precision: 0.9748
+Epoch 7/50
+17236/17236 - 2s - loss: 0.0471 - accuracy: 0.9822 - auc: 0.9982 - recall: 0.9913 - precision: 0.9736 - val_loss: 0.0494 - val_accuracy: 0.9812 - val_auc: 0.9983 - val_recall: 0.9947 - val_precision: 0.9677
+Epoch 8/50
+17236/17236 - 2s - loss: 0.0470 - accuracy: 0.9817 - auc: 0.9982 - recall: 0.9914 - precision: 0.9726 - val_loss: 0.0472 - val_accuracy: 0.9828 - val_auc: 0.9981 - val_recall: 0.9936 - val_precision: 0.9718
+Epoch 9/50
+17236/17236 - 2s - loss: 0.0443 - accuracy: 0.9822 - auc: 0.9984 - recall: 0.9913 - precision: 0.9736 - val_loss: 0.0452 - val_accuracy: 0.9833 - val_auc: 0.9983 - val_recall: 0.9936 - val_precision: 0.9728
+Epoch 10/50
+17236/17236 - 2s - loss: 0.0431 - accuracy: 0.9836 - auc: 0.9984 - recall: 0.9928 - precision: 0.9749 - val_loss: 0.0416 - val_accuracy: 0.9823 - val_auc: 0.9985 - val_recall: 0.9947 - val_precision: 0.9698
+Epoch 11/50
+17236/17236 - 2s - loss: 0.0419 - accuracy: 0.9835 - auc: 0.9986 - recall: 0.9925 - precision: 0.9751 - val_loss: 0.0382 - val_accuracy: 0.9843 - val_auc: 0.9990 - val_recall: 0.9957 - val_precision: 0.9728
+Epoch 12/50
+17236/17236 - 2s - loss: 0.0419 - accuracy: 0.9839 - auc: 0.9985 - recall: 0.9929 - precision: 0.9754 - val_loss: 0.0390 - val_accuracy: 0.9838 - val_auc: 0.9988 - val_recall: 0.9893 - val_precision: 0.9778
+Epoch 13/50
+17236/17236 - 2s - loss: 0.0392 - accuracy: 0.9847 - auc: 0.9987 - recall: 0.9925 - precision: 0.9774 - val_loss: 0.0397 - val_accuracy: 0.9854 - val_auc: 0.9990 - val_recall: 0.9936 - val_precision: 0.9769
+Epoch 14/50
+17236/17236 - 2s - loss: 0.0386 - accuracy: 0.9856 - auc: 0.9987 - recall: 0.9926 - precision: 0.9789 - val_loss: 0.0365 - val_accuracy: 0.9864 - val_auc: 0.9993 - val_recall: 0.9872 - val_precision: 0.9851
+Epoch 15/50
+17236/17236 - 2s - loss: 0.0389 - accuracy: 0.9845 - auc: 0.9987 - recall: 0.9927 - precision: 0.9767 - val_loss: 0.0368 - val_accuracy: 0.9864 - val_auc: 0.9991 - val_recall: 0.9989 - val_precision: 0.9739
+Epoch 16/50
+17236/17236 - 2s - loss: 0.0376 - accuracy: 0.9858 - auc: 0.9988 - recall: 0.9948 - precision: 0.9773 - val_loss: 0.0320 - val_accuracy: 0.9880 - val_auc: 0.9992 - val_recall: 0.9947 - val_precision: 0.9810
+Epoch 17/50
+17236/17236 - 2s - loss: 0.0375 - accuracy: 0.9856 - auc: 0.9988 - recall: 0.9931 - precision: 0.9786 - val_loss: 0.0326 - val_accuracy: 0.9875 - val_auc: 0.9992 - val_recall: 1.0000 - val_precision: 0.9750
+Epoch 18/50
+17236/17236 - 2s - loss: 0.0371 - accuracy: 0.9859 - auc: 0.9988 - recall: 0.9940 - precision: 0.9782 - val_loss: 0.0321 - val_accuracy: 0.9859 - val_auc: 0.9992 - val_recall: 0.9936 - val_precision: 0.9779
+Epoch 19/50
+17236/17236 - 2s - loss: 0.0344 - accuracy: 0.9868 - auc: 0.9990 - recall: 0.9949 - precision: 0.9790 - val_loss: 0.0349 - val_accuracy: 0.9890 - val_auc: 0.9992 - val_recall: 1.0000 - val_precision: 0.9780
+Epoch 20/50
+17236/17236 - 2s - loss: 0.0334 - accuracy: 0.9868 - auc: 0.9991 - recall: 0.9947 - precision: 0.9794 - val_loss: 0.0337 - val_accuracy: 0.9864 - val_auc: 0.9991 - val_recall: 0.9914 - val_precision: 0.9810
+Epoch 21/50
+17236/17236 - 2s - loss: 0.0346 - accuracy: 0.9867 - auc: 0.9991 - recall: 0.9943 - precision: 0.9795 - val_loss: 0.0326 - val_accuracy: 0.9875 - val_auc: 0.9992 - val_recall: 1.0000 - val_precision: 0.9750
+Epoch 22/50
+17236/17236 - 2s - loss: 0.0334 - accuracy: 0.9869 - auc: 0.9990 - recall: 0.9954 - precision: 0.9789 - val_loss: 0.0344 - val_accuracy: 0.9859 - val_auc: 0.9991 - val_recall: 0.9925 - val_precision: 0.9789
+Epoch 23/50
+17236/17236 - 2s - loss: 0.0334 - accuracy: 0.9872 - auc: 0.9991 - recall: 0.9956 - precision: 0.9792 - val_loss: 0.0459 - val_accuracy: 0.9864 - val_auc: 0.9991 - val_recall: 0.9979 - val_precision: 0.9749
+Epoch 24/50
+17236/17236 - 2s - loss: 0.0340 - accuracy: 0.9870 - auc: 0.9989 - recall: 0.9955 - precision: 0.9789 - val_loss: 0.0400 - val_accuracy: 0.9838 - val_auc: 0.9989 - val_recall: 0.9861 - val_precision: 0.9809
+Epoch 25/50
+17236/17236 - 2s - loss: 0.0348 - accuracy: 0.9875 - auc: 0.9989 - recall: 0.9957 - precision: 0.9797 - val_loss: 0.0309 - val_accuracy: 0.9875 - val_auc: 0.9995 - val_recall: 0.9882 - val_precision: 0.9861
+Epoch 26/50
+17236/17236 - 2s - loss: 0.0322 - accuracy: 0.9874 - auc: 0.9991 - recall: 0.9954 - precision: 0.9797 - val_loss: 0.0345 - val_accuracy: 0.9875 - val_auc: 0.9991 - val_recall: 1.0000 - val_precision: 0.9750
+Epoch 27/50
+17236/17236 - 2s - loss: 0.0318 - accuracy: 0.9875 - auc: 0.9991 - recall: 0.9953 - precision: 0.9802 - val_loss: 0.0301 - val_accuracy: 0.9901 - val_auc: 0.9993 - val_recall: 0.9947 - val_precision: 0.9852
+Epoch 28/50
+17236/17236 - 2s - loss: 0.0300 - accuracy: 0.9887 - auc: 0.9992 - recall: 0.9964 - precision: 0.9813 - val_loss: 0.0291 - val_accuracy: 0.9890 - val_auc: 0.9993 - val_recall: 1.0000 - val_precision: 0.9780
+Epoch 29/50
+17236/17236 - 2s - loss: 0.0289 - accuracy: 0.9886 - auc: 0.9993 - recall: 0.9961 - precision: 0.9815 - val_loss: 0.0311 - val_accuracy: 0.9906 - val_auc: 0.9993 - val_recall: 0.9968 - val_precision: 0.9842
+Epoch 30/50
+17236/17236 - 2s - loss: 0.0291 - accuracy: 0.9877 - auc: 0.9994 - recall: 0.9951 - precision: 0.9806 - val_loss: 0.0302 - val_accuracy: 0.9901 - val_auc: 0.9996 - val_recall: 0.9989 - val_precision: 0.9811
+Epoch 31/50
+17236/17236 - 2s - loss: 0.0305 - accuracy: 0.9889 - auc: 0.9991 - recall: 0.9961 - precision: 0.9820 - val_loss: 0.0284 - val_accuracy: 0.9859 - val_auc: 0.9995 - val_recall: 0.9925 - val_precision: 0.9789
+Epoch 32/50
+17236/17236 - 2s - loss: 0.0282 - accuracy: 0.9897 - auc: 0.9991 - recall: 0.9957 - precision: 0.9840 - val_loss: 0.0294 - val_accuracy: 0.9890 - val_auc: 0.9993 - val_recall: 1.0000 - val_precision: 0.9780
+Epoch 33/50
+17236/17236 - 2s - loss: 0.0268 - accuracy: 0.9897 - auc: 0.9994 - recall: 0.9962 - precision: 0.9835 - val_loss: 0.0278 - val_accuracy: 0.9880 - val_auc: 0.9994 - val_recall: 0.9947 - val_precision: 0.9810
+Epoch 34/50
+17236/17236 - 2s - loss: 0.0269 - accuracy: 0.9904 - auc: 0.9993 - recall: 0.9963 - precision: 0.9847 - val_loss: 0.0280 - val_accuracy: 0.9901 - val_auc: 0.9994 - val_recall: 1.0000 - val_precision: 0.9801
+Epoch 35/50
+17236/17236 - 2s - loss: 0.0272 - accuracy: 0.9899 - auc: 0.9993 - recall: 0.9956 - precision: 0.9844 - val_loss: 0.0256 - val_accuracy: 0.9896 - val_auc: 0.9996 - val_recall: 0.9936 - val_precision: 0.9852
+Epoch 36/50
+17236/17236 - 2s - loss: 0.0267 - accuracy: 0.9900 - auc: 0.9993 - recall: 0.9957 - precision: 0.9846 - val_loss: 0.0591 - val_accuracy: 0.9864 - val_auc: 0.9963 - val_recall: 0.9968 - val_precision: 0.9759
+Epoch 37/50
+17236/17236 - 2s - loss: 0.0287 - accuracy: 0.9894 - auc: 0.9992 - recall: 0.9944 - precision: 0.9845 - val_loss: 0.0267 - val_accuracy: 0.9896 - val_auc: 0.9995 - val_recall: 0.9893 - val_precision: 0.9893
+Epoch 38/50
+17236/17236 - 2s - loss: 0.0256 - accuracy: 0.9915 - auc: 0.9994 - recall: 0.9970 - precision: 0.9861 - val_loss: 0.0364 - val_accuracy: 0.9796 - val_auc: 0.9994 - val_recall: 0.9701 - val_precision: 0.9880
+Epoch 39/50
+17236/17236 - 2s - loss: 0.0264 - accuracy: 0.9904 - auc: 0.9993 - recall: 0.9954 - precision: 0.9856 - val_loss: 0.0309 - val_accuracy: 0.9843 - val_auc: 0.9996 - val_recall: 0.9807 - val_precision: 0.9871
+Epoch 40/50
+17236/17236 - 2s - loss: 0.0263 - accuracy: 0.9898 - auc: 0.9993 - recall: 0.9949 - precision: 0.9850 - val_loss: 0.0258 - val_accuracy: 0.9890 - val_auc: 0.9995 - val_recall: 0.9914 - val_precision: 0.9862
+Epoch 41/50
+17236/17236 - 2s - loss: 0.0234 - accuracy: 0.9918 - auc: 0.9994 - recall: 0.9968 - precision: 0.9871 - val_loss: 0.0289 - val_accuracy: 0.9906 - val_auc: 0.9994 - val_recall: 0.9925 - val_precision: 0.9883
+Epoch 42/50
+17236/17236 - 2s - loss: 0.0230 - accuracy: 0.9913 - auc: 0.9995 - recall: 0.9957 - precision: 0.9870 - val_loss: 0.0162 - val_accuracy: 0.9922 - val_auc: 0.9999 - val_recall: 0.9925 - val_precision: 0.9915
+Epoch 43/50
+17236/17236 - 2s - loss: 0.0272 - accuracy: 0.9907 - auc: 0.9993 - recall: 0.9956 - precision: 0.9860 - val_loss: 0.0264 - val_accuracy: 0.9885 - val_auc: 0.9995 - val_recall: 0.9925 - val_precision: 0.9841
+Epoch 44/50
+17236/17236 - 2s - loss: 0.0242 - accuracy: 0.9909 - auc: 0.9994 - recall: 0.9958 - precision: 0.9861 - val_loss: 0.0220 - val_accuracy: 0.9932 - val_auc: 0.9997 - val_recall: 0.9979 - val_precision: 0.9883
+Epoch 45/50
+17236/17236 - 2s - loss: 0.0224 - accuracy: 0.9914 - auc: 0.9995 - recall: 0.9955 - precision: 0.9874 - val_loss: 0.0204 - val_accuracy: 0.9922 - val_auc: 0.9998 - val_recall: 0.9914 - val_precision: 0.9925
+Epoch 46/50
+17236/17236 - 2s - loss: 0.0233 - accuracy: 0.9914 - auc: 0.9995 - recall: 0.9957 - precision: 0.9873 - val_loss: 0.0191 - val_accuracy: 0.9927 - val_auc: 0.9998 - val_recall: 0.9968 - val_precision: 0.9883
+Epoch 47/50
+17236/17236 - 2s - loss: 0.0240 - accuracy: 0.9910 - auc: 0.9995 - recall: 0.9954 - precision: 0.9868 - val_loss: 0.0203 - val_accuracy: 0.9916 - val_auc: 0.9998 - val_recall: 0.9957 - val_precision: 0.9873
+Epoch 48/50
+17236/17236 - 2s - loss: 0.0221 - accuracy: 0.9912 - auc: 0.9995 - recall: 0.9958 - precision: 0.9868 - val_loss: 0.0232 - val_accuracy: 0.9901 - val_auc: 0.9996 - val_recall: 0.9947 - val_precision: 0.9852
+Epoch 49/50
+17236/17236 - 2s - loss: 0.0219 - accuracy: 0.9919 - auc: 0.9995 - recall: 0.9958 - precision: 0.9882 - val_loss: 0.0215 - val_accuracy: 0.9906 - val_auc: 0.9997 - val_recall: 0.9947 - val_precision: 0.9862
+Epoch 50/50
+17236/17236 - 2s - loss: 0.0278 - accuracy: 0.9909 - auc: 0.9991 - recall: 0.9955 - precision: 0.9865 - val_loss: 0.0234 - val_accuracy: 0.9927 - val_auc: 0.9995 - val_recall: 0.9957 - val_precision: 0.9894
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+WARNING:tensorflow:Layer lstm_2 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_2 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_3 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_3 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+classifier is generated with time step 1
+---------------------------------------------------------------
+Measureing ps-detector-attack detector performance on test data
+---------------------------------------------------------------
+kind: 
+ps-detector-attack  testset_min:-3.045436243980641
+ps-detector-attack  testset_max:32.63330682674631
+Metrics: 
+ {'auc': 0.9365220659505866, 'accuracy': 0.9872430900070872, 'precision': 0.7197452229299363, 'recall': 0.9186991869918699, 'f1': 0.8071428571428572, 'fp': 44, 'tp': 113, 'fn': 10, 'tn': 4066, 'auprc': 0.9049249225532348, 'precision99': 0.99, 'recall99': 0.0}
+features len is  41
+-----------------------------------
+Training ps-detector-recon detector
+-----------------------------------
+kind: 
+ps-detector-recon  trainset_min:-2.4484992515578954
+ps-detector-recon  trainset_max:96.22275969699034
+the info of dataset, (14410, 1, 41)
+shuffle is enabled for training
+Early stopping: NO.
+Train on 12969 samples, validate on 1441 samples
+Epoch 1/50
+12969/12969 - 2s - loss: 0.3508 - accuracy: 0.8643 - auc_1: 0.8915 - recall_1: 0.9922 - precision_1: 0.7911 - val_loss: 0.2789 - val_accuracy: 0.8855 - val_auc_1: 0.9127 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 2/50
+12969/12969 - 1s - loss: 0.3048 - accuracy: 0.8762 - auc_1: 0.8983 - recall_1: 0.9956 - precision_1: 0.8046 - val_loss: 0.2799 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 3/50
+12969/12969 - 1s - loss: 0.3011 - accuracy: 0.8762 - auc_1: 0.9016 - recall_1: 0.9956 - precision_1: 0.8046 - val_loss: 0.2769 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 4/50
+12969/12969 - 1s - loss: 0.3001 - accuracy: 0.8764 - auc_1: 0.8994 - recall_1: 0.9960 - precision_1: 0.8046 - val_loss: 0.2781 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 5/50
+12969/12969 - 1s - loss: 0.2996 - accuracy: 0.8767 - auc_1: 0.9024 - recall_1: 0.9965 - precision_1: 0.8048 - val_loss: 0.2802 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 6/50
+12969/12969 - 1s - loss: 0.2983 - accuracy: 0.8769 - auc_1: 0.9017 - recall_1: 0.9969 - precision_1: 0.8048 - val_loss: 0.2786 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 7/50
+12969/12969 - 1s - loss: 0.2984 - accuracy: 0.8769 - auc_1: 0.9020 - recall_1: 0.9971 - precision_1: 0.8048 - val_loss: 0.2759 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 8/50
+12969/12969 - 1s - loss: 0.2979 - accuracy: 0.8769 - auc_1: 0.9013 - recall_1: 0.9971 - precision_1: 0.8048 - val_loss: 0.2769 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 9/50
+12969/12969 - 1s - loss: 0.2980 - accuracy: 0.8769 - auc_1: 0.9024 - recall_1: 0.9971 - precision_1: 0.8048 - val_loss: 0.2766 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 10/50
+12969/12969 - 1s - loss: 0.2975 - accuracy: 0.8770 - auc_1: 0.9025 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2744 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 11/50
+12969/12969 - 1s - loss: 0.2970 - accuracy: 0.8770 - auc_1: 0.9030 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2812 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 12/50
+12969/12969 - 1s - loss: 0.2968 - accuracy: 0.8769 - auc_1: 0.9006 - recall_1: 0.9971 - precision_1: 0.8048 - val_loss: 0.2763 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 13/50
+12969/12969 - 1s - loss: 0.2964 - accuracy: 0.8770 - auc_1: 0.9004 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2762 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 14/50
+12969/12969 - 1s - loss: 0.2960 - accuracy: 0.8770 - auc_1: 0.9042 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2766 - val_accuracy: 0.8848 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8047
+Epoch 15/50
+12969/12969 - 1s - loss: 0.2959 - accuracy: 0.8769 - auc_1: 0.9000 - recall_1: 0.9971 - precision_1: 0.8048 - val_loss: 0.2784 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 16/50
+12969/12969 - 1s - loss: 0.2959 - accuracy: 0.8770 - auc_1: 0.9014 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2763 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 17/50
+12969/12969 - 1s - loss: 0.2963 - accuracy: 0.8769 - auc_1: 0.8997 - recall_1: 0.9971 - precision_1: 0.8047 - val_loss: 0.2754 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 18/50
+12969/12969 - 1s - loss: 0.2959 - accuracy: 0.8771 - auc_1: 0.9009 - recall_1: 0.9971 - precision_1: 0.8050 - val_loss: 0.2768 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 19/50
+12969/12969 - 1s - loss: 0.2953 - accuracy: 0.8770 - auc_1: 0.9023 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2747 - val_accuracy: 0.8855 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 20/50
+12969/12969 - 1s - loss: 0.2951 - accuracy: 0.8770 - auc_1: 0.9021 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2753 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 21/50
+12969/12969 - 1s - loss: 0.2947 - accuracy: 0.8770 - auc_1: 0.9015 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2750 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 22/50
+12969/12969 - 1s - loss: 0.2948 - accuracy: 0.8771 - auc_1: 0.9040 - recall_1: 0.9971 - precision_1: 0.8050 - val_loss: 0.2765 - val_accuracy: 0.8848 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8047
+Epoch 23/50
+12969/12969 - 1s - loss: 0.2945 - accuracy: 0.8771 - auc_1: 0.9048 - recall_1: 0.9971 - precision_1: 0.8050 - val_loss: 0.2759 - val_accuracy: 0.8848 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8047
+Epoch 24/50
+12969/12969 - 1s - loss: 0.2945 - accuracy: 0.8770 - auc_1: 0.9030 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2762 - val_accuracy: 0.8848 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8047
+Epoch 25/50
+12969/12969 - 1s - loss: 0.2936 - accuracy: 0.8772 - auc_1: 0.9051 - recall_1: 0.9971 - precision_1: 0.8052 - val_loss: 0.2742 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 26/50
+12969/12969 - 1s - loss: 0.2944 - accuracy: 0.8770 - auc_1: 0.9013 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2744 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 27/50
+12969/12969 - 1s - loss: 0.2940 - accuracy: 0.8772 - auc_1: 0.9027 - recall_1: 0.9971 - precision_1: 0.8051 - val_loss: 0.2747 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 28/50
+12969/12969 - 1s - loss: 0.2936 - accuracy: 0.8773 - auc_1: 0.9038 - recall_1: 0.9971 - precision_1: 0.8053 - val_loss: 0.2741 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 29/50
+12969/12969 - 1s - loss: 0.2937 - accuracy: 0.8770 - auc_1: 0.9017 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2728 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 30/50
+12969/12969 - 1s - loss: 0.2935 - accuracy: 0.8772 - auc_1: 0.9016 - recall_1: 0.9971 - precision_1: 0.8051 - val_loss: 0.2744 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 31/50
+12969/12969 - 1s - loss: 0.2937 - accuracy: 0.8772 - auc_1: 0.9020 - recall_1: 0.9971 - precision_1: 0.8051 - val_loss: 0.2740 - val_accuracy: 0.8855 - val_auc_1: 0.9136 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 32/50
+12969/12969 - 1s - loss: 0.2931 - accuracy: 0.8772 - auc_1: 0.9044 - recall_1: 0.9971 - precision_1: 0.8051 - val_loss: 0.2765 - val_accuracy: 0.8848 - val_auc_1: 0.9128 - val_recall_1: 1.0000 - val_precision_1: 0.8047
+Epoch 33/50
+12969/12969 - 1s - loss: 0.2929 - accuracy: 0.8771 - auc_1: 0.9040 - recall_1: 0.9971 - precision_1: 0.8050 - val_loss: 0.2740 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 34/50
+12969/12969 - 1s - loss: 0.2927 - accuracy: 0.8770 - auc_1: 0.9035 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2741 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 35/50
+12969/12969 - 1s - loss: 0.2928 - accuracy: 0.8774 - auc_1: 0.9026 - recall_1: 0.9971 - precision_1: 0.8054 - val_loss: 0.2744 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 36/50
+12969/12969 - 1s - loss: 0.2919 - accuracy: 0.8772 - auc_1: 0.9038 - recall_1: 0.9971 - precision_1: 0.8051 - val_loss: 0.2730 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 37/50
+12969/12969 - 1s - loss: 0.2927 - accuracy: 0.8773 - auc_1: 0.9023 - recall_1: 0.9971 - precision_1: 0.8053 - val_loss: 0.2725 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 38/50
+12969/12969 - 1s - loss: 0.2920 - accuracy: 0.8774 - auc_1: 0.9040 - recall_1: 0.9971 - precision_1: 0.8054 - val_loss: 0.2738 - val_accuracy: 0.8855 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 39/50
+12969/12969 - 1s - loss: 0.2924 - accuracy: 0.8782 - auc_1: 0.9018 - recall_1: 0.9971 - precision_1: 0.8064 - val_loss: 0.2727 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 40/50
+12969/12969 - 1s - loss: 0.2928 - accuracy: 0.8771 - auc_1: 0.9038 - recall_1: 0.9971 - precision_1: 0.8050 - val_loss: 0.2755 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 41/50
+12969/12969 - 1s - loss: 0.2929 - accuracy: 0.8770 - auc_1: 0.9057 - recall_1: 0.9971 - precision_1: 0.8049 - val_loss: 0.2728 - val_accuracy: 0.8855 - val_auc_1: 0.9135 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 42/50
+12969/12969 - 1s - loss: 0.2926 - accuracy: 0.8773 - auc_1: 0.9032 - recall_1: 0.9971 - precision_1: 0.8053 - val_loss: 0.2739 - val_accuracy: 0.8855 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 43/50
+12969/12969 - 1s - loss: 0.2924 - accuracy: 0.8772 - auc_1: 0.9061 - recall_1: 0.9971 - precision_1: 0.8052 - val_loss: 0.2759 - val_accuracy: 0.8862 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8066
+Epoch 44/50
+12969/12969 - 1s - loss: 0.2913 - accuracy: 0.8782 - auc_1: 0.9057 - recall_1: 0.9971 - precision_1: 0.8064 - val_loss: 0.2736 - val_accuracy: 0.8862 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8066
+Epoch 45/50
+12969/12969 - 1s - loss: 0.2917 - accuracy: 0.8777 - auc_1: 0.9034 - recall_1: 0.9971 - precision_1: 0.8058 - val_loss: 0.2717 - val_accuracy: 0.8855 - val_auc_1: 0.9129 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 46/50
+12969/12969 - 1s - loss: 0.2901 - accuracy: 0.8793 - auc_1: 0.9043 - recall_1: 0.9971 - precision_1: 0.8079 - val_loss: 0.2705 - val_accuracy: 0.8862 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8066
+Epoch 47/50
+12969/12969 - 1s - loss: 0.2919 - accuracy: 0.8775 - auc_1: 0.9022 - recall_1: 0.9971 - precision_1: 0.8055 - val_loss: 0.2735 - val_accuracy: 0.8855 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 48/50
+12969/12969 - 1s - loss: 0.2908 - accuracy: 0.8779 - auc_1: 0.9038 - recall_1: 0.9972 - precision_1: 0.8060 - val_loss: 0.2714 - val_accuracy: 0.8855 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8057
+Epoch 49/50
+12969/12969 - 1s - loss: 0.2900 - accuracy: 0.8790 - auc_1: 0.9042 - recall_1: 0.9972 - precision_1: 0.8074 - val_loss: 0.2724 - val_accuracy: 0.8876 - val_auc_1: 0.9141 - val_recall_1: 1.0000 - val_precision_1: 0.8085
+Epoch 50/50
+12969/12969 - 1s - loss: 0.2904 - accuracy: 0.8787 - auc_1: 0.9027 - recall_1: 0.9969 - precision_1: 0.8072 - val_loss: 0.2702 - val_accuracy: 0.8876 - val_auc_1: 0.9127 - val_recall_1: 1.0000 - val_precision_1: 0.8085
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+WARNING:tensorflow:Layer lstm_4 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_4 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_5 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_5 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+classifier is generated with time step 1
+--------------------------------------------------------------
+Measureing ps-detector-recon detector performance on test data
+--------------------------------------------------------------
+kind: 
+ps-detector-recon  testset_min:-2.4484992496151756
+ps-detector-recon  testset_max:28.32679285519669
+Metrics: 
+ {'auc': 0.912300408320242, 'accuracy': 0.9586581620600048, 'precision': 0.9497830130192189, 'recall': 0.9957751056223595, 'f1': 0.9722354434396319, 'fp': 162, 'tp': 3064, 'fn': 13, 'tn': 994, 'auprc': 0.8914286125167391, 'precision99': 0.61, 'recall99': 0.04}
+features len is  41
+-----------------------------------
+Training ps-detector-infec detector
+-----------------------------------
+kind: 
+ps-detector-infec  trainset_min:-2.3799714775110803
+ps-detector-infec  trainset_max:140.77286670370265
+the info of dataset, (19818, 1, 41)
+shuffle is enabled for training
+Early stopping: NO.
+Train on 17836 samples, validate on 1982 samples
+Epoch 1/50
+17836/17836 - 2s - loss: 0.3836 - accuracy: 0.8482 - auc_2: 0.8951 - recall_2: 0.7933 - precision_2: 0.8909 - val_loss: 0.3089 - val_accuracy: 0.8764 - val_auc_2: 0.9222 - val_recall_2: 0.8052 - val_precision_2: 0.9402
+Epoch 2/50
+17836/17836 - 2s - loss: 0.3032 - accuracy: 0.8841 - auc_2: 0.9238 - recall_2: 0.8172 - precision_2: 0.9433 - val_loss: 0.2898 - val_accuracy: 0.8910 - val_auc_2: 0.9275 - val_recall_2: 0.8143 - val_precision_2: 0.9632
+Epoch 3/50
+17836/17836 - 2s - loss: 0.2853 - accuracy: 0.8906 - auc_2: 0.9312 - recall_2: 0.8221 - precision_2: 0.9525 - val_loss: 0.2868 - val_accuracy: 0.8870 - val_auc_2: 0.9302 - val_recall_2: 0.8042 - val_precision_2: 0.9651
+Epoch 4/50
+17836/17836 - 2s - loss: 0.2814 - accuracy: 0.8925 - auc_2: 0.9316 - recall_2: 0.8228 - precision_2: 0.9559 - val_loss: 0.2755 - val_accuracy: 0.8915 - val_auc_2: 0.9319 - val_recall_2: 0.8163 - val_precision_2: 0.9621
+Epoch 5/50
+17836/17836 - 2s - loss: 0.2755 - accuracy: 0.8949 - auc_2: 0.9320 - recall_2: 0.8236 - precision_2: 0.9604 - val_loss: 0.2733 - val_accuracy: 0.8925 - val_auc_2: 0.9322 - val_recall_2: 0.8133 - val_precision_2: 0.9677
+Epoch 6/50
+17836/17836 - 2s - loss: 0.2717 - accuracy: 0.8961 - auc_2: 0.9328 - recall_2: 0.8231 - precision_2: 0.9637 - val_loss: 0.2710 - val_accuracy: 0.8971 - val_auc_2: 0.9338 - val_recall_2: 0.8173 - val_precision_2: 0.9737
+Epoch 7/50
+17836/17836 - 2s - loss: 0.2687 - accuracy: 0.8968 - auc_2: 0.9348 - recall_2: 0.8243 - precision_2: 0.9640 - val_loss: 0.2670 - val_accuracy: 0.8940 - val_auc_2: 0.9338 - val_recall_2: 0.8082 - val_precision_2: 0.9769
+Epoch 8/50
+17836/17836 - 2s - loss: 0.2685 - accuracy: 0.8969 - auc_2: 0.9346 - recall_2: 0.8232 - precision_2: 0.9654 - val_loss: 0.2634 - val_accuracy: 0.8966 - val_auc_2: 0.9352 - val_recall_2: 0.8163 - val_precision_2: 0.9737
+Epoch 9/50
+17836/17836 - 2s - loss: 0.2637 - accuracy: 0.8994 - auc_2: 0.9337 - recall_2: 0.8251 - precision_2: 0.9689 - val_loss: 0.2618 - val_accuracy: 0.8961 - val_auc_2: 0.9361 - val_recall_2: 0.8163 - val_precision_2: 0.9725
+Epoch 10/50
+17836/17836 - 2s - loss: 0.2651 - accuracy: 0.8984 - auc_2: 0.9347 - recall_2: 0.8244 - precision_2: 0.9674 - val_loss: 0.2616 - val_accuracy: 0.8971 - val_auc_2: 0.9358 - val_recall_2: 0.8163 - val_precision_2: 0.9748
+Epoch 11/50
+17836/17836 - 2s - loss: 0.2620 - accuracy: 0.8995 - auc_2: 0.9373 - recall_2: 0.8249 - precision_2: 0.9695 - val_loss: 0.2730 - val_accuracy: 0.8991 - val_auc_2: 0.9354 - val_recall_2: 0.8173 - val_precision_2: 0.9784
+Epoch 12/50
+17836/17836 - 2s - loss: 0.2606 - accuracy: 0.8998 - auc_2: 0.9367 - recall_2: 0.8252 - precision_2: 0.9698 - val_loss: 0.2596 - val_accuracy: 0.8986 - val_auc_2: 0.9362 - val_recall_2: 0.8183 - val_precision_2: 0.9760
+Epoch 13/50
+17836/17836 - 2s - loss: 0.2615 - accuracy: 0.8996 - auc_2: 0.9348 - recall_2: 0.8248 - precision_2: 0.9698 - val_loss: 0.2655 - val_accuracy: 0.8961 - val_auc_2: 0.9352 - val_recall_2: 0.8102 - val_precision_2: 0.9794
+Epoch 14/50
+17836/17836 - 2s - loss: 0.2592 - accuracy: 0.9005 - auc_2: 0.9368 - recall_2: 0.8255 - precision_2: 0.9710 - val_loss: 0.2576 - val_accuracy: 0.8961 - val_auc_2: 0.9361 - val_recall_2: 0.8153 - val_precision_2: 0.9736
+Epoch 15/50
+17836/17836 - 2s - loss: 0.2579 - accuracy: 0.9009 - auc_2: 0.9366 - recall_2: 0.8265 - precision_2: 0.9709 - val_loss: 0.2555 - val_accuracy: 0.8991 - val_auc_2: 0.9362 - val_recall_2: 0.8183 - val_precision_2: 0.9772
+Epoch 16/50
+17836/17836 - 2s - loss: 0.2571 - accuracy: 0.9008 - auc_2: 0.9373 - recall_2: 0.8254 - precision_2: 0.9719 - val_loss: 0.2589 - val_accuracy: 0.9001 - val_auc_2: 0.9359 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 17/50
+17836/17836 - 2s - loss: 0.2564 - accuracy: 0.9012 - auc_2: 0.9371 - recall_2: 0.8258 - precision_2: 0.9724 - val_loss: 0.2539 - val_accuracy: 0.9001 - val_auc_2: 0.9364 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 18/50
+17836/17836 - 2s - loss: 0.2547 - accuracy: 0.9014 - auc_2: 0.9375 - recall_2: 0.8259 - precision_2: 0.9726 - val_loss: 0.2567 - val_accuracy: 0.9001 - val_auc_2: 0.9368 - val_recall_2: 0.8163 - val_precision_2: 0.9819
+Epoch 19/50
+17836/17836 - 2s - loss: 0.2557 - accuracy: 0.9012 - auc_2: 0.9369 - recall_2: 0.8252 - precision_2: 0.9729 - val_loss: 0.2724 - val_accuracy: 0.8930 - val_auc_2: 0.9289 - val_recall_2: 0.8012 - val_precision_2: 0.9828
+Epoch 20/50
+17836/17836 - 2s - loss: 0.2541 - accuracy: 0.9018 - auc_2: 0.9373 - recall_2: 0.8261 - precision_2: 0.9734 - val_loss: 0.2547 - val_accuracy: 0.8976 - val_auc_2: 0.9366 - val_recall_2: 0.8102 - val_precision_2: 0.9829
+Epoch 21/50
+17836/17836 - 2s - loss: 0.2543 - accuracy: 0.9019 - auc_2: 0.9394 - recall_2: 0.8268 - precision_2: 0.9729 - val_loss: 0.2565 - val_accuracy: 0.8956 - val_auc_2: 0.9350 - val_recall_2: 0.8102 - val_precision_2: 0.9782
+Epoch 22/50
+17836/17836 - 2s - loss: 0.2522 - accuracy: 0.9029 - auc_2: 0.9370 - recall_2: 0.8272 - precision_2: 0.9747 - val_loss: 0.2579 - val_accuracy: 0.8961 - val_auc_2: 0.9375 - val_recall_2: 0.8143 - val_precision_2: 0.9748
+Epoch 23/50
+17836/17836 - 2s - loss: 0.2525 - accuracy: 0.9029 - auc_2: 0.9383 - recall_2: 0.8270 - precision_2: 0.9749 - val_loss: 0.2477 - val_accuracy: 0.8996 - val_auc_2: 0.9383 - val_recall_2: 0.8183 - val_precision_2: 0.9784
+Epoch 24/50
+17836/17836 - 2s - loss: 0.2507 - accuracy: 0.9037 - auc_2: 0.9386 - recall_2: 0.8277 - precision_2: 0.9761 - val_loss: 0.2603 - val_accuracy: 0.8976 - val_auc_2: 0.9330 - val_recall_2: 0.8102 - val_precision_2: 0.9829
+Epoch 25/50
+17836/17836 - 2s - loss: 0.2513 - accuracy: 0.9024 - auc_2: 0.9375 - recall_2: 0.8262 - precision_2: 0.9747 - val_loss: 0.2465 - val_accuracy: 0.9011 - val_auc_2: 0.9383 - val_recall_2: 0.8183 - val_precision_2: 0.9819
+Epoch 26/50
+17836/17836 - 2s - loss: 0.2509 - accuracy: 0.9034 - auc_2: 0.9389 - recall_2: 0.8276 - precision_2: 0.9754 - val_loss: 0.2564 - val_accuracy: 0.8991 - val_auc_2: 0.9396 - val_recall_2: 0.8122 - val_precision_2: 0.9842
+Epoch 27/50
+17836/17836 - 2s - loss: 0.2482 - accuracy: 0.9040 - auc_2: 0.9383 - recall_2: 0.8267 - precision_2: 0.9777 - val_loss: 0.2461 - val_accuracy: 0.9001 - val_auc_2: 0.9396 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 28/50
+17836/17836 - 2s - loss: 0.2489 - accuracy: 0.9037 - auc_2: 0.9392 - recall_2: 0.8268 - precision_2: 0.9771 - val_loss: 0.2560 - val_accuracy: 0.8981 - val_auc_2: 0.9373 - val_recall_2: 0.8183 - val_precision_2: 0.9749
+Epoch 29/50
+17836/17836 - 2s - loss: 0.2505 - accuracy: 0.9035 - auc_2: 0.9389 - recall_2: 0.8273 - precision_2: 0.9758 - val_loss: 0.2489 - val_accuracy: 0.9011 - val_auc_2: 0.9383 - val_recall_2: 0.8193 - val_precision_2: 0.9808
+Epoch 30/50
+17836/17836 - 2s - loss: 0.2488 - accuracy: 0.9041 - auc_2: 0.9378 - recall_2: 0.8278 - precision_2: 0.9767 - val_loss: 0.2497 - val_accuracy: 0.8991 - val_auc_2: 0.9393 - val_recall_2: 0.8133 - val_precision_2: 0.9830
+Epoch 31/50
+17836/17836 - 2s - loss: 0.2496 - accuracy: 0.9036 - auc_2: 0.9389 - recall_2: 0.8268 - precision_2: 0.9768 - val_loss: 0.2516 - val_accuracy: 0.8996 - val_auc_2: 0.9385 - val_recall_2: 0.8183 - val_precision_2: 0.9784
+Epoch 32/50
+17836/17836 - 2s - loss: 0.2474 - accuracy: 0.9046 - auc_2: 0.9383 - recall_2: 0.8276 - precision_2: 0.9782 - val_loss: 0.2516 - val_accuracy: 0.9006 - val_auc_2: 0.9389 - val_recall_2: 0.8173 - val_precision_2: 0.9819
+Epoch 33/50
+17836/17836 - 2s - loss: 0.2468 - accuracy: 0.9043 - auc_2: 0.9389 - recall_2: 0.8274 - precision_2: 0.9776 - val_loss: 0.2554 - val_accuracy: 0.9006 - val_auc_2: 0.9383 - val_recall_2: 0.8193 - val_precision_2: 0.9796
+Epoch 34/50
+17836/17836 - 2s - loss: 0.2473 - accuracy: 0.9045 - auc_2: 0.9382 - recall_2: 0.8279 - precision_2: 0.9776 - val_loss: 0.2491 - val_accuracy: 0.9001 - val_auc_2: 0.9383 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 35/50
+17836/17836 - 2s - loss: 0.2487 - accuracy: 0.9046 - auc_2: 0.9391 - recall_2: 0.8278 - precision_2: 0.9780 - val_loss: 0.2518 - val_accuracy: 0.8991 - val_auc_2: 0.9372 - val_recall_2: 0.8183 - val_precision_2: 0.9772
+Epoch 36/50
+17836/17836 - 2s - loss: 0.2464 - accuracy: 0.9044 - auc_2: 0.9387 - recall_2: 0.8270 - precision_2: 0.9782 - val_loss: 0.2570 - val_accuracy: 0.9001 - val_auc_2: 0.9361 - val_recall_2: 0.8193 - val_precision_2: 0.9784
+Epoch 37/50
+17836/17836 - 2s - loss: 0.2476 - accuracy: 0.9045 - auc_2: 0.9382 - recall_2: 0.8274 - precision_2: 0.9780 - val_loss: 0.2523 - val_accuracy: 0.9006 - val_auc_2: 0.9379 - val_recall_2: 0.8193 - val_precision_2: 0.9796
+Epoch 38/50
+17836/17836 - 2s - loss: 0.2458 - accuracy: 0.9050 - auc_2: 0.9402 - recall_2: 0.8274 - precision_2: 0.9792 - val_loss: 0.2615 - val_accuracy: 0.8986 - val_auc_2: 0.9363 - val_recall_2: 0.8183 - val_precision_2: 0.9760
+Epoch 39/50
+17836/17836 - 2s - loss: 0.2475 - accuracy: 0.9046 - auc_2: 0.9387 - recall_2: 0.8270 - precision_2: 0.9788 - val_loss: 0.2472 - val_accuracy: 0.9016 - val_auc_2: 0.9398 - val_recall_2: 0.8183 - val_precision_2: 0.9831
+Epoch 40/50
+17836/17836 - 2s - loss: 0.2450 - accuracy: 0.9055 - auc_2: 0.9398 - recall_2: 0.8282 - precision_2: 0.9796 - val_loss: 0.2444 - val_accuracy: 0.9016 - val_auc_2: 0.9400 - val_recall_2: 0.8183 - val_precision_2: 0.9831
+Epoch 41/50
+17836/17836 - 2s - loss: 0.2448 - accuracy: 0.9051 - auc_2: 0.9412 - recall_2: 0.8273 - precision_2: 0.9795 - val_loss: 0.2424 - val_accuracy: 0.9021 - val_auc_2: 0.9404 - val_recall_2: 0.8183 - val_precision_2: 0.9843
+Epoch 42/50
+17836/17836 - 2s - loss: 0.2477 - accuracy: 0.9049 - auc_2: 0.9390 - recall_2: 0.8283 - precision_2: 0.9779 - val_loss: 0.2493 - val_accuracy: 0.9011 - val_auc_2: 0.9390 - val_recall_2: 0.8193 - val_precision_2: 0.9808
+Epoch 43/50
+17836/17836 - 2s - loss: 0.2466 - accuracy: 0.9042 - auc_2: 0.9388 - recall_2: 0.8278 - precision_2: 0.9771 - val_loss: 0.2471 - val_accuracy: 0.9001 - val_auc_2: 0.9389 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 44/50
+17836/17836 - 2s - loss: 0.2453 - accuracy: 0.9044 - auc_2: 0.9401 - recall_2: 0.8264 - precision_2: 0.9789 - val_loss: 0.2475 - val_accuracy: 0.9001 - val_auc_2: 0.9394 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 45/50
+17836/17836 - 2s - loss: 0.2419 - accuracy: 0.9057 - auc_2: 0.9407 - recall_2: 0.8277 - precision_2: 0.9806 - val_loss: 0.2403 - val_accuracy: 0.9026 - val_auc_2: 0.9402 - val_recall_2: 0.8193 - val_precision_2: 0.9843
+Epoch 46/50
+17836/17836 - 2s - loss: 0.2421 - accuracy: 0.9060 - auc_2: 0.9401 - recall_2: 0.8280 - precision_2: 0.9809 - val_loss: 0.2426 - val_accuracy: 0.9011 - val_auc_2: 0.9396 - val_recall_2: 0.8183 - val_precision_2: 0.9819
+Epoch 47/50
+17836/17836 - 2s - loss: 0.2409 - accuracy: 0.9064 - auc_2: 0.9407 - recall_2: 0.8282 - precision_2: 0.9815 - val_loss: 0.2488 - val_accuracy: 0.8976 - val_auc_2: 0.9397 - val_recall_2: 0.8112 - val_precision_2: 0.9818
+Epoch 48/50
+17836/17836 - 2s - loss: 0.2428 - accuracy: 0.9056 - auc_2: 0.9422 - recall_2: 0.8278 - precision_2: 0.9802 - val_loss: 0.2492 - val_accuracy: 0.9001 - val_auc_2: 0.9387 - val_recall_2: 0.8183 - val_precision_2: 0.9796
+Epoch 49/50
+17836/17836 - 2s - loss: 0.2426 - accuracy: 0.9054 - auc_2: 0.9394 - recall_2: 0.8271 - precision_2: 0.9804 - val_loss: 0.2469 - val_accuracy: 0.9016 - val_auc_2: 0.9393 - val_recall_2: 0.8183 - val_precision_2: 0.9831
+Epoch 50/50
+17836/17836 - 2s - loss: 0.2403 - accuracy: 0.9062 - auc_2: 0.9411 - recall_2: 0.8283 - precision_2: 0.9810 - val_loss: 0.2440 - val_accuracy: 0.9021 - val_auc_2: 0.9403 - val_recall_2: 0.8173 - val_precision_2: 0.9855
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+classifier is generated with time step 1
+--------------------------------------------------------------
+Measureing ps-detector-infec detector performance on test data
+--------------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-1.7222021363244926
+ps-detector-infec  testset_max:31.46267630066733
+Metrics: 
+ {'auc': 0.5999068250640578, 'accuracy': 0.954169619655091, 'precision': 0.8195876288659794, 'recall': 0.5, 'f1': 0.62109375, 'fp': 35, 'tp': 159, 'fn': 159, 'tn': 3880, 'auprc': 0.39771775272666826, 'precision99': 0.76, 'recall99': 0.0}
+detector.dataset['test'][0].shape: (4233, 41)
+detector.dataset['test'][1].shape: (4233,)
+detector.dataset['test'][1]: [0. 0. 0. ... 0. 0. 0.]
+--------------------------------------------------------------------
+Measureing ps-detector-infec detector performance on clean test data
+--------------------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-1.7222021363244926
+ps-detector-infec  testset_max:31.46267630066733
+Metrics on clean testset: 
+ {'auc': 0.5999068250640578, 'accuracy': 0.954169619655091, 'precision': 0.8195876288659794, 'recall': 0.5, 'f1': 0.62109375, 'fp': 35, 'tp': 159, 'fn': 159, 'tn': 3880, 'auprc': 0.39771775272666826, 'precision99': 0.76, 'recall99': 0.0}
+----------------------------------------------------------------------------------------------
+Generate adversarial exapmples based white-box ps-detector-infec detector with clean test data
+----------------------------------------------------------------------------------------------
+kind: 
+ps-detector-infec  cle_testset_min:-1.7222021363244926
+ps-detector-infec  cle_testset_max:31.46267630066733
+cle_testset_x.shape: (4233, 41)
+cle_testset_x.shape: (4233, 1, 41)
+eps=1.0,eps_step=0.5,max_iter=20
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A2023-05-13 17:39:09.020402: W tensorflow/c/c_api.cc:326] Operation '{name:'lstm_4/while' id:3147 op device:{} def:{{{node lstm_4/while}} = While[T=[DT_INT32, DT_INT32, DT_INT32, DT_VARIANT, DT_FLOAT, DT_FLOAT, DT_INT32, DT_VARIANT, DT_RESOURCE, DT_RESOURCE, DT_RESOURCE, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT], _lower_using_switch_merge=true, _num_original_outputs=45, _read_only_resource_inputs=[8, 9, 10], body=lstm_4_while_body_4870[], cond=lstm_4_while_cond_4869[], output_shapes=[[], [], [], [], [?,128], [?,128], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], parallel_iterations=32](lstm_4/while/loop_counter, lstm_4/while/maximum_iterations, lstm_4/time, lstm_4/TensorArrayV2_1, lstm_4/zeros, lstm_4/zeros_1, lstm_4/strided_slice_1, lstm_4/TensorArrayUnstack/TensorListFromTensor, lstm_4/lstm_cell_4/kernel, lstm_4/lstm_cell_4/recurrent_kernel, lstm_4/lstm_cell_4/bias, lstm_4/while/EmptyTensorList, lstm_4/while/EmptyTensorList_1, lstm_4/while/EmptyTensorList_2, lstm_4/while/EmptyTensorList_3, lstm_4/while/EmptyTensorList_4, lstm_4/while/EmptyTensorList_5, lstm_4/while/EmptyTensorList_6, lstm_4/while/EmptyTensorList_7, lstm_4/while/EmptyTensorList_8, lstm_4/while/EmptyTensorList_9, lstm_4/while/EmptyTensorList_10, lstm_4/while/EmptyTensorList_11, lstm_4/while/EmptyTensorList_12, lstm_4/while/EmptyTensorList_13, lstm_4/while/EmptyTensorList_14, lstm_4/while/EmptyTensorList_15, lstm_4/while/EmptyTensorList_16, lstm_4/while/EmptyTensorList_17, lstm_4/while/EmptyTensorList_18, lstm_4/while/EmptyTensorList_19, lstm_4/while/EmptyTensorList_20, lstm_4/while/EmptyTensorList_21, lstm_4/while/EmptyTensorList_22, lstm_4/while/EmptyTensorList_23, lstm_4/while/EmptyTensorList_24, lstm_4/while/EmptyTensorList_25, lstm_4/while/EmptyTensorList_26, lstm_4/while/EmptyTensorList_27, lstm_4/while/EmptyTensorList_28, lstm_4/while/EmptyTensorList_29, lstm_4/while/EmptyTensorList_30, lstm_4/while/EmptyTensorList_31, lstm_4/while/EmptyTensorList_32, lstm_4/while/EmptyTensorList_33)}}' was changed by setting attribute after it was run by a session. This mutation will have no effect, and will trigger an error in the future. Either don't modify nodes after running them or create a new session.
+
+PGD - Iterations:   5%|▌         | 1/20 [00:00<00:06,  2.77it/s][A
+                                                                [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00,  2.31it/s]PGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00,  2.31it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.58it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.69it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.79it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.51it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.21it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.49it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.07it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.58it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.81it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.70it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.17it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.81it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.71it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.18it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.58it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.63it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.77it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.46it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.56it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.34it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.83it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.35it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.19it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.03it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.29it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.05it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.93it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.91it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.16it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.43it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.45it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.79it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.84it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.47it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.28it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.22it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.94it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.66it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.57it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.14it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.08it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.48it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.26it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.23it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.60it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.31it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.71it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.98it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.23it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.95it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.67it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.14it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.88it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.67it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.41it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.70it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.09it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.36it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.23it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.69it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.33it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.01it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.66it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.56it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.97it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.12it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.58it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.13it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.32it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.36it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.54it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.63it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.77it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.56it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.15it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.52it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.07it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.05it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.15it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.06it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.82it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.38it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.35it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.74it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.07it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.74it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.85it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.72it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.61it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.61it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.57it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.12it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.10it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.98it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.42it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.95it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.58it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.08it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.83it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.33it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.09it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.24it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.26it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.38it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.12it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.65it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.93it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.21it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.84it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.34it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.22it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.40it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.63it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.49it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.08it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.89it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.72it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.82it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.41it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.25it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.23it/s]
+/home/huan1932/IoTDataGenerate/data_preprocess/models/lstm.py:199: RuntimeWarning: invalid value encountered in double_scalars
+  f1 = (2*precision*recall)/(precision+recall)
+WARNING:tensorflow:Layer lstm_6 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_6 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_7 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_7 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+adv_testset_x.shape: (4233, 1, 41)
+adv_testset_y.shape: (4233,)
+adv_testset_x.shape: (4233, 41)
+adv_test_examples.shape: (4233, 41)
+adv_test_labels.shape: (4233,)
+--------------------------------------------------------------------------
+Measureing ps-detector-infec detector performance on adversarial test data
+--------------------------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-141.78712463378906
+ps-detector-infec  testset_max:990.8682250976562
+Metrics on adversarial testset: 
+ {'auc': 0.49967951034964697, 'accuracy': 0.9244034963382943, 'precision': 0.0, 'recall': 0.0, 'f1': nan, 'fp': 2, 'tp': 0, 'fn': 318, 'tn': 3913, 'auprc': 0.07183355607624077, 'precision99': 0.0, 'recall99': 0.0}
+proportion of infection events tagged by ps-detector-attack detector:  0.03774346553638107
+proportion of infection events tagged by ps-detector-recon detector:  0.48057321626803917
+proportion of infection events tagged by ps-detector-infec detector:  0.42027449793117366
+proportion of events estimated to be benign :  0.07165203350489455
+Permute truncated is False
+Use prob embedding is False
+Permute Truncated is disabled
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            [(None, 10, 4)]      0                                            
+__________________________________________________________________________________________________
+lstm_6 (LSTM)                   [(None, 10, 128), (N 68096       input_1[0][0]                    
+__________________________________________________________________________________________________
+batch_normalization (BatchNorma (None, 128)          512         lstm_6[0][1]                     
+__________________________________________________________________________________________________
+repeat_vector (RepeatVector)    (None, 10, 128)      0           batch_normalization[0][0]        
+__________________________________________________________________________________________________
+batch_normalization_1 (BatchNor (None, 128)          512         lstm_6[0][2]                     
+__________________________________________________________________________________________________
+lstm_7 (LSTM)                   (None, 10, 128)      131584      repeat_vector[0][0]              
+                                                                 batch_normalization[0][0]        
+                                                                 batch_normalization_1[0][0]      
+__________________________________________________________________________________________________
+dot (Dot)                       (None, 10, 10)       0           lstm_7[0][0]                     
+                                                                 lstm_6[0][0]                     
+__________________________________________________________________________________________________
+activation (Activation)         (None, 10, 10)       0           dot[0][0]                        
+__________________________________________________________________________________________________
+dot_1 (Dot)                     (None, 10, 128)      0           activation[0][0]                 
+                                                                 lstm_6[0][0]                     
+__________________________________________________________________________________________________
+batch_normalization_2 (BatchNor (None, 10, 128)      512         dot_1[0][0]                      
+__________________________________________________________________________________________________
+concatenate (Concatenate)       (None, 10, 256)      0           batch_normalization_2[0][0]      
+                                                                 lstm_7[0][0]                     
+__________________________________________________________________________________________________
+time_distributed (TimeDistribut (None, 10, 1)        257         concatenate[0][0]                
+__________________________________________________________________________________________________
+activation_1 (Activation)       (None, 10, 1)        0           time_distributed[0][0]           
+==================================================================================================
+Total params: 201,473
+Trainable params: 200,705
+Non-trainable params: 768
+__________________________________________________________________________________________________
+Train on 15847 samples, validate on 3962 samples
+Epoch 1/30
+15847/15847 - 6s - loss: 0.0583 - accuracy: 0.9838 - auc_3: 0.9958 - recall_3: 0.9840 - precision_3: 0.9835 - val_loss: 0.0318 - val_accuracy: 0.9930 - val_auc_3: 0.9981 - val_recall_3: 0.9927 - val_precision_3: 0.9934
+Epoch 2/30
+15847/15847 - 5s - loss: 0.0308 - accuracy: 0.9935 - auc_3: 0.9973 - recall_3: 0.9935 - precision_3: 0.9935 - val_loss: 0.0607 - val_accuracy: 0.9917 - val_auc_3: 0.9974 - val_recall_3: 0.9880 - val_precision_3: 0.9955
+Epoch 3/30
+15847/15847 - 5s - loss: 0.0293 - accuracy: 0.9935 - auc_3: 0.9975 - recall_3: 0.9934 - precision_3: 0.9936 - val_loss: 0.0259 - val_accuracy: 0.9943 - val_auc_3: 0.9981 - val_recall_3: 0.9904 - val_precision_3: 0.9982
+Epoch 4/30
+15847/15847 - 5s - loss: 0.0290 - accuracy: 0.9936 - auc_3: 0.9975 - recall_3: 0.9930 - precision_3: 0.9942 - val_loss: 0.0285 - val_accuracy: 0.9937 - val_auc_3: 0.9978 - val_recall_3: 0.9912 - val_precision_3: 0.9963
+Epoch 5/30
+15847/15847 - 5s - loss: 0.0278 - accuracy: 0.9939 - auc_3: 0.9976 - recall_3: 0.9929 - precision_3: 0.9947 - val_loss: 0.0301 - val_accuracy: 0.9938 - val_auc_3: 0.9984 - val_recall_3: 0.9916 - val_precision_3: 0.9960
+Epoch 6/30
+15847/15847 - 5s - loss: 0.0266 - accuracy: 0.9938 - auc_3: 0.9978 - recall_3: 0.9927 - precision_3: 0.9948 - val_loss: 0.0670 - val_accuracy: 0.9931 - val_auc_3: 0.9986 - val_recall_3: 0.9876 - val_precision_3: 0.9985
+Epoch 7/30
+15847/15847 - 5s - loss: 0.0277 - accuracy: 0.9935 - auc_3: 0.9977 - recall_3: 0.9926 - precision_3: 0.9944 - val_loss: 0.0866 - val_accuracy: 0.9830 - val_auc_3: 0.9980 - val_recall_3: 0.9682 - val_precision_3: 0.9979
+Epoch 8/30
+15847/15847 - 5s - loss: 0.0256 - accuracy: 0.9939 - auc_3: 0.9982 - recall_3: 0.9926 - precision_3: 0.9951 - val_loss: 0.0484 - val_accuracy: 0.9938 - val_auc_3: 0.9985 - val_recall_3: 0.9890 - val_precision_3: 0.9985
+Epoch 9/30
+15847/15847 - 5s - loss: 0.0258 - accuracy: 0.9939 - auc_3: 0.9979 - recall_3: 0.9928 - precision_3: 0.9951 - val_loss: 0.0591 - val_accuracy: 0.9940 - val_auc_3: 0.9986 - val_recall_3: 0.9894 - val_precision_3: 0.9987
+Epoch 10/30
+15847/15847 - 5s - loss: 0.0360 - accuracy: 0.9934 - auc_3: 0.9975 - recall_3: 0.9933 - precision_3: 0.9935 - val_loss: 0.1819 - val_accuracy: 0.9433 - val_auc_3: 0.9981 - val_recall_3: 0.8890 - val_precision_3: 0.9979
+Epoch 11/30
+15847/15847 - 5s - loss: 0.0279 - accuracy: 0.9937 - auc_3: 0.9979 - recall_3: 0.9928 - precision_3: 0.9946 - val_loss: 0.1028 - val_accuracy: 0.9876 - val_auc_3: 0.9986 - val_recall_3: 0.9766 - val_precision_3: 0.9988
+Epoch 12/30
+15847/15847 - 5s - loss: 0.0262 - accuracy: 0.9938 - auc_3: 0.9979 - recall_3: 0.9930 - precision_3: 0.9944 - val_loss: 0.0842 - val_accuracy: 0.9897 - val_auc_3: 0.9981 - val_recall_3: 0.9811 - val_precision_3: 0.9984
+Epoch 13/30
+15847/15847 - 5s - loss: 0.0258 - accuracy: 0.9938 - auc_3: 0.9979 - recall_3: 0.9925 - precision_3: 0.9951 - val_loss: 0.1390 - val_accuracy: 0.9859 - val_auc_3: 0.9983 - val_recall_3: 0.9731 - val_precision_3: 0.9987
+Epoch 14/30
+15847/15847 - 5s - loss: 0.0258 - accuracy: 0.9938 - auc_3: 0.9980 - recall_3: 0.9929 - precision_3: 0.9947 - val_loss: 0.0255 - val_accuracy: 0.9940 - val_auc_3: 0.9989 - val_recall_3: 0.9903 - val_precision_3: 0.9978
+Epoch 15/30
+15847/15847 - 5s - loss: 0.0257 - accuracy: 0.9940 - auc_3: 0.9981 - recall_3: 0.9928 - precision_3: 0.9952 - val_loss: 0.0354 - val_accuracy: 0.9941 - val_auc_3: 0.9989 - val_recall_3: 0.9904 - val_precision_3: 0.9979
+Epoch 16/30
+15847/15847 - 5s - loss: 0.0256 - accuracy: 0.9939 - auc_3: 0.9982 - recall_3: 0.9924 - precision_3: 0.9954 - val_loss: 0.1332 - val_accuracy: 0.9880 - val_auc_3: 0.9987 - val_recall_3: 0.9778 - val_precision_3: 0.9982
+Epoch 17/30
+15847/15847 - 5s - loss: 0.0254 - accuracy: 0.9939 - auc_3: 0.9982 - recall_3: 0.9926 - precision_3: 0.9952 - val_loss: 0.0400 - val_accuracy: 0.9939 - val_auc_3: 0.9987 - val_recall_3: 0.9897 - val_precision_3: 0.9982
+Epoch 18/30
+15847/15847 - 5s - loss: 0.0245 - accuracy: 0.9940 - auc_3: 0.9983 - recall_3: 0.9929 - precision_3: 0.9950 - val_loss: 0.1228 - val_accuracy: 0.9927 - val_auc_3: 0.9984 - val_recall_3: 0.9866 - val_precision_3: 0.9988
+Epoch 19/30
+15847/15847 - 5s - loss: 0.0248 - accuracy: 0.9939 - auc_3: 0.9984 - recall_3: 0.9928 - precision_3: 0.9951 - val_loss: 0.0266 - val_accuracy: 0.9936 - val_auc_3: 0.9989 - val_recall_3: 0.9922 - val_precision_3: 0.9950
+Epoch 20/30
+15847/15847 - 5s - loss: 0.0246 - accuracy: 0.9939 - auc_3: 0.9982 - recall_3: 0.9926 - precision_3: 0.9952 - val_loss: 0.0596 - val_accuracy: 0.9941 - val_auc_3: 0.9987 - val_recall_3: 0.9899 - val_precision_3: 0.9984
+Epoch 21/30
+15847/15847 - 5s - loss: 0.0246 - accuracy: 0.9940 - auc_3: 0.9983 - recall_3: 0.9927 - precision_3: 0.9952 - val_loss: 0.0534 - val_accuracy: 0.9940 - val_auc_3: 0.9986 - val_recall_3: 0.9895 - val_precision_3: 0.9985
+Epoch 22/30
+15847/15847 - 5s - loss: 0.0249 - accuracy: 0.9940 - auc_3: 0.9984 - recall_3: 0.9923 - precision_3: 0.9957 - val_loss: 0.0321 - val_accuracy: 0.9922 - val_auc_3: 0.9981 - val_recall_3: 0.9902 - val_precision_3: 0.9943
+Epoch 23/30
+15847/15847 - 5s - loss: 0.0268 - accuracy: 0.9939 - auc_3: 0.9979 - recall_3: 0.9931 - precision_3: 0.9946 - val_loss: 0.0790 - val_accuracy: 0.9837 - val_auc_3: 0.9987 - val_recall_3: 0.9687 - val_precision_3: 0.9988
+Epoch 24/30
+15847/15847 - 5s - loss: 0.0253 - accuracy: 0.9938 - auc_3: 0.9981 - recall_3: 0.9925 - precision_3: 0.9951 - val_loss: 0.0786 - val_accuracy: 0.9930 - val_auc_3: 0.9984 - val_recall_3: 0.9875 - val_precision_3: 0.9985
+Epoch 25/30
+15847/15847 - 5s - loss: 0.0255 - accuracy: 0.9937 - auc_3: 0.9982 - recall_3: 0.9926 - precision_3: 0.9949 - val_loss: 0.0357 - val_accuracy: 0.9933 - val_auc_3: 0.9987 - val_recall_3: 0.9883 - val_precision_3: 0.9984
+Epoch 26/30
+15847/15847 - 5s - loss: 0.0254 - accuracy: 0.9940 - auc_3: 0.9980 - recall_3: 0.9928 - precision_3: 0.9951 - val_loss: 0.0356 - val_accuracy: 0.9941 - val_auc_3: 0.9989 - val_recall_3: 0.9899 - val_precision_3: 0.9982
+Epoch 27/30
+15847/15847 - 5s - loss: 0.0250 - accuracy: 0.9940 - auc_3: 0.9983 - recall_3: 0.9923 - precision_3: 0.9956 - val_loss: 0.0369 - val_accuracy: 0.9935 - val_auc_3: 0.9988 - val_recall_3: 0.9885 - val_precision_3: 0.9985
+Epoch 28/30
+15847/15847 - 5s - loss: 0.0248 - accuracy: 0.9941 - auc_3: 0.9981 - recall_3: 0.9926 - precision_3: 0.9956 - val_loss: 0.0554 - val_accuracy: 0.9941 - val_auc_3: 0.9987 - val_recall_3: 0.9893 - val_precision_3: 0.9988
+Epoch 29/30
+15847/15847 - 5s - loss: 0.0254 - accuracy: 0.9940 - auc_3: 0.9982 - recall_3: 0.9922 - precision_3: 0.9956 - val_loss: 0.0636 - val_accuracy: 0.9942 - val_auc_3: 0.9988 - val_recall_3: 0.9899 - val_precision_3: 0.9984
+Epoch 30/30
+15847/15847 - 5s - loss: 0.0243 - accuracy: 0.9940 - auc_3: 0.9983 - recall_3: 0.9922 - precision_3: 0.9958 - val_loss: 0.0621 - val_accuracy: 0.9932 - val_auc_3: 0.9987 - val_recall_3: 0.9878 - val_precision_3: 0.9987
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+WARNING:tensorflow:Layer lstm_8 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_8 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_9 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+WARNING:tensorflow:Layer lstm_9 will not use cuDNN kernel since it doesn't meet the cuDNN kernel criteria. It will use generic GPU kernel as fallback when running on GPU
+Permute truncated is False
+Use prob embedding is False
+preds ps infec shape is (19818,)
+features len is  41
+-----------------------------
+Retraining infection detector
+-----------------------------
+kind: 
+ps-detector-infec  trainset_min:-2.3799714775110803
+ps-detector-infec  trainset_max:140.77286670370265
+the info of dataset, (19818, 1, 41)
+shuffle is enabled for training
+Early stopping: NO.
+Train on 17836 samples, validate on 1982 samples
+Epoch 1/50
+17836/17836 - 3s - loss: 0.3711 - accuracy: 0.8552 - auc_4: 0.8997 - recall_4: 0.8040 - precision_4: 0.8986 - val_loss: 0.3083 - val_accuracy: 0.8814 - val_auc_4: 0.9271 - val_recall_4: 0.8203 - val_precision_4: 0.9400
+Epoch 2/50
+17836/17836 - 2s - loss: 0.2851 - accuracy: 0.8899 - auc_4: 0.9289 - recall_4: 0.8202 - precision_4: 0.9554 - val_loss: 0.2781 - val_accuracy: 0.8930 - val_auc_4: 0.9350 - val_recall_4: 0.8243 - val_precision_4: 0.9609
+Epoch 3/50
+17836/17836 - 2s - loss: 0.2681 - accuracy: 0.8956 - auc_4: 0.9341 - recall_4: 0.8214 - precision_4: 0.9668 - val_loss: 0.2698 - val_accuracy: 0.8930 - val_auc_4: 0.9398 - val_recall_4: 0.8342 - val_precision_4: 0.9505
+Epoch 4/50
+17836/17836 - 2s - loss: 0.2607 - accuracy: 0.8985 - auc_4: 0.9357 - recall_4: 0.8227 - precision_4: 0.9718 - val_loss: 0.2604 - val_accuracy: 0.8951 - val_auc_4: 0.9420 - val_recall_4: 0.8193 - val_precision_4: 0.9708
+Epoch 5/50
+17836/17836 - 2s - loss: 0.2542 - accuracy: 0.9007 - auc_4: 0.9391 - recall_4: 0.8251 - precision_4: 0.9742 - val_loss: 0.2549 - val_accuracy: 0.9001 - val_auc_4: 0.9418 - val_recall_4: 0.8381 - val_precision_4: 0.9615
+Epoch 6/50
+17836/17836 - 2s - loss: 0.2517 - accuracy: 0.9012 - auc_4: 0.9377 - recall_4: 0.8241 - precision_4: 0.9766 - val_loss: 0.2507 - val_accuracy: 0.9006 - val_auc_4: 0.9423 - val_recall_4: 0.8381 - val_precision_4: 0.9626
+Epoch 7/50
+17836/17836 - 2s - loss: 0.2474 - accuracy: 0.9026 - auc_4: 0.9390 - recall_4: 0.8254 - precision_4: 0.9781 - val_loss: 0.2558 - val_accuracy: 0.9021 - val_auc_4: 0.9425 - val_recall_4: 0.8391 - val_precision_4: 0.9648
+Epoch 8/50
+17836/17836 - 2s - loss: 0.2467 - accuracy: 0.9029 - auc_4: 0.9393 - recall_4: 0.8248 - precision_4: 0.9797 - val_loss: 0.2564 - val_accuracy: 0.8996 - val_auc_4: 0.9414 - val_recall_4: 0.8332 - val_precision_4: 0.9657
+Epoch 9/50
+17836/17836 - 2s - loss: 0.2451 - accuracy: 0.9033 - auc_4: 0.9390 - recall_4: 0.8251 - precision_4: 0.9802 - val_loss: 0.2501 - val_accuracy: 0.8951 - val_auc_4: 0.9454 - val_recall_4: 0.8174 - val_precision_4: 0.9730
+Epoch 10/50
+17836/17836 - 2s - loss: 0.2428 - accuracy: 0.9038 - auc_4: 0.9395 - recall_4: 0.8251 - precision_4: 0.9814 - val_loss: 0.2472 - val_accuracy: 0.9041 - val_auc_4: 0.9441 - val_recall_4: 0.8381 - val_precision_4: 0.9703
+Epoch 11/50
+17836/17836 - 2s - loss: 0.2416 - accuracy: 0.9041 - auc_4: 0.9387 - recall_4: 0.8249 - precision_4: 0.9821 - val_loss: 0.2477 - val_accuracy: 0.9057 - val_auc_4: 0.9436 - val_recall_4: 0.8371 - val_precision_4: 0.9747
+Epoch 12/50
+17836/17836 - 2s - loss: 0.2424 - accuracy: 0.9037 - auc_4: 0.9368 - recall_4: 0.8249 - precision_4: 0.9812 - val_loss: 0.2403 - val_accuracy: 0.9087 - val_auc_4: 0.9444 - val_recall_4: 0.8401 - val_precision_4: 0.9782
+Epoch 13/50
+17836/17836 - 2s - loss: 0.2390 - accuracy: 0.9051 - auc_4: 0.9394 - recall_4: 0.8255 - precision_4: 0.9838 - val_loss: 0.2293 - val_accuracy: 0.9082 - val_auc_4: 0.9464 - val_recall_4: 0.8401 - val_precision_4: 0.9770
+Epoch 14/50
+17836/17836 - 2s - loss: 0.2373 - accuracy: 0.9060 - auc_4: 0.9426 - recall_4: 0.8262 - precision_4: 0.9852 - val_loss: 0.2342 - val_accuracy: 0.9057 - val_auc_4: 0.9456 - val_recall_4: 0.8391 - val_precision_4: 0.9725
+Epoch 15/50
+17836/17836 - 2s - loss: 0.2384 - accuracy: 0.9053 - auc_4: 0.9413 - recall_4: 0.8259 - precision_4: 0.9839 - val_loss: 0.2316 - val_accuracy: 0.9087 - val_auc_4: 0.9463 - val_recall_4: 0.8361 - val_precision_4: 0.9826
+Epoch 16/50
+17836/17836 - 2s - loss: 0.2361 - accuracy: 0.9058 - auc_4: 0.9390 - recall_4: 0.8262 - precision_4: 0.9848 - val_loss: 0.2322 - val_accuracy: 0.9072 - val_auc_4: 0.9473 - val_recall_4: 0.8391 - val_precision_4: 0.9759
+Epoch 17/50
+17836/17836 - 2s - loss: 0.2366 - accuracy: 0.9060 - auc_4: 0.9402 - recall_4: 0.8262 - precision_4: 0.9853 - val_loss: 0.2279 - val_accuracy: 0.9102 - val_auc_4: 0.9474 - val_recall_4: 0.8401 - val_precision_4: 0.9815
+Epoch 18/50
+17836/17836 - 2s - loss: 0.2337 - accuracy: 0.9069 - auc_4: 0.9420 - recall_4: 0.8265 - precision_4: 0.9869 - val_loss: 0.2327 - val_accuracy: 0.9067 - val_auc_4: 0.9447 - val_recall_4: 0.8312 - val_precision_4: 0.9836
+Epoch 19/50
+17836/17836 - 2s - loss: 0.2340 - accuracy: 0.9067 - auc_4: 0.9403 - recall_4: 0.8253 - precision_4: 0.9879 - val_loss: 0.2300 - val_accuracy: 0.9077 - val_auc_4: 0.9476 - val_recall_4: 0.8401 - val_precision_4: 0.9759
+Epoch 20/50
+17836/17836 - 2s - loss: 0.2331 - accuracy: 0.9069 - auc_4: 0.9412 - recall_4: 0.8267 - precision_4: 0.9867 - val_loss: 0.2328 - val_accuracy: 0.9041 - val_auc_4: 0.9464 - val_recall_4: 0.8401 - val_precision_4: 0.9681
+Epoch 21/50
+17836/17836 - 2s - loss: 0.2313 - accuracy: 0.9075 - auc_4: 0.9422 - recall_4: 0.8267 - precision_4: 0.9882 - val_loss: 0.2258 - val_accuracy: 0.9087 - val_auc_4: 0.9481 - val_recall_4: 0.8351 - val_precision_4: 0.9837
+Epoch 22/50
+17836/17836 - 2s - loss: 0.2288 - accuracy: 0.9084 - auc_4: 0.9417 - recall_4: 0.8276 - precision_4: 0.9891 - val_loss: 0.2302 - val_accuracy: 0.9082 - val_auc_4: 0.9465 - val_recall_4: 0.8391 - val_precision_4: 0.9781
+Epoch 23/50
+17836/17836 - 2s - loss: 0.2310 - accuracy: 0.9076 - auc_4: 0.9413 - recall_4: 0.8258 - precision_4: 0.9894 - val_loss: 0.2355 - val_accuracy: 0.9062 - val_auc_4: 0.9459 - val_recall_4: 0.8391 - val_precision_4: 0.9737
+Epoch 24/50
+17836/17836 - 2s - loss: 0.2296 - accuracy: 0.9083 - auc_4: 0.9410 - recall_4: 0.8269 - precision_4: 0.9896 - val_loss: 0.2260 - val_accuracy: 0.9067 - val_auc_4: 0.9475 - val_recall_4: 0.8361 - val_precision_4: 0.9781
+Epoch 25/50
+17836/17836 - 2s - loss: 0.2304 - accuracy: 0.9077 - auc_4: 0.9413 - recall_4: 0.8262 - precision_4: 0.9892 - val_loss: 0.2306 - val_accuracy: 0.9067 - val_auc_4: 0.9461 - val_recall_4: 0.8351 - val_precision_4: 0.9792
+Epoch 26/50
+17836/17836 - 2s - loss: 0.2289 - accuracy: 0.9081 - auc_4: 0.9426 - recall_4: 0.8265 - precision_4: 0.9896 - val_loss: 0.2381 - val_accuracy: 0.9026 - val_auc_4: 0.9452 - val_recall_4: 0.8272 - val_precision_4: 0.9790
+Epoch 27/50
+17836/17836 - 2s - loss: 0.2279 - accuracy: 0.9088 - auc_4: 0.9425 - recall_4: 0.8266 - precision_4: 0.9913 - val_loss: 0.2129 - val_accuracy: 0.9142 - val_auc_4: 0.9489 - val_recall_4: 0.8391 - val_precision_4: 0.9918
+Epoch 28/50
+17836/17836 - 2s - loss: 0.2296 - accuracy: 0.9081 - auc_4: 0.9424 - recall_4: 0.8267 - precision_4: 0.9894 - val_loss: 0.2224 - val_accuracy: 0.9087 - val_auc_4: 0.9478 - val_recall_4: 0.8401 - val_precision_4: 0.9782
+Epoch 29/50
+17836/17836 - 2s - loss: 0.2257 - accuracy: 0.9092 - auc_4: 0.9417 - recall_4: 0.8275 - precision_4: 0.9911 - val_loss: 0.2148 - val_accuracy: 0.9127 - val_auc_4: 0.9488 - val_recall_4: 0.8401 - val_precision_4: 0.9872
+Epoch 30/50
+17836/17836 - 2s - loss: 0.2255 - accuracy: 0.9091 - auc_4: 0.9409 - recall_4: 0.8275 - precision_4: 0.9908 - val_loss: 0.2180 - val_accuracy: 0.9127 - val_auc_4: 0.9488 - val_recall_4: 0.8391 - val_precision_4: 0.9884
+Epoch 31/50
+17836/17836 - 2s - loss: 0.2257 - accuracy: 0.9091 - auc_4: 0.9430 - recall_4: 0.8268 - precision_4: 0.9916 - val_loss: 0.2139 - val_accuracy: 0.9147 - val_auc_4: 0.9504 - val_recall_4: 0.8411 - val_precision_4: 0.9907
+Epoch 32/50
+17836/17836 - 2s - loss: 0.2250 - accuracy: 0.9096 - auc_4: 0.9429 - recall_4: 0.8274 - precision_4: 0.9921 - val_loss: 0.2143 - val_accuracy: 0.9137 - val_auc_4: 0.9473 - val_recall_4: 0.8361 - val_precision_4: 0.9941
+Epoch 33/50
+17836/17836 - 2s - loss: 0.2242 - accuracy: 0.9097 - auc_4: 0.9419 - recall_4: 0.8273 - precision_4: 0.9927 - val_loss: 0.2184 - val_accuracy: 0.9117 - val_auc_4: 0.9481 - val_recall_4: 0.8401 - val_precision_4: 0.9850
+Epoch 34/50
+17836/17836 - 2s - loss: 0.2235 - accuracy: 0.9103 - auc_4: 0.9423 - recall_4: 0.8278 - precision_4: 0.9935 - val_loss: 0.2224 - val_accuracy: 0.9117 - val_auc_4: 0.9486 - val_recall_4: 0.8411 - val_precision_4: 0.9838
+Epoch 35/50
+17836/17836 - 2s - loss: 0.2272 - accuracy: 0.9090 - auc_4: 0.9435 - recall_4: 0.8269 - precision_4: 0.9913 - val_loss: 0.2158 - val_accuracy: 0.9132 - val_auc_4: 0.9499 - val_recall_4: 0.8342 - val_precision_4: 0.9953
+Epoch 36/50
+17836/17836 - 2s - loss: 0.2239 - accuracy: 0.9100 - auc_4: 0.9423 - recall_4: 0.8273 - precision_4: 0.9933 - val_loss: 0.2145 - val_accuracy: 0.9127 - val_auc_4: 0.9497 - val_recall_4: 0.8401 - val_precision_4: 0.9872
+Epoch 37/50
+17836/17836 - 2s - loss: 0.2267 - accuracy: 0.9094 - auc_4: 0.9409 - recall_4: 0.8269 - precision_4: 0.9923 - val_loss: 0.2191 - val_accuracy: 0.9102 - val_auc_4: 0.9479 - val_recall_4: 0.8411 - val_precision_4: 0.9804
+Epoch 38/50
+17836/17836 - 2s - loss: 0.2219 - accuracy: 0.9107 - auc_4: 0.9446 - recall_4: 0.8281 - precision_4: 0.9940 - val_loss: 0.2124 - val_accuracy: 0.9132 - val_auc_4: 0.9494 - val_recall_4: 0.8411 - val_precision_4: 0.9873
+Epoch 39/50
+17836/17836 - 2s - loss: 0.2248 - accuracy: 0.9096 - auc_4: 0.9418 - recall_4: 0.8272 - precision_4: 0.9925 - val_loss: 0.2115 - val_accuracy: 0.9152 - val_auc_4: 0.9500 - val_recall_4: 0.8411 - val_precision_4: 0.9919
+Epoch 40/50
+17836/17836 - 2s - loss: 0.2232 - accuracy: 0.9101 - auc_4: 0.9454 - recall_4: 0.8276 - precision_4: 0.9932 - val_loss: 0.2105 - val_accuracy: 0.9157 - val_auc_4: 0.9502 - val_recall_4: 0.8411 - val_precision_4: 0.9930
+Epoch 41/50
+17836/17836 - 2s - loss: 0.2218 - accuracy: 0.9106 - auc_4: 0.9429 - recall_4: 0.8278 - precision_4: 0.9940 - val_loss: 0.2137 - val_accuracy: 0.9147 - val_auc_4: 0.9494 - val_recall_4: 0.8401 - val_precision_4: 0.9918
+Epoch 42/50
+17836/17836 - 2s - loss: 0.2242 - accuracy: 0.9105 - auc_4: 0.9434 - recall_4: 0.8282 - precision_4: 0.9935 - val_loss: 0.2122 - val_accuracy: 0.9137 - val_auc_4: 0.9498 - val_recall_4: 0.8411 - val_precision_4: 0.9884
+Epoch 43/50
+17836/17836 - 2s - loss: 0.2230 - accuracy: 0.9102 - auc_4: 0.9426 - recall_4: 0.8274 - precision_4: 0.9936 - val_loss: 0.2260 - val_accuracy: 0.9082 - val_auc_4: 0.9468 - val_recall_4: 0.8351 - val_precision_4: 0.9826
+Epoch 44/50
+17836/17836 - 2s - loss: 0.2234 - accuracy: 0.9103 - auc_4: 0.9427 - recall_4: 0.8279 - precision_4: 0.9932 - val_loss: 0.2091 - val_accuracy: 0.9157 - val_auc_4: 0.9505 - val_recall_4: 0.8391 - val_precision_4: 0.9953
+Epoch 45/50
+17836/17836 - 2s - loss: 0.2230 - accuracy: 0.9102 - auc_4: 0.9427 - recall_4: 0.8267 - precision_4: 0.9944 - val_loss: 0.2490 - val_accuracy: 0.9092 - val_auc_4: 0.9436 - val_recall_4: 0.8381 - val_precision_4: 0.9815
+Epoch 46/50
+17836/17836 - 2s - loss: 0.2257 - accuracy: 0.9098 - auc_4: 0.9433 - recall_4: 0.8274 - precision_4: 0.9928 - val_loss: 0.2122 - val_accuracy: 0.9152 - val_auc_4: 0.9502 - val_recall_4: 0.8411 - val_precision_4: 0.9919
+Epoch 47/50
+17836/17836 - 2s - loss: 0.2223 - accuracy: 0.9106 - auc_4: 0.9441 - recall_4: 0.8282 - precision_4: 0.9936 - val_loss: 0.2183 - val_accuracy: 0.9117 - val_auc_4: 0.9496 - val_recall_4: 0.8411 - val_precision_4: 0.9838
+Epoch 48/50
+17836/17836 - 2s - loss: 0.2237 - accuracy: 0.9102 - auc_4: 0.9427 - recall_4: 0.8274 - precision_4: 0.9937 - val_loss: 0.2121 - val_accuracy: 0.9137 - val_auc_4: 0.9493 - val_recall_4: 0.8411 - val_precision_4: 0.9884
+Epoch 49/50
+17836/17836 - 2s - loss: 0.2235 - accuracy: 0.9102 - auc_4: 0.9422 - recall_4: 0.8278 - precision_4: 0.9932 - val_loss: 0.2091 - val_accuracy: 0.9157 - val_auc_4: 0.9503 - val_recall_4: 0.8411 - val_precision_4: 0.9930
+Epoch 50/50
+17836/17836 - 2s - loss: 0.2237 - accuracy: 0.9097 - auc_4: 0.9433 - recall_4: 0.8273 - precision_4: 0.9925 - val_loss: 0.2088 - val_accuracy: 0.9162 - val_auc_4: 0.9512 - val_recall_4: 0.8411 - val_precision_4: 0.9942
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+/home/huan1932/.conda/envs/iotedef/lib/python3.8/site-packages/tensorflow/python/keras/engine/training.py:2325: UserWarning: `Model.state_updates` will be removed in a future version. This property should not be used in TensorFlow 2.0, as `updates` are applied automatically.
+  warnings.warn('`Model.state_updates` will be removed in a future version. '
+classifier is generated with time step 1
+------------------------------------------------------
+Measureing infection detector performance on test data
+------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-1.7222021363244926
+ps-detector-infec  testset_max:31.46267630066733
+-----------------------------------------------------
+Per-step infection detector metrics BEFORE relabeling
+-----------------------------------------------------
+{'auc': 0.5999068250640578, 'accuracy': 0.954169619655091, 'precision': 0.8195876288659794, 'recall': 0.5, 'f1': 0.62109375, 'fp': 35, 'tp': 159, 'fn': 159, 'tn': 3880, 'auprc': 0.39771775272666826, 'precision99': 0.76, 'recall99': 0.0}
+----------------------------------------------------
+Per-step infection detector metrics AFTER relabeling
+----------------------------------------------------
+Round 0:
+{'auc': 0.6375109440388123, 'accuracy': 0.9574769666902906, 'precision': 0.822429906542056, 'recall': 0.5534591194968553, 'f1': 0.6616541353383458, 'fp': 38, 'tp': 176, 'fn': 142, 'tn': 3877, 'auprc': 0.5739878789115991, 'precision99': 0.99, 'recall99': 0.0}
+detector.dataset['test'][0].shape: (4233, 41)
+detector.dataset['test'][1].shape: (4233,)
+detector.dataset['test'][1]: [0. 0. 0. ... 0. 0. 0.]
+--------------------------------------------------------------------
+Measureing ps-detector-infec detector performance on clean test data
+--------------------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-1.7222021363244926
+ps-detector-infec  testset_max:31.46267630066733
+Metrics on clean testset: 
+ {'auc': 0.6375109440388123, 'accuracy': 0.9574769666902906, 'precision': 0.822429906542056, 'recall': 0.5534591194968553, 'f1': 0.6616541353383458, 'fp': 38, 'tp': 176, 'fn': 142, 'tn': 3877, 'auprc': 0.5739878789115991, 'precision99': 0.99, 'recall99': 0.0}
+----------------------------------------------------------------------------------------------
+Generate adversarial exapmples based white-box ps-detector-infec detector with clean test data
+----------------------------------------------------------------------------------------------
+kind: 
+ps-detector-infec  cle_testset_min:-1.7222021363244926
+ps-detector-infec  cle_testset_max:31.46267630066733
+cle_testset_x.shape: (4233, 41)
+cle_testset_x.shape: (4233, 1, 41)
+eps=1.0,eps_step=0.5,max_iter=20
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A2023-05-13 17:43:42.940689: W tensorflow/c/c_api.cc:326] Operation '{name:'lstm_8/while' id:8694 op device:{} def:{{{node lstm_8/while}} = While[T=[DT_INT32, DT_INT32, DT_INT32, DT_VARIANT, DT_FLOAT, DT_FLOAT, DT_INT32, DT_VARIANT, DT_RESOURCE, DT_RESOURCE, DT_RESOURCE, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT, DT_VARIANT], _lower_using_switch_merge=true, _num_original_outputs=45, _read_only_resource_inputs=[8, 9, 10], body=lstm_8_while_body_16731[], cond=lstm_8_while_cond_16730[], output_shapes=[[], [], [], [], [?,128], [?,128], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], parallel_iterations=32](lstm_8/while/loop_counter, lstm_8/while/maximum_iterations, lstm_8/time, lstm_8/TensorArrayV2_1, lstm_8/zeros, lstm_8/zeros_1, lstm_8/strided_slice_1, lstm_8/TensorArrayUnstack/TensorListFromTensor, lstm_8/lstm_cell_8/kernel, lstm_8/lstm_cell_8/recurrent_kernel, lstm_8/lstm_cell_8/bias, lstm_8/while/EmptyTensorList, lstm_8/while/EmptyTensorList_1, lstm_8/while/EmptyTensorList_2, lstm_8/while/EmptyTensorList_3, lstm_8/while/EmptyTensorList_4, lstm_8/while/EmptyTensorList_5, lstm_8/while/EmptyTensorList_6, lstm_8/while/EmptyTensorList_7, lstm_8/while/EmptyTensorList_8, lstm_8/while/EmptyTensorList_9, lstm_8/while/EmptyTensorList_10, lstm_8/while/EmptyTensorList_11, lstm_8/while/EmptyTensorList_12, lstm_8/while/EmptyTensorList_13, lstm_8/while/EmptyTensorList_14, lstm_8/while/EmptyTensorList_15, lstm_8/while/EmptyTensorList_16, lstm_8/while/EmptyTensorList_17, lstm_8/while/EmptyTensorList_18, lstm_8/while/EmptyTensorList_19, lstm_8/while/EmptyTensorList_20, lstm_8/while/EmptyTensorList_21, lstm_8/while/EmptyTensorList_22, lstm_8/while/EmptyTensorList_23, lstm_8/while/EmptyTensorList_24, lstm_8/while/EmptyTensorList_25, lstm_8/while/EmptyTensorList_26, lstm_8/while/EmptyTensorList_27, lstm_8/while/EmptyTensorList_28, lstm_8/while/EmptyTensorList_29, lstm_8/while/EmptyTensorList_30, lstm_8/while/EmptyTensorList_31, lstm_8/while/EmptyTensorList_32, lstm_8/while/EmptyTensorList_33)}}' was changed by setting attribute after it was run by a session. This mutation will have no effect, and will trigger an error in the future. Either don't modify nodes after running them or create a new session.
+
+PGD - Iterations:   5%|▌         | 1/20 [00:00<00:13,  1.42it/s][A
+                                                                [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00,  1.28it/s]PGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00,  1.28it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.99it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.89it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.86it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.38it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.42it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.00it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.33it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.67it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.97it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.03it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.81it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.24it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.15it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.78it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.27it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.24it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.23it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.68it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.25it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.49it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.35it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.50it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.87it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.87it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.84it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.02it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.17it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.03it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.47it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.94it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.41it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.65it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.13it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.04it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.02it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.26it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.43it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.43it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.09it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.53it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.92it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.96it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.72it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.66it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.54it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.56it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.31it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.00it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.82it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.57it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.84it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.36it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.06it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.84it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.99it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.97it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.99it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.43it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.27it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.68it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.28it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.64it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.04it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.22it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.86it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.93it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.68it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.99it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.55it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.29it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.08it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.01it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.01it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.49it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.45it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.61it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.30it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.00it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.61it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.87it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.31it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.45it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.30it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.96it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.20it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.67it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.47it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.15it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.57it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.98it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.09it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.94it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.53it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.27it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.44it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.10it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.71it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.27it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.05it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.59it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.53it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.94it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 12.85it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.86it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.63it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.37it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.31it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.96it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.89it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.80it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.35it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.20it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.72it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.15it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.12it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.43it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.09it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.60it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.24it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.79it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.08it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.01it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.00it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 13.90it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 14.24it/s]
+PGD - Random Initializations:   0%|          | 0/1 [00:00<?, ?it/s]
+PGD - Iterations:   0%|          | 0/20 [00:00<?, ?it/s][A
+                                                        [APGD - Random Initializations: 100%|██████████| 1/1 [00:00<00:00, 15.22it/s]
+adv_testset_x.shape: (4233, 1, 41)
+adv_testset_y.shape: (4233,)
+adv_testset_x.shape: (4233, 41)
+adv_test_examples.shape: (4233, 41)
+adv_test_labels.shape: (4233,)
+--------------------------------------------------------------------------
+Measureing ps-detector-infec detector performance on adversarial test data
+--------------------------------------------------------------------------
+kind: 
+ps-detector-infec  testset_min:-71.39714050292969
+ps-detector-infec  testset_max:990.8682250976562
+Metrics on adversarial testset: 
+ {'auc': 0.5382442950432541, 'accuracy': 0.9258209307819514, 'precision': 0.5555555555555556, 'recall': 0.06289308176100629, 'f1': 0.11299435028248589, 'fp': 16, 'tp': 20, 'fn': 298, 'tn': 3899, 'auprc': 0.24193337359270792, 'precision99': 0.01, 'recall99': 0.0}

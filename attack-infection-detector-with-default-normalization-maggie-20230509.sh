@@ -1,0 +1,2 @@
+
+CUDA_VISIBLE_DEVICES=3 python3 attack-infection-detector-with-default-normalization-maggie.py >> /home/huan1932/IoTDataGenerate/data_preprocess/result/log/attack-infection-detector-with-default-normalization-20230508.log 2>&1
