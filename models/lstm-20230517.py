@@ -31,7 +31,9 @@ THRESHOLD = 0.5
 
 class Lstm(Algorithm):
     def __init__(self, name):
-        super().__init__(name)        
+        super().__init__(name)
+        #self.data = data
+        #self.label = label
 
     def add_dataset(self, dataset):
         self.dataset = dataset
@@ -349,6 +351,5 @@ class Lstm(Algorithm):
         # adv_testset_x.shape: (318, 41)
         
         return adv_testset_x, adv_testset_y     
-           
+        
     #--------------------------------------------------
-    

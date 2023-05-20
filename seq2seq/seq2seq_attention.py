@@ -427,3 +427,145 @@ class Seq2seqAttention(Analyzer):
 
         #self.print_infection_information(ret, config)
         return ret_probs, ret_idxs
+    
+    #-----------maggie add--------------
+    def add_dataset(self, dataset):
+        self.dataset = dataset
+
+        self.trainset_min = np.min(self.dataset['train'][0])
+        self.trainset_max = np.max(self.dataset['train'][0])
+        self.testset_min = np.min(self.dataset['test'][0])
+        self.testset_max = np.max(self.dataset['test'][0])    
+            
+        print(f"{self.name} trainset_min:{self.trainset_min}")
+        print(f"{self.name} trainset_max:{self.trainset_max}")
+        print(f"{self.name} testset_min:{self.testset_min}")
+        print(f"{self.name} testset_max:{self.testset_max}")  
+    
+    def stdtrain(self, events, labels, args, exp_result_dir, permute_truncated=True):
+        
+        print(f"training {self.name}")
+        slen = args.sequence_length
+        rv = args.rv
+        permute_truncated = args.permute_truncated
+        use_prob_embedding = args.use_prob_embedding
+        print("args.sequence_length:",args.sequence_length)
+        print("args.rv:",args.rv)
+        print("args.permute_truncated:",args.permute_truncated)
+        print("args.use_prob_embedding:",args.use_prob_embedding)
+
+        """ 
+        training infection-seq2seq
+        args.sequence_length: 10
+        args.rv: 1
+        args.permute_truncated: False
+        args.use_prob_embedding: False
+        """
+        
+        print("prepare training set")
+
+
+        in_, out_ = [], []
+        idx_order = []
+        idx = 0
+        
+        for idx, (event, label) in enumerate(zip(events, labels)):
+            if use_prob_embedding:
+                event = self.probability_based_embedding(event, rv)            
+            # print(f"{idx}th event {event}: label {label}")
+            
+            in_.append(event)
+            out_.append([label])
+            idx_order.append(idx)
+
+        X_in, X_out, truncated_idxs = self.truncate(in_, out_, idx_order, slen=slen)
+        X_out_labels = np.array(X_out)[:,:,0].tolist()
+
+        if permute_truncated:
+            print("Permute Truncated is enabled")
+            X_in, perm_truncated_idxs = self.permute_truncated(X_in, X_out_labels, truncated_idxs, slen=slen, inplace=False)
+        else:
+            print("Permute Truncated is disabled")
+
+        if use_prob_embedding:
+            X_in = np.expand_dims(X_in, axis=-1)
+
+        input_train = Input(shape=(X_in.shape[-2], X_in.shape[-1]))
+        output_train = Input(shape=(X_out.shape[-2], X_out.shape[-1]))
+
+
+        print("create seq2seq")
+        encoder_stack_h, encoder_last_h, encoder_last_c = LSTM(
+                units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
+                return_sequences=True, return_state=True)(input_train)
+
+        encoder_last_h = BatchNormalization(momentum=0.6)(encoder_last_h)
+        encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
+
+        decoder_input = RepeatVector(output_train.shape[1])(encoder_last_h)
+        decoder_stack_h = LSTM(units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
+                return_state=False, return_sequences=True)(decoder_input, initial_state=[encoder_last_h, encoder_last_c])
+        
+        attention = dot([decoder_stack_h, encoder_stack_h], axes=[2,2])
+        attention = Activation('softmax')(attention)
+
+        context = dot([attention, encoder_stack_h], axes=[2,1])
+        context = BatchNormalization(momentum=0.6)(context)
+
+        decoder_combined_context = concatenate([context, decoder_stack_h])
+        out = TimeDistributed(Dense(output_train.shape[2]))(decoder_combined_context)
+        out = Activation('sigmoid')(out)
+
+        self.model = Model(inputs=input_train, outputs=out)
+        
+        opt = Adam(learning_rate=0.01, clipnorm=1)
+        binary_crossentropy = tf.keras.losses.BinaryCrossentropy(
+                                from_logits=False,
+                                label_smoothing=0.0,
+                                reduction="auto",
+                                name="binary_crossentropy",
+                            )
+
+        metrics = ['accuracy', tf.keras.metrics.AUC(), tf.keras.metrics.Recall(), tf.keras.metrics.Precision()]
+        self.model.compile(loss=binary_crossentropy, optimizer=opt, metrics=metrics)
+
+        X_in, X_out = shuffle(X_in,X_out)
+        
+        print("X_in.shape:", X_in.shape)
+        print("X_out.shape:", X_out.shape)
+
+
+        history = self.model.fit(x=X_in, y=X_out[:, :, :1], validation_split=0.2, epochs=args.seq2seq_epochs, verbose=2, batch_size=100)
+  
+        # maggie
+        epo_train_loss = history.history['loss']
+        epo_val_loss = history.history['val_loss']
+        epo_train_acc = history.history['accuracy']
+        epo_val_acc = history.history['val_accuracy']
+
+        #--------save plt---------            
+        loss_png_name = f'Loss of standard trained {self.name}'
+        accuracy_png_name = f'Accuracy of standard trained {self.name}'        
+                   
+        plt.plot(epo_train_loss, label='Train Loss')
+        plt.plot(epo_val_loss, label='Validation Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.title(f'{loss_png_name}')
+        plt.show()
+        plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
+        plt.close()
+                
+        plt.plot(epo_train_acc, label='Train Accuracy')
+        plt.plot(epo_val_acc, label='Validation Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.legend()
+        plt.title(f'{accuracy_png_name}')        
+        plt.show()
+        plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
+        plt.close()
+
+
+    #-----------------------------------

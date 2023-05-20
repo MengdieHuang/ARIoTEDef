@@ -30,7 +30,14 @@ def get_args(jupyter_args = None):
                         help="adversarial evasion attack parameter: epsilon step.")   
     parser.add_argument('--max_iter', required=False, type=int, default=20,
                         help="adversarial evasion attack parameter: iteration number.")   
-    parser.add_argument('--save_path',type=str, default='/home/huan1932/IoTDataGenerate/data_preprocess/result',help='Output path for saving results')
+    parser.add_argument('--save_path',type=str, default='/home/huan1932/ARIoTEDef/result',help='Output path for saving results')
+    parser.add_argument('--batchsize', required=False, type=int, default=32,
+                        help="batch size.")       
+    parser.add_argument('--timesteps', required=False, type=int, default=1,
+                        help="time steps of LSTM.")      
+    parser.add_argument('--seq2seq_epochs', required=False, type=int, default=50,
+                        help="seq2seq epochs")      
+        
         
     #----------------------------------------
     
