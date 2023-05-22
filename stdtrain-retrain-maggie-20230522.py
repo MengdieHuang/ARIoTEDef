@@ -48,6 +48,7 @@ reconnaissance_detector, infection_detector, attack_detector = init_psdetector(n
 # ----------------train per-step detectors----------------------
 print_header("Train Per-Step Detector")
 for detector in [reconnaissance_detector, infection_detector, attack_detector]:
+# for detector in [infection_detector]:
     
     print(f">>>>>>>> Training {detector.modelname} >>>>>>>>")    
     detector.stdtrain(timesteps=args.timesteps, exp_result_dir=exp_result_dir)
@@ -76,7 +77,7 @@ print_header("Adversarial Attack Vanilla Per-Step Detector")
 for detector in [reconnaissance_detector, infection_detector, attack_detector]:
    
     # generate adversarial mailicious testset
-    print(f"Generate only adversarial mailicious exapmples based white-box {detector.modelname}")
+    print(f"Generate adversarial mailicious exapmples based white-box {detector.modelname}")
     
     adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps, exp_result_dir=exp_result_dir)
         
@@ -136,12 +137,33 @@ for seq2seq in [infection_seq2seq]:
     cle_test_windows_x = cle_test_windows_x.reshape((cle_test_windows_x.shape[0], args.timesteps, int(math.ceil(cle_test_windows_x.shape[1] / args.timesteps))))
     print("cle_test_windows_x.shape:",cle_test_windows_x.shape)
     
+    """ 
+    cle_test_windows_x.shape: (4224, 41)
+    cle_test_windows_y.shape: (4224,)
+    cle_test_windows_x.shape: (4224, 1, 41)
+    """
     seq2seq_test_events = get_events_from_windows(reconnaissance_detector, infection_detector, attack_detector, cle_test_windows_x)
     print("seq2seq_test_events.shape:",seq2seq_test_events.shape)
     """ 
-
+    seq2seq_test_events.shape: (4224, 4)
     """        
     test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = seq2seq.test(testset_x=seq2seq_test_events, testset_y=cle_test_windows_y, exp_result_dir=exp_result_dir)
+    
+    metrics_dic = { 
+                   'model': seq2seq.modelname,
+                   'clean test Accuracy': test_acc,
+                   'clean test Loss': test_los,
+                   'clean test TP': test_TP,
+                   'clean test FP': test_FP,
+                   'clean test TN': test_TN,
+                   'clean test FN': test_FN,
+                   'clean test Recall': test_recall,
+                   'clean test Precision': test_precision,
+                   'clean test FPR': test_FPR,
+                   'clean test F1': test_F1,
+                }
+     
+    print(f"{seq2seq.modelname} metrics_dic:\n {metrics_dic}")       
         
 # ----------------retrain vanilla per-step detectors----------------------
 print_header("Retrain Vanilla Infection Detector")

@@ -14,7 +14,7 @@ def get_events_from_windows(reconnaissance_detector, infection_detector, attack_
         
         events.append(malicious_class_score)
 
-    print("events_num:",events[0].shape[0])   
+    # print("events_num:",events[0].shape[0])   
     """ 
     proportion of malicious events tagged by reconnaissance-detector is: 0.48137116316639744
     proportion of malicious events tagged by infection-detector is: 0.4333602584814216
@@ -63,13 +63,13 @@ def get_events_from_windows(reconnaissance_detector, infection_detector, attack_
     """ 
        
     events=np.array(events).squeeze()
-    print("events.shape:",events.shape)
+    # print("events.shape:",events.shape)
     """ 
     events.shape: (4, 19808)
     """
     events = np.transpose(events)
-    print("events.shape:",events.shape)
-    print("events[:1]:",events[:1])
+    # print("events.shape:",events.shape)
+    # print("events[:1]:",events[:1])
     """ 
     events.shape: (19808, 4)
     events[:1]: [[0.11222175 0.99411726 0.0520148  0.00495092]]
@@ -77,8 +77,8 @@ def get_events_from_windows(reconnaissance_detector, infection_detector, attack_
     
     events = [softmax(e) for e in events]
     events=np.array(events)
-    print("events.shape:",events.shape)
-    print("events[:1]:",events[:1])   
+    # print("events.shape:",events.shape)
+    # print("events[:1]:",events[:1])   
     
     """ 
     events.shape: (19808, 4)
