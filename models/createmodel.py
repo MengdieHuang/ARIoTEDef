@@ -3,13 +3,10 @@ from models.keraslstm import PSDetector
 
 from seq2seq.seq2seq_attention import Seq2seqAttention
 
-# import os
-# os.environ['TF_NUMA_NODES'] = '1'
+from models.keraslstm import Seq2Seq
+
 
 def init_psdetector(multistep_dataset, args):
-
-
-
 
     reconnaissance_detector = PSDetector(name="reconnaissance-detector", args=args)
     reconnaissance_detector.add_dataset(dataset=multistep_dataset['reconnaissance']) 
@@ -56,9 +53,11 @@ def init_psdetector(multistep_dataset, args):
 
 def init_seq2seq(multistep_dataset, args):
     
-    infection_seq2seq = Seq2seqAttention(name='infection-seq2seq')
+    # infection_seq2seq = Seq2seqAttention(name='infection-seq2seq')
+    infection_seq2seq = Seq2Seq(name='infection-seq2seq', args=args)
     infection_seq2seq.add_dataset(dataset=multistep_dataset['infection']) 
     print("infection_seq2seq.dataset['train'][0].shape:",infection_seq2seq.dataset['train'][0].shape)
     print("infection_seq2seq.dataset['train'][1].shape:",infection_seq2seq.dataset['train'][1].shape)
-        
+    # infection_seq2seq.def_model(XXX)
+    # raise Exception("maggie stop")    
     return infection_seq2seq
