@@ -163,9 +163,10 @@ class PSDetector():
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
         time_png_name = f'Cost time of standard trained {self.modelname}'
-                   
-        plt.plot(epo_train_loss, label='Train Loss')
-        plt.plot(epo_val_loss, label='Validation Loss')
+         
+        plt.style.use('seaborn')           
+        plt.plot(epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend()
@@ -174,8 +175,8 @@ class PSDetector():
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(epo_train_acc, label='Train Accuracy')
-        plt.plot(epo_val_acc, label='Validation Accuracy')
+        plt.plot(epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
         plt.legend()
@@ -184,7 +185,7 @@ class PSDetector():
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(epo_cost_time)
+        plt.plot(epo_cost_time, marker='o')
         plt.xlabel('Epoch')
         plt.ylabel('Cost Time')
         plt.legend()
@@ -484,9 +485,11 @@ class PSDetector():
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
         time_png_name = f'Cost time of standard trained {self.modelname}'
-                   
-        plt.plot(epo_train_loss, label='Train Loss')
-        plt.plot(epo_val_loss, label='Validation Loss')
+             
+        plt.style.use('seaborn')
+           
+        plt.plot(epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend()
@@ -495,8 +498,8 @@ class PSDetector():
         plt.savefig(f'{curround_exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(epo_train_acc, label='Train Accuracy')
-        plt.plot(epo_val_acc, label='Validation Accuracy')
+        plt.plot(epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
         plt.legend()
@@ -505,7 +508,7 @@ class PSDetector():
         plt.savefig(f'{curround_exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(epo_cost_time)
+        plt.plot(epo_cost_time, marker='o')
         plt.xlabel('Epoch')
         plt.ylabel('Cost Time')
         plt.legend()
@@ -799,8 +802,8 @@ class Seq2Seq():
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
                    
-        plt.plot(epo_train_loss, label='Train Loss')
-        plt.plot(epo_val_loss, label='Validation Loss')
+        plt.plot(epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend()
@@ -809,8 +812,8 @@ class Seq2Seq():
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(epo_train_acc, label='Train Accuracy')
-        plt.plot(epo_val_acc, label='Validation Accuracy')
+        plt.plot(epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
         plt.legend()

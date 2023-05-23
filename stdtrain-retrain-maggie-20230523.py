@@ -5,7 +5,7 @@ Date: May 8, 2023
 
 import os
 os.environ['TF_NUMA_NODES'] = '1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 设置日志级别为 WARNING
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # set log level WARNING
 import numpy as np
 from seq2seq.utils import print_header, get_events
 import tensorflow as tf
@@ -137,9 +137,7 @@ for seq2seq in [infection_seq2seq]:
     os.makedirs(stdtrain_exp_result_dir, exist_ok=True)
     
     seq2seq.stdtrain(events=seq2seq_train_events, labels=cle_train_windows_y, exp_result_dir=stdtrain_exp_result_dir)
-    
-    
-    # raise Exception("maggie")
+        
     print(f">>>>>>>> Evaluate {seq2seq.modelname} on clean test data")
     
     # create testset
@@ -404,10 +402,13 @@ for detector in [infection_detector]:
         loss_png_name = f'Test loss of retrained {detector.modelname}'
         accuracy_png_name = f'Test Accuracy of retrained {detector.modelname}'
         costtime_png_name = f'Cost Time of retrain {detector.modelname}'
+        fn_fp_png_name = f'Test FP and FN of retrained {detector.modelname}'
+        recall_png_name = f'Test Recall of retrained {detector.modelname}'
+        f1_png_name = f'Test F1 of retrained {detector.modelname}'
         
         plt.style.use('seaborn')
 
-        plt.plot(test_los_list, label='Test Loss')
+        plt.plot(test_los_list, label='Test Loss', marker='o')
         plt.xlabel('Round')
         plt.ylabel('Loss')
         plt.legend()
@@ -415,7 +416,7 @@ for detector in [infection_detector]:
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(test_acc_list, label='Test Accuracy')
+        plt.plot(test_acc_list, label='Test Accuracy', marker='o')
         plt.xlabel('Round')
         plt.ylabel('Accuracy')
         plt.legend()
@@ -423,13 +424,37 @@ for detector in [infection_detector]:
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(cost_time_list, label='Cost Time')
+        plt.plot(cost_time_list, label='Cost Time', marker='o')
         plt.xlabel('Round')
         plt.ylabel('Cost Time')
         plt.legend()
         plt.title(f'{costtime_png_name}')        
-        # plt.show()
         plt.savefig(f'{exp_result_dir}/{costtime_png_name}.png')
         plt.close()
-                        
+
+        plt.plot(test_FP_list, label='Test FP', marker='o')
+        plt.plot(test_FN_list, label='Test FN', marker='s')
+        plt.xlabel('Round')
+        plt.ylabel('Test FP and FN')
+        plt.legend()
+        plt.title(f'{fn_fp_png_name}')        
+        plt.savefig(f'{exp_result_dir}/{fn_fp_png_name}.png')
+        plt.close()
+
+        plt.plot(test_recall_list, label='Test Recall', marker='o')
+        plt.xlabel('Round')
+        plt.ylabel('Test Recall')
+        plt.legend()
+        plt.title(f'{recall_png_name}')        
+        plt.savefig(f'{exp_result_dir}/{recall_png_name}.png')
+        plt.close()        
+
+        plt.plot(test_F1_list, label='Test F1', marker='o')
+        plt.xlabel('Round')
+        plt.ylabel('Test F1')
+        plt.legend()
+        plt.title(f'{f1_png_name}')        
+        plt.savefig(f'{exp_result_dir}/{f1_png_name}.png')
+        plt.close()                                 
+
 raise Exception("maggie stop")
