@@ -192,75 +192,6 @@ class PSDetector():
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
         plt.close()
-
-        # batch_size = self.args.batchsize
-        # num_batches = len(trainset_x) // batch_size
-        
-        # print(f"batch_size={self.args.batchsize}, epoch_num={self.args.ps_epochs}")
-        # # batch_size=32, epoch_num=50
-
-        # # 初始化变量用于记录训练过程中的指标
-        # train_losses = []
-        # val_losses = []
-        # train_accuracies = []
-        # val_accuracies = []
-        
-        # # 训练循环
-        # for epoch in range(self.args.ps_epochs):
-        #     print(f"Epoch {epoch + 1}/{self.args.ps_epochs}")
-
-        #     train_loss_epoch = 0
-        #     train_acc_epoch = 0
-                
-        #     # 逐批次进行训练
-        #     for batch_idx in range(num_batches):
-        #         batch_start = batch_idx * batch_size
-        #         batch_end = (batch_idx + 1) * batch_size
-
-        #         batch_x = trainset_x[batch_start:batch_end]
-        #         batch_y = trainset_y[batch_start:batch_end]
-
-        #         # # 使用 train_on_batch() 函数训练模型
-        #         # loss, accuracy = self.model.train_on_batch(batch_x, batch_y)
-        #         # # result = self.model.train_on_batch(batch_x, batch_y)
-
-        #         # # 设置 eager learning phase
-        #         # with tf.GradientTape():
-        #         #     tf.keras.backend.set_learning_phase(1)
-        #         loss, accuracy = self.model.train_on_batch(batch_x, batch_y)                
-
-        
-        #         print("loss:",loss)
-        #         print("accuracy:",accuracy)
-                
-        #         train_loss_epoch += loss
-        #         train_acc_epoch += accuracy
-        
-        #         print(f"Batch {batch_idx + 1}/{num_batches} - loss: {loss:.4f} - accuracy: {accuracy:.4f}")
-        #         raise Exception("maggie stop here!!!!")
-
-        #     train_loss_epoch /= num_batches
-        #     train_acc_epoch /= num_batches
-
-        #     # 在每个 epoch 结束后，计算验证集上的损失并检查早停条件
-        #     # val_loss, _ = self.model.evaluate(valset_x, valset_y, verbose=0)
-            
-        #     # 计算验证集上的损失和准确率
-        #     val_loss, val_acc = self.model.evaluate(valset_x, valset_y, verbose=0)
-
-        #     print(f"Train Loss: {train_loss_epoch:.4f} - Train Accuracy: {train_acc_epoch:.4f}")
-        #     print(f"Val Loss: {val_loss:.4f} - Val Accuracy: {val_acc:.4f}")
-            
-        #     # 保存指标
-        #     train_losses.append(train_loss_epoch)
-        #     val_losses.append(val_loss)
-        #     train_accuracies.append(train_acc_epoch)
-        #     val_accuracies.append(val_acc)
-            
-        #     # 检查早停条件
-        #     if early_stop and early_stop.on_epoch_end(epoch, logs={'val_loss': val_loss, 'val_acc': val_acc}):
-        #         print("Early stopping triggered.")
-        #         break            
              
     def evaluate(self, testset_x, testset_y):
         
@@ -330,11 +261,11 @@ class PSDetector():
         print(f"prepare test set for evaluating {self.modelname} ")
         # testset_x = self.dataset['test'][0]
         # testset_y = self.dataset['test'][1]    
-        print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)
         
         testset_x = testset_x.reshape((testset_x.shape[0], timesteps, int(math.ceil(testset_x.shape[1] / timesteps))))
-        print("testset_x.shape:",testset_x.shape)
+        # print("testset_x.shape:",testset_x.shape)
         
         """ 
         testset_x.shape: (4233, 41)
@@ -488,6 +419,103 @@ class PSDetector():
                 
     
         return adv_testset_x, adv_testset_y
+
+     
+    def retrain(self, retrainset_x, retrainset_y, timesteps, curround_exp_result_dir):
+        
+        if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+            print(" cuda and GPU are available")
+
+        print(f"prepare retraining set for learning {self.modelname} ")
+        
+        trainset_x = retrainset_x
+        trainset_y = retrainset_y
+
+        trainset_x, trainset_y = shuffle(trainset_x, trainset_y)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
+
+        trainset_x = trainset_x.reshape((trainset_x.shape[0], timesteps, int(math.ceil(trainset_x.shape[1] / timesteps))))
+
+        # print("trainset_x.shape:",trainset_x.shape)
+
+
+        trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)        
+        # print("valset_x.shape:",valset_x.shape)
+        # print("valset_y.shape:",valset_y.shape)        
+
+
+        new_train_size = (len(trainset_x) // 32) * 32
+        trainset_x = trainset_x[:new_train_size]
+        trainset_y = trainset_y[:new_train_size]
+        print("trainset_x.shape:",trainset_x.shape)
+        print("trainset_y.shape:",trainset_y.shape)
+        
+        new_val_size = (len(valset_x) // 32) * 32
+        valset_x = valset_x[:new_val_size]
+        valset_y = valset_y[:new_val_size]
+        print("valset_x.shape:",valset_x.shape)
+        print("valset_y.shape:",valset_y.shape)    
+        
+                        
+        """  
+        trainset_x.shape: (800, 1, 41)
+        trainset_y.shape: (800,)
+        valset_x.shape: (64, 1, 41)
+        valset_y.shape: (64,)
+        """
+      
+        early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
+      
+        timer_callback = EpochTimer()
+        callbacks = [early_stop, timer_callback]
+        history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_data=(valset_x,valset_y))       
+
+        epo_train_loss = history.history['loss']
+        epo_val_loss = history.history['val_loss']
+        epo_train_acc = history.history['accuracy']
+        epo_val_acc = history.history['val_accuracy']
+        epo_cost_time = timer_callback.epoch_times
+
+        rou_cost_time = sum(epo_cost_time)
+        #--------save plt---------            
+        loss_png_name = f'Loss of standard trained {self.modelname}'
+        accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
+        time_png_name = f'Cost time of standard trained {self.modelname}'
+                   
+        plt.plot(epo_train_loss, label='Train Loss')
+        plt.plot(epo_val_loss, label='Validation Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.title(f'{loss_png_name}')
+        # plt.show()
+        plt.savefig(f'{curround_exp_result_dir}/{loss_png_name}.png')
+        plt.close()
+                
+        plt.plot(epo_train_acc, label='Train Accuracy')
+        plt.plot(epo_val_acc, label='Validation Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.legend()
+        plt.title(f'{accuracy_png_name}')        
+        # plt.show()
+        plt.savefig(f'{curround_exp_result_dir}/{accuracy_png_name}.png')
+        plt.close()
+
+        plt.plot(epo_cost_time)
+        plt.xlabel('Epoch')
+        plt.ylabel('Cost Time')
+        plt.legend()
+        plt.title(f'{time_png_name}')        
+        # plt.show()
+        plt.savefig(f'{curround_exp_result_dir}/{time_png_name}.png')
+        plt.close()
+        
+        return rou_cost_time
+        
 
 class Seq2Seq():
     def __init__(self, name, args):
@@ -796,9 +824,9 @@ class Seq2Seq():
         
 
         
-        print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
-        print("testset_y[:1]:",testset_y[:1])
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)
+        # print("testset_y[:1]:",testset_y[:1])
         """ 
         testset_x.shape: (4215, 10, 4)
         testset_y.shape: (4215, 10, 1)
@@ -817,10 +845,10 @@ class Seq2Seq():
         y_pred_binary = np.round(output).astype(int)
         y_test_binary = np.round(testset_y).astype(int)       
         
-        print("y_pred_binary.shape:",y_pred_binary.shape)
-        print("y_pred_binary:",y_pred_binary)
-        print("y_test_binary.shape:",y_test_binary.shape)                  
-        print("y_test_binary:",y_test_binary)                  
+        # print("y_pred_binary.shape:",y_pred_binary.shape)
+        # print("y_pred_binary:",y_pred_binary)
+        # print("y_test_binary.shape:",y_test_binary.shape)                  
+        # print("y_test_binary:",y_test_binary)                  
         
         """ 
         y_pred_binary.shape: (4215, 10, 1)
@@ -834,8 +862,8 @@ class Seq2Seq():
         y_test_binary_2d = y_test_binary.squeeze()
         y_pred_binary_2d = y_pred_binary.squeeze()
         
-        print("y_test_binary_2d.shape:",y_test_binary_2d.shape)  
-        print("y_pred_binary_2d.shape:",y_pred_binary_2d.shape)  
+        # print("y_test_binary_2d.shape:",y_test_binary_2d.shape)  
+        # print("y_pred_binary_2d.shape:",y_pred_binary_2d.shape)  
         
         """ 
         y_test_binary_2d.shape: (4215, 10)
@@ -848,8 +876,8 @@ class Seq2Seq():
             y_test_binary_1d.append(most_frequent_index)
         y_test_binary_1d = np.array(y_test_binary_1d)
 
-        print("y_test_binary_1d:",y_test_binary_1d)  # (4215,)
-        print("y_test_binary_1d.shape:",y_test_binary_1d.shape)  # (4215,)
+        # print("y_test_binary_1d:",y_test_binary_1d)  # (4215,)
+        # print("y_test_binary_1d.shape:",y_test_binary_1d.shape)  # (4215,)
         
 
         y_pred_binary_1d = []
@@ -859,8 +887,8 @@ class Seq2Seq():
             y_pred_binary_1d.append(most_frequent_index)
         y_pred_binary_1d = np.array(y_pred_binary_1d)
                 
-        print("y_pred_binary_1d:",y_pred_binary_1d)  # (4215,)                
-        print("y_pred_binary_1d.shape:",y_pred_binary_1d.shape)  # (4215,)        
+        # print("y_pred_binary_1d:",y_pred_binary_1d)  # (4215,)                
+        # print("y_pred_binary_1d.shape:",y_pred_binary_1d.shape)  # (4215,)        
         
         """ 
         y_test_binary_2d.shape: (4215, 10)
@@ -890,8 +918,7 @@ class Seq2Seq():
         
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
-    
-    
+      
     def test(self, testset_x, testset_y, exp_result_dir):
         print(f"test {self.modelname}")
         
@@ -953,7 +980,7 @@ class Seq2Seq():
         print("X_in.shape:", X_in.shape)
         print("X_out.shape:", X_out.shape)
 
-        print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
+        # print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
         
         """ 
         X_in.shape: (4215, 10, 4)
@@ -964,10 +991,10 @@ class Seq2Seq():
         # output_test = Input(shape=(X_out.shape[-2], X_out.shape[-1]))
                 
 
-        print("X_in[:1]:",X_in[:1])
-        print("X_in[:1].shape:",X_in[:1].shape)
-        print("X_out[:1]:",X_out[:1])
-        print("X_out[:1].shape:",X_out[:1].shape)   
+        # print("X_in[:1]:",X_in[:1])
+        # print("X_in[:1].shape:",X_in[:1].shape)
+        # print("X_out[:1]:",X_out[:1])
+        # print("X_out[:1].shape:",X_out[:1].shape)   
         
         """ 
         X_in[:1]: 
@@ -998,4 +1025,152 @@ class Seq2Seq():
         
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+            
+    def analysis(self, testset_x, testset_y, exp_result_dir):
+        print(f"use trained {self.modelname} to analysis events")        
+
+        slen = self.args.sequence_length
+        rv = self.args.rv
+        permute_truncated = self.args.permute_truncated
+        use_prob_embedding = self.args.use_prob_embedding
+        print("self.args.sequence_length:",self.args.sequence_length)
+        print("self.args.rv:",self.args.rv)
+        print("self.args.permute_truncated:",self.args.permute_truncated)
+        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)            
+
+        """
+        self.args.sequence_length: 10
+        self.args.rv: 1
+        self.args.permute_truncated: False
+        self.args.use_prob_embedding: False
+        """
+        if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+            print(" cuda and GPU are available")
+
+        print(f"prepare test set for analysis {self.modelname} ")
+  
+        print("testset_x.shape:",testset_x.shape)
+        print("testset_y.shape:",testset_y.shape)
+        """ 
+        testset_x.shape: (4224, 4)
+        testset_y.shape: (4224,)
+        """
+
+        in_, out_ = [], []
+        idx_order = []
+        idx = 0
+        
+        for idx, (event, label) in enumerate(zip(testset_x, testset_y)):
+            if use_prob_embedding:
+                event = self.probability_based_embedding(event, rv)            
+            # print(f"{idx}th event {event}: label {label}")
+            
+            in_.append(event)
+            out_.append([label])
+            idx_order.append(idx)
+                    
+        X_in, X_out, truncated_idxs = self.truncate(in_, out_, idx_order, slen=slen)
+        X_out_labels = np.array(X_out)[:,:,0].tolist()
+
+        if permute_truncated:
+            print("Permute Truncated is enabled")
+            X_in, perm_truncated_idxs = self.permute_truncated(X_in, X_out_labels, truncated_idxs, slen=slen, inplace=False)
+        else:
+            print("Permute Truncated is disabled")
+
+        if use_prob_embedding:
+            X_in = np.expand_dims(X_in, axis=-1)
+
+        print("X_in.shape:", X_in.shape)
+        print("X_out.shape:", X_out.shape)
+        # print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
+        
+        """ 
+        X_in.shape: (4215, 10, 4)
+        X_out.shape: (4215, 10, 1)
+        X_out[:, :, :1].shape: (4215, 10, 1)
+        """             
+
+        # print("X_in[:1]:",X_in[:1])
+        # print("X_in[:1].shape:",X_in[:1].shape)
+        # print("X_out[:1]:",X_out[:1])
+        # print("X_out[:1].shape:",X_out[:1].shape)   
+        
+        """ 
+        X_in[:1]: [[[0.17961185 0.4654549  0.1753892  0.17954406]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.46916515 0.17586853 0.17583415 0.17913216]
+        [0.4753528  0.17487994 0.17487994 0.17488736]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.46916515 0.17586853 0.17583415 0.17913216]
+        [0.4691652  0.17586854 0.17583413 0.17913215]
+        [0.175922   0.17950743 0.17592548 0.46864507]
+        [0.46916515 0.17586853 0.17583415 0.17913216]]]
+        X_in[:1].shape: (1, 10, 4)
+        X_out[:1]: [[[0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]]]
+        X_out[:1].shape: (1, 10, 1)
+        """                     
+        
+        y_pred = self.model.predict(X_in)
+        print("y_pred.shape:",y_pred.shape)
+        print("y_pred[:1]:",y_pred[:1])
+        
+        """ 
+        y_pred.shape: (4215, 10, 1)
+        y_pred[:1]: [[[0.00705705]
+        [0.00941563]
+        [0.0075582 ]
+        [0.00797312]
+        [0.00803206]
+        [0.00810819]
+        [0.00802327]
+        [0.00786802]
+        [0.00766706]
+        [0.00744636]]]
+        """
+
+        '''acumulates predictions'''
+        idx = 0
+        predictions = {}   
+        for pred in y_pred: # 遍历测试集logit
+
+            '''iterates through remaining truncated seq len if surpassing the limit'''
+            if len(y_pred) - idx > slen:
+                lst = range(len(pred))
+            else:
+                lst = range(len(y_pred)-idx)
+
+            '''acumulates truncated predictions: e.g. {idx1: [1,1,0,0], idx2: [1,0,0,1], idx3: [0,0,1,1], ...]'''
+            for i in lst:
+                if idx + i not in predictions:
+                    predictions[idx + i] = []
+                predictions[idx + i].append(pred[i][0])
+            idx += 1
+            
+        '''looks like it takes the average of predictions for each truncated sequence? not sure'''
+        results = []
+        for idx in range(len(testset_x) - slen + 1):
+            res = sum(predictions[idx])/len(predictions[idx])
+            results.append(res)
+            
+        ret_probs = []
+        ret_idxs = []
+        
+        for idx in range(len(results)):
+            if results[idx] > 0.01:
+                prob = results[idx]
+                ret_probs.append(prob)
+                ret_idxs.append(idx)
+
+        return ret_probs, ret_idxs
             
