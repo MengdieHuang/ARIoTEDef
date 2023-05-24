@@ -38,7 +38,10 @@ def get_args(jupyter_args = None):
     parser.add_argument('--seq2seq_epochs', required=False, type=int, default=50,
                         help="seq2seq epochs")      
         
+    parser.add_argument('--retrainset_mode',type=str, default='adv',help='Output path for saving results')
         
+        
+
     #----------------------------------------
     
     if jupyter_args is not None:
