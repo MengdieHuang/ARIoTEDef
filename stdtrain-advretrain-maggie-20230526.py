@@ -11,7 +11,7 @@ from seq2seq.utils import print_header, get_events
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
 from utils.argsparse import get_args
-from savedir import set_exp_result_dir
+from utils.savedir import set_exp_result_dir
 from data.dataload import loadnpydata
 from data.normalize import normalize_multistep_dataset
 from models.createmodel import init_psdetector
