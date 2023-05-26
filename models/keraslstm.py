@@ -627,6 +627,8 @@ class Seq2Seq():
                 if prev_label != current_label: 
                     if i < 20 and enable_permute_prints:
                         print(repeating_seq)
+                    
+                    np.random.seed(self.args.seed)    
                     permute_idxs = permute_idxs + list(np.random.permutation(repeating_seq))
                     #x_seq_in[repeating_seq] = x_seq_in[idx_permutation]
                     repeating_seq = []
@@ -637,7 +639,8 @@ class Seq2Seq():
                     i+=1 
                 if i < 20 and enable_permute_prints:
                     print(repeating_seq)
-                
+            
+            np.random.seed(self.args.seed)    
             permute_idxs = permute_idxs + list(np.random.permutation(repeating_seq))
             if i < 20 and enable_permute_prints:
                 print("permuting {} with idxs {}".format(x_seq_in, permute_idxs))
