@@ -182,7 +182,7 @@ for detector in [infection_detector]:
 
     for seq2seq in [infection_seq2seq]:
         
-        vanillia_detector = copy.deepcopy(detector)
+        # vanillia_detector = copy.deepcopy(detector)
         
         print_header(f"Retrain {detector.modelname} detector using {infection_seq2seq.modelname}")
 
