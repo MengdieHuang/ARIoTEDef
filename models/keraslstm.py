@@ -246,7 +246,17 @@ class PSDetector():
         # output.shape: (4224,)
         # """
         
+
+
+        print("testset_y.shape:", testset_y.shape)
+        print("testset_y[:3]:", testset_y[:3])
+        print("output.shape:", output.shape)
+        print("output:", output)        
+        print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
+        
         test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
+        
+        
         test_acc = accuracy_score(testset_y, output)
         test_recall = recall_score(testset_y, output, average='macro')
         test_precision = precision_score(testset_y, output, average='macro')
