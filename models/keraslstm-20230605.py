@@ -124,10 +124,34 @@ class PSDetector():
         valset_x.shape: (1916, 1, 41)
         valset_y.shape: (1916,)
         """
+
+        # new_train_size = (len(trainset_x) // 32) * 32
+        # trainset_x = trainset_x[:new_train_size]
+        # trainset_y = trainset_y[:new_train_size]
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
+        
+        # new_val_size = (len(valset_x) // 32) * 32
+        # valset_x = valset_x[:new_val_size]
+        # valset_y = valset_y[:new_val_size]
+        # print("valset_x.shape:",valset_x.shape)
+        # print("valset_y.shape:",valset_y.shape)    
+        
+                        
+        # """  
+        # trainset_x.shape: (17216, 1, 41)
+        # trainset_y.shape: (17216,)
+        # valset_x.shape: (1888, 1, 41)
+        # valset_y.shape: (1888,)
+        # """
       
-        early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
+        early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1) 
+        # history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=[early_stop], validation_data=(valset_x,valset_y))       
+      
+      
         timer_callback = EpochTimer()
         callbacks = [early_stop, timer_callback]
+        # history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_data=(valset_x,valset_y))       
         history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
 
 
@@ -262,6 +286,16 @@ class PSDetector():
         testset_x.shape: (4233, 1, 41)
         """
     
+        # new_test_size = (len(testset_x) // 32) * 32
+        # testset_x = testset_x[:new_test_size]
+        # testset_y = testset_y[:new_test_size]
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)    
+        # """ 
+        # testset_x.shape: (4224, 1, 41)
+        # testset_y.shape: (4224,)
+        # """        
+        # raise Exception("maggie")
         test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(testset_x, testset_y)
         
         
@@ -345,7 +379,16 @@ class PSDetector():
         """ 
         malicious_cle_testset_x.shape: (123, 1, 41)
         """
-               
+        
+        # new_test_size = (len(malicious_cle_testset_x) // 32) * 32
+        # malicious_cle_testset_x = malicious_cle_testset_x[:new_test_size]
+        # malicious_cle_testset_y = malicious_cle_testset_y[:new_test_size]
+        # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
+        # print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)    
+        # """ 
+        # malicious_cle_testset_x.shape: (96, 1, 41)
+        # malicious_cle_testset_y.shape: (96,)
+        # """             
 
         print("self.testset_min:",self.testset_min)
         print("self.testset_max:",self.testset_max)
@@ -415,6 +458,27 @@ class PSDetector():
         # print("trainset_y.shape:",trainset_y.shape)        
         # print("valset_x.shape:",valset_x.shape)
         # print("valset_y.shape:",valset_y.shape)        
+
+
+        # new_train_size = (len(trainset_x) // 32) * 32
+        # trainset_x = trainset_x[:new_train_size]
+        # trainset_y = trainset_y[:new_train_size]
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
+        
+        # new_val_size = (len(valset_x) // 32) * 32
+        # valset_x = valset_x[:new_val_size]
+        # valset_y = valset_y[:new_val_size]
+        # print("valset_x.shape:",valset_x.shape)
+        # print("valset_y.shape:",valset_y.shape)    
+        
+                        
+        """  
+        trainset_x.shape: (800, 1, 41)
+        trainset_y.shape: (800,)
+        valset_x.shape: (64, 1, 41)
+        valset_y.shape: (64,)
+        """
       
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
       
