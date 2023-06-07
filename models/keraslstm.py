@@ -24,6 +24,14 @@ from keras.layers import RepeatVector, TimeDistributed, BatchNormalization, Acti
 from tensorflow.keras.optimizers import Adam
 from keras.models import Model    
 
+import sys
+sys.stdout.flush()
+print("正在导入art库...", flush=True)
+from art.estimators.classification.keras import KerasClassifier
+from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
+print("art库导入完成!", flush=True) 
+        
+        
 class EpochTimer(Callback):
     def __init__(self):
         self.epoch_times = []
@@ -49,10 +57,10 @@ class PSDetector():
         self.testset_min = np.min(self.dataset['test'][0])
         self.testset_max = np.max(self.dataset['test'][0])    
             
-        print(f"{self.modelname} trainset_min:{self.trainset_min}")
-        print(f"{self.modelname} trainset_max:{self.trainset_max}")
-        print(f"{self.modelname} testset_min:{self.testset_min}")
-        print(f"{self.modelname} testset_max:{self.testset_max}")            
+        print(f"{self.modelname} trainset_min:{self.trainset_min:.4f}")
+        print(f"{self.modelname} trainset_max:{self.trainset_max:.4f}")
+        print(f"{self.modelname} testset_min:{self.testset_min:.4f}")
+        print(f"{self.modelname} testset_max:{self.testset_max:.4f}")            
                 
     def def_model(self, input_dim=41, output_dim=1, timesteps=1):  
 
@@ -73,10 +81,16 @@ class PSDetector():
         model.add(Flatten())
     
         # metrics = [tf.keras.metrics.FalseNegatives(), tf.keras.metrics.FalsePositives(), tf.keras.metrics.Accuracy(), tf.keras.metrics.Recall()]
-        metrics = ['accuracy']
+        # metrics = ['accuracy']
 
         # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=metrics)
+        # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=metrics)
+        
+        # from tensorflow.keras import optimizers
+        # # 配置模型的训练过程
+        # model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
+        
+        
         
         # model.summary()
         self.model = model
@@ -84,15 +98,15 @@ class PSDetector():
     def stdtrain(self, timesteps, exp_result_dir):
         
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
-        print(f"prepare training set and validation set for learning {self.modelname} ")
+        # print(f"prepare training set and validation set for learning {self.modelname} ")
         # print("shuffle training set")       
         trainset_x = self.dataset['train'][0]
         trainset_y = self.dataset['train'][1]
   
-        print("trainset_x.shape:",trainset_x.shape)
-        print("trainset_y.shape:",trainset_y.shape)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
         """ 
         trainset_x.shape: (19152, 41)
         trainset_y.shape: (19152,)
@@ -113,20 +127,26 @@ class PSDetector():
         """
         
 
-        trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
-        print("trainset_x.shape:",trainset_x.shape)
-        print("trainset_y.shape:",trainset_y.shape)        
-        print("valset_x.shape:",valset_x.shape)
-        print("valset_y.shape:",valset_y.shape)        
-        """ 
-        trainset_x.shape: (17236, 1, 41)
-        trainset_y.shape: (17236,)
-        valset_x.shape: (1916, 1, 41)
-        valset_y.shape: (1916,)
-        """
-      
+        # trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)        
+        # print("valset_x.shape:",valset_x.shape)
+        # print("valset_y.shape:",valset_y.shape)        
+        # """ 
+        # trainset_x.shape: (17236, 1, 41)
+        # trainset_y.shape: (17236,)
+        # valset_x.shape: (1916, 1, 41)
+        # valset_y.shape: (1916,)
+        # """
+
+        
+        from tensorflow.keras import optimizers
+        # 配置模型的训练过程
+        self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
+        
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
         timer_callback = EpochTimer()
+        
         callbacks = [early_stop, timer_callback]
         history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
 
@@ -144,20 +164,22 @@ class PSDetector():
          
         plt.style.use('seaborn')           
         plt.plot(list(range(len(epo_train_loss))), epo_train_loss, label='Train Loss', marker='o')
-        plt.plot(epo_val_loss, label='Validation Loss', marker='s')
+        # plt.plot(epo_val_loss, label='Validation Loss', marker='s')
+        plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
-        plt.legend()
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{loss_png_name}')
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
         plt.plot(list(range(len(epo_train_acc))), epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')
+        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')        
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
-        plt.legend()
+        # plt.ylim(0, 1)
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
@@ -166,7 +188,7 @@ class PSDetector():
         plt.plot(list(range(len(epo_cost_time))), epo_cost_time, marker='o')
         plt.xlabel('Epoch')
         plt.ylabel('Cost Time')
-        plt.legend()
+        # plt.legend(loc='best',frameon=True)
         plt.title(f'{time_png_name}')        
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
@@ -226,11 +248,11 @@ class PSDetector():
         
 
 
-        print("testset_y.shape:", testset_y.shape)
-        print("testset_y[:3]:", testset_y[:3])
-        print("output.shape:", output.shape)
-        print("output:", output)        
-        print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
+        # print("testset_y.shape:", testset_y.shape)
+        # print("testset_y[:3]:", testset_y[:3])
+        # print("output.shape:", output.shape)
+        # print("output:", output)        
+        # print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
         
         test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
         
@@ -239,22 +261,31 @@ class PSDetector():
         test_recall = recall_score(testset_y, output, average='macro')
         test_precision = precision_score(testset_y, output, average='macro')
         test_F1 = f1_score(testset_y, output, average='macro')
-        test_FPR = test_FP / (test_FP + test_TN)
         
-        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+        # test_FPR = test_FP / (test_FP + test_TN)
+        
+        # return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+    
+        # return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
+    
+        return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
+    
+    
+
+
     
     def test(self, testset_x, testset_y, timesteps, exp_result_dir):
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
-        print(f"prepare test set for evaluating {self.modelname} ")
+        # print(f"prepare test set for evaluating {self.modelname} ")
         # testset_x = self.dataset['test'][0]
         # testset_y = self.dataset['test'][1]    
         # print("testset_x.shape:",testset_x.shape)
         # print("testset_y.shape:",testset_y.shape)
         
         testset_x = testset_x.reshape((testset_x.shape[0], timesteps, int(math.ceil(testset_x.shape[1] / timesteps))))
-        print("testset_x.shape:",testset_x.shape)
+        # print("testset_x.shape:",testset_x.shape)
         
         """ 
         testset_x.shape: (4233, 41)
@@ -262,28 +293,30 @@ class PSDetector():
         testset_x.shape: (4233, 1, 41)
         """
     
-        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(testset_x, testset_y)
+        # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(testset_x, testset_y)
         
+        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(testset_x, testset_y)
+
         
-        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
              
     def generate_advmail(self,timesteps, exp_result_dir):        
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
-        print(f"prepare test set for generating adversarial testset against {self.modelname} ")
+        # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
         cle_testset_x = self.dataset['test'][0]
         cle_testset_y = self.dataset['test'][1]    
-        print("cle_testset_x.shape:",cle_testset_x.shape)
-        print("cle_testset_y.shape:",cle_testset_y.shape)
+        # print("cle_testset_x.shape:",cle_testset_x.shape)
+        # print("cle_testset_y.shape:",cle_testset_y.shape)
         # print("cle_testset_y[:10]:",cle_testset_y[:10])        
         """
         cle_testset_x.shape: (4224, 41)
         cle_testset_y.shape: (4224,)
         cle_testset_y[:10]: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
         """
-        print(f"{self.modelname} cle_testset_min:{self.testset_min}")
-        print(f"{self.modelname} cle_testset_max:{self.testset_max}")      
+        # print(f"{self.modelname} cle_testset_min:{self.testset_min}")
+        # print(f"{self.modelname} cle_testset_max:{self.testset_max}")      
        
         """ 
         attack-detector cle_testset_min:-3.30513966135273
@@ -300,7 +333,7 @@ class PSDetector():
         
         malicious_cle_testset_y = np.extract(condition,cle_testset_y)
         print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
-        # print("malicious_cle_testset_y:",malicious_cle_testset_y)
+        print("malicious_cle_testset_y:",malicious_cle_testset_y)
                                 
         """ 
         condition.shape: (4233,)
@@ -340,26 +373,26 @@ class PSDetector():
         
         
         malicious_cle_testset_x = malicious_cle_testset_x.reshape((malicious_cle_testset_x.shape[0], timesteps, int(math.ceil(malicious_cle_testset_x.shape[1] / timesteps))))
-        # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
+        print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
         
         """ 
         malicious_cle_testset_x.shape: (123, 1, 41)
         """
                
 
-        print("self.testset_min:",self.testset_min)
-        print("self.testset_max:",self.testset_max)
+        # print("self.testset_min:",self.testset_min)
+        # print("self.testset_max:",self.testset_max)
         
         print("self.args.eps:",self.args.eps)
         print("self.args.eps_step:",self.args.eps_step)
         print("self.args.max_iter:",self.args.max_iter)
         
-        import sys
-        sys.stdout.flush()
-        print("正在导入art库...", flush=True)
-        from art.estimators.classification.keras import KerasClassifier
-        from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
-        print("art库导入完成!", flush=True)   
+        # import sys
+        # sys.stdout.flush()
+        # print("正在导入art库...", flush=True)
+        # from art.estimators.classification.keras import KerasClassifier
+        # from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
+        # print("art库导入完成!", flush=True)   
              
         art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
 
@@ -376,15 +409,15 @@ class PSDetector():
         adv_testset_x = pgd_attack.generate(x=malicious_cle_testset_x)
         adv_testset_y = malicious_cle_testset_y
         
-        print("adv_testset_x.shape:",adv_testset_x.shape)
-        print("adv_testset_y.shape:",adv_testset_y.shape)
+        # print("adv_testset_x.shape:",adv_testset_x.shape)
+        # print("adv_testset_y.shape:",adv_testset_y.shape)
         """ 
         adv_testset_x.shape: (318, 1, 41)
         adv_testset_y.shape: (318,)
         """
         
         adv_testset_x = adv_testset_x.reshape((adv_testset_x.shape[0],adv_testset_x.shape[2]))
-        print("adv_testset_x.shape:",adv_testset_x.shape)
+        # print("adv_testset_x.shape:",adv_testset_x.shape)
         # adv_testset_x.shape: (318, 41)
                 
     
@@ -394,7 +427,7 @@ class PSDetector():
     def retrain(self, retrainset_x, retrainset_y, timesteps, curround_exp_result_dir):
         
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
         print(f"prepare retraining set for learning {self.modelname} ")
         
@@ -410,17 +443,18 @@ class PSDetector():
         # print("trainset_x.shape:",trainset_x.shape)
 
 
-        trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
-        # print("trainset_x.shape:",trainset_x.shape)
-        # print("trainset_y.shape:",trainset_y.shape)        
-        # print("valset_x.shape:",valset_x.shape)
-        # print("valset_y.shape:",valset_y.shape)        
+        # trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
+        # # print("trainset_x.shape:",trainset_x.shape)
+        # # print("trainset_y.shape:",trainset_y.shape)        
+        # # print("valset_x.shape:",valset_x.shape)
+        # # print("valset_y.shape:",valset_y.shape)        
       
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
       
         timer_callback = EpochTimer()
         callbacks = [early_stop, timer_callback]
-        history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_data=(valset_x,valset_y))       
+        # history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_data=(valset_x,valset_y))       
+        history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
 
         epo_train_loss = history.history['loss']
         epo_val_loss = history.history['val_loss']
@@ -440,7 +474,7 @@ class PSDetector():
         plt.plot(epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
-        plt.legend()
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{loss_png_name}')
         # plt.show()
         plt.savefig(f'{curround_exp_result_dir}/{loss_png_name}.png')
@@ -450,7 +484,8 @@ class PSDetector():
         plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
-        plt.legend()
+        # plt.ylim(0, 1)
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         # plt.show()
         plt.savefig(f'{curround_exp_result_dir}/{accuracy_png_name}.png')
@@ -459,7 +494,7 @@ class PSDetector():
         plt.plot(epo_cost_time, marker='o')
         plt.xlabel('Epoch')
         plt.ylabel('Cost Time')
-        plt.legend()
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{time_png_name}')        
         # plt.show()
         plt.savefig(f'{curround_exp_result_dir}/{time_png_name}.png')
@@ -467,7 +502,13 @@ class PSDetector():
         
         return rou_cost_time
         
-
+    def load_model(self,model_path):
+        from keras.models import load_model
+        self.model = load_model(model_path)
+        
+    def save_model(self, save_path):
+        self.model.save(save_path)
+        
 class Seq2Seq():
     def __init__(self, name, args):
         self.modelname = name
@@ -481,10 +522,10 @@ class Seq2Seq():
         self.testset_min = np.min(self.dataset['test'][0])
         self.testset_max = np.max(self.dataset['test'][0])    
             
-        print(f"{self.modelname} trainset_min:{self.trainset_min}")
-        print(f"{self.modelname} trainset_max:{self.trainset_max}")
-        print(f"{self.modelname} testset_min:{self.testset_min}")
-        print(f"{self.modelname} testset_max:{self.testset_max}")  
+        print(f"{self.modelname} trainset_min:{self.trainset_min:.4f}")
+        print(f"{self.modelname} trainset_max:{self.trainset_max:.4f}")
+        print(f"{self.modelname} testset_min:{self.testset_min:.4f}")
+        print(f"{self.modelname} testset_max:{self.testset_max:.4f}")  
     
     def probability_based_embedding(self, p, d):
         ret = 0
@@ -602,7 +643,7 @@ class Seq2Seq():
     def stdtrain(self, events, labels, exp_result_dir, permute_truncated=True):
 
         
-        print(f"training {self.modelname}")
+        # print(f"training {self.modelname}")
         
         slen = self.args.sequence_length
         rv = self.args.rv
@@ -621,7 +662,7 @@ class Seq2Seq():
         self.args.use_prob_embedding: False
         """
         
-        print("prepare training set")
+        # print("prepare training set")
 
 
         in_, out_ = [], []
@@ -703,6 +744,10 @@ class Seq2Seq():
         print("X_in.shape:", X_in.shape)
         print("X_out.shape:", X_out.shape)
 
+        # test_x = X_out[:, :, :1]
+        # print("test_x.shape:",test_x.shape)
+        # raise Exception("maggie stop")
+
         print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
         """ 
         X_in.shape: (19799, 10, 4)
@@ -710,6 +755,7 @@ class Seq2Seq():
         X_out[:, :, :1].shape: (19799, 10, 1)
         从张量 X_out 中选择所有的行（:表示选择所有行）、所有的列（:表示选择所有列），并且只选择第一个维度上的第一个元素（:1表示选择索引为0的元素）
         """
+        
         
         # print("X_in[:1]:",X_in[:1])
         # print("X_in[:1].shape:",X_in[:1].shape)
@@ -742,7 +788,9 @@ class Seq2Seq():
         X_out[:1].shape: (1, 10, 1)
         """
         # history = self.model.fit(x=X_in, y=X_out[:, :, :1], validation_split=0.2, epochs=self.args.seq2seq_epochs, verbose=2, batch_size=100)
-        history = self.model.fit(x=X_in, y=X_out[:, :, :1], validation_split=0.2, epochs=self.args.seq2seq_epochs, verbose=2, batch_size=self.args.seq2seq_batchsize)
+        
+        # history = self.model.fit(x=X_in, y=X_out[:, :, :1], validation_split=0.2, epochs=self.args.seq2seq_epochs, verbose=2, batch_size=self.args.seq2seq_batchsize)
+        history = self.model.fit(x=X_in, y=X_out, validation_split=0.2, epochs=self.args.seq2seq_epochs, verbose=2, batch_size=self.args.seq2seq_batchsize)
   
         # maggie
         epo_train_loss = history.history['loss']
@@ -758,7 +806,7 @@ class Seq2Seq():
         plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
-        plt.legend()
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{loss_png_name}')
         plt.show()
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
@@ -768,7 +816,8 @@ class Seq2Seq():
         plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
-        plt.legend()
+        # plt.ylim(0, 1)
+        plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         plt.show()
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
@@ -858,11 +907,11 @@ class Seq2Seq():
         test_TN, test_FP, test_FN, test_TP = confusion_matrix(y_test_binary_1d, y_pred_binary_1d).ravel()
 
         test_acc = accuracy_score(y_test_binary_1d, y_pred_binary_1d)
-        print("test_acc:",test_acc)
+        print(f"Test accuracy: {100*test_acc} %")
         test_recall = recall_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
         test_precision = precision_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
         test_F1 = f1_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
-        test_FPR = test_FP / (test_FP + test_TN)
+        # test_FPR = test_FP / (test_FP + test_TN)
 
         
         # test_los, test_acc_v2 = self.model.evaluate(x=testset_x, y=testset_y)
@@ -872,10 +921,12 @@ class Seq2Seq():
 
         
         
-        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+        # return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
+    
+        return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
       
     def test(self, testset_x, testset_y, exp_result_dir):
-        print(f"test {self.modelname}")
+        # print(f"test {self.modelname}")
         
         slen = self.args.sequence_length
         rv = self.args.rv
@@ -895,13 +946,13 @@ class Seq2Seq():
         self.args.use_prob_embedding: False
         """
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
-        print(f"prepare test set for evaluating {self.modelname} ")
+        # print(f"prepare test set for evaluating {self.modelname} ")
         # testset_x = self.dataset['test'][0]
         # testset_y = self.dataset['test'][1]    
-        print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)
         """ 
         testset_x.shape: (4224, 4)
         testset_y.shape: (4224,)
@@ -976,10 +1027,11 @@ class Seq2Seq():
         [0.]]]
         X_out[:1].shape: (1, 10, 1)
         """             
-        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
+        # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
+        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
         
         
-        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
+        return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
             
     def analysis(self, testset_x, testset_y, exp_result_dir):
         print(f"use trained {self.modelname} to analysis events")        
@@ -1000,7 +1052,7 @@ class Seq2Seq():
         self.args.use_prob_embedding: False
         """
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print(" cuda and GPU are available")
+            print("Cuda and GPU are available")
 
         print(f"prepare test set for analysis {self.modelname} ")
   

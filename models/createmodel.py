@@ -13,13 +13,20 @@ def init_psdetector(multistep_dataset, args):
     print("reconnaissance_detector.dataset['train'][0].shape:",reconnaissance_detector.dataset['train'][0].shape)
     print("reconnaissance_detector.dataset['train'][1].shape:",reconnaissance_detector.dataset['train'][1].shape)
     """
-    reconnaissance_detector.dataset['train'][0].shape: (14400, 41)
-    reconnaissance_detector.dataset['train'][1].shape: (14400,)
+    reconnaissance_detector.dataset['train'][0].shape: (14410, 41)
+    reconnaissance_detector.dataset['train'][1].shape: (14410,)
     """
     reconnaissance_input_dim=reconnaissance_detector.dataset['train'][0].shape[1]
     print("reconnaissance_input_dim:",reconnaissance_input_dim)               # reconnaissance_input_dim: 41
     # reconnaissance_detector.def_model(reconnaissance_input_dim, output_dim=1, timesteps=1)
-    reconnaissance_detector.def_model(reconnaissance_input_dim, output_dim=1, timesteps=args.timesteps)
+    
+    if args.rec_model_path is None:
+        reconnaissance_detector.def_model(reconnaissance_input_dim, output_dim=1, timesteps=args.timesteps)
+    elif args.rec_model_path is not None:
+        print("args.rec_model_path:", args.rec_model_path)
+        model_path = args.rec_model_path
+        reconnaissance_detector.load_model(model_path)
+        
 
 
     infection_detector = PSDetector(name="infection-detector", args=args)
@@ -27,27 +34,40 @@ def init_psdetector(multistep_dataset, args):
     print("infection_detector.dataset['train'][0].shape:",infection_detector.dataset['train'][0].shape)
     print("infection_detector.dataset['train'][1].shape:",infection_detector.dataset['train'][1].shape)
     """
-    infection_detector.dataset['train'][0].shape: (19808, 41)
-    infection_detector.dataset['train'][1].shape: (19808,)
+    infection_detector.dataset['train'][0].shape: (19818, 41)
+    infection_detector.dataset['train'][1].shape: (19818,)
     """
     infection_input_dim=infection_detector.dataset['train'][0].shape[1]
     print("infection_input_dim:",infection_input_dim)               # infection_input_dim: 41
     # infection_detector.def_model(infection_input_dim, output_dim=1, timesteps=1)
-    infection_detector.def_model(infection_input_dim, output_dim=1, timesteps=args.timesteps)
-
+    
+    if args.inf_model_path is None:
+        infection_detector.def_model(infection_input_dim, output_dim=1, timesteps=args.timesteps)
+    elif args.inf_model_path is not None:
+        print("args.inf_model_path:", args.inf_model_path)
+        model_path = args.inf_model_path
+        infection_detector.load_model(model_path)
+        
     attack_detector = PSDetector(name="attack-detector", args=args)
     attack_detector.add_dataset(dataset=multistep_dataset['attack']) 
     print("attack_detector.dataset['train'][0].shape:",attack_detector.dataset['train'][0].shape)
     print("attack_detector.dataset['train'][1].shape:",attack_detector.dataset['train'][1].shape)
     """
-    attack_detector.dataset['train'][0].shape: (19136, 41)
-    attack_detector.dataset['train'][1].shape: (19136,)
+    attack_detector.dataset['train'][0].shape: (19152, 41)
+    attack_detector.dataset['train'][1].shape: (19152,)
     """
     attack_input_dim=attack_detector.dataset['train'][0].shape[1]
     print("attack_input_dim:",attack_input_dim)               # attack_input_dim: 41
     # attack_detector.def_model(attack_input_dim, output_dim=1, timesteps=1)
-    attack_detector.def_model(attack_input_dim, output_dim=1, timesteps=args.timesteps)
     
+    if args.att_model_path is None:
+        attack_detector.def_model(attack_input_dim, output_dim=1, timesteps=args.timesteps)
+    elif args.att_model_path is not None:
+        print("args.att_model_path:", args.att_model_path)
+        model_path = args.att_model_path
+        attack_detector.load_model(model_path)
+        
+            
     return reconnaissance_detector, infection_detector, attack_detector
 
 

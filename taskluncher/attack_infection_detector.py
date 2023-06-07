@@ -166,7 +166,7 @@ normalized_test_data_infection_max = np.max(normalized_test_data_infection)
 print("normalized_test_data_infection_max:",normalized_test_data_infection_max)
 
 
-raise Exception("maggie stop")
+# raise Exception("maggie stop")
 
 art_classifier = KerasClassifier(model=infection_classifier, clip_values=(-100, 1), use_logits=False)
 pgd_attack = ProjectedGradientDescent(estimator=art_classifier, eps=0.1, eps_step=0.05, max_iter=10)
@@ -185,7 +185,7 @@ predictions = np.argmax(art_classifier.predict(adv_test_set), axis=1)
 accuracy = np.sum(predictions == np.argmax(test_label_infection, axis=1)) / len(test_label_infection)
 print(f"Accuracy of infection detector on adversarial test set: {accuracy * 100:.2f}%")
 
-raise Exception("maggie")
+# raise Exception("maggie")
 # ----------------create per-step detectors----------------------
 ps_attack = Lstm("ps-detector-attack")
 ps_attack.add_dataset(all_data['attack']) 

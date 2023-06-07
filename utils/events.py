@@ -10,7 +10,7 @@ def get_events_from_windows(reconnaissance_detector, infection_detector, attack_
         # malicious_class_score.shape: (19808, 1)
         
         malicious_events_proportion = np.sum(np.array(malicious_class_score)>0.5)/len(malicious_class_score)
-        print(f'proportion of malicious events tagged by {detector.modelname} is: { malicious_events_proportion}')
+        print(f'proportion of malicious events tagged by {detector.modelname} is: { 100*malicious_events_proportion:.4f} %')
         
         events.append(malicious_class_score)
 

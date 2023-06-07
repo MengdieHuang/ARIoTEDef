@@ -40,6 +40,16 @@ def get_args(jupyter_args = None):
     parser.add_argument('--seq2seq_batchsize', required=False, type=int, default=32,
                         help="seq2seq batchsize")            
     parser.add_argument('--retrainset_mode',type=str, default='adv',help='Output path for saving results')
+    
+    parser.add_argument('--rec_model_path', type=str, default= None, help='save path of reconnaissance detector')
+    parser.add_argument('--inf_model_path', type=str, default= None, help='save path of infection detector')
+    parser.add_argument('--att_model_path', type=str, default= None, help='save path of attack detector')
+
+    parser.add_argument('--lr', required=False, type=float, default=0.001,
+                        help="initial learning rate of per step detector training")     
+    
+    
+    parser.add_argument('--stdtrain_pedetector', action='store_true', help='default is False')
         
         
 

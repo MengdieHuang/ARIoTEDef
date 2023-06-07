@@ -6,17 +6,19 @@ Date: May 8, 2023
 import os
 os.environ['TF_NUMA_NODES'] = '1'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # set log level WARNING
-import numpy as np
-from seq2seq.utils import print_header, get_events
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
+
+import numpy as np
+from utils.printformat import print_header
 from utils.argsparse import get_args
 from utils.savedir import set_exp_result_dir
+from utils.events import get_events_from_windows
+
 from data.dataload import loadnpydata
 from data.normalize import normalize_multistep_dataset
 from models.createmodel import init_psdetector
 from models.createmodel import init_seq2seq
-from utils.events import get_events_from_windows
 from data.truncation import truncationdata
 import copy
 
@@ -45,34 +47,65 @@ multistep_dataset = normalize_multistep_dataset(multistep_dataset)
 reconnaissance_detector, infection_detector, attack_detector = init_psdetector(multistep_dataset, args)
 
 # ----------------train per-step detectors----------------------
-print_header("Train Per-Step Detector")
+
 for detector in [reconnaissance_detector, infection_detector, attack_detector]:
     
-    print(f">>>>>>>> Training {detector.modelname} >>>>>>>>")  
-    stdtrain_exp_result_dir = os.path.join(exp_result_dir,f'stdtrain-psdetector')
-    os.makedirs(stdtrain_exp_result_dir, exist_ok=True)
+    if args.stdtrain_pedetector is True:
+        print_header("Train Per-Step Detector")
+        
+        print(f">>>>>>>> Training {detector.modelname} >>>>>>>>")  
+        stdtrain_exp_result_dir = os.path.join(exp_result_dir,f'stdtrain-psdetector')
+        os.makedirs(stdtrain_exp_result_dir, exist_ok=True)
 
-    detector.stdtrain(timesteps=args.timesteps, exp_result_dir=stdtrain_exp_result_dir)
-    
-    print(f">>>>>>>> Evaluate {detector.modelname} on clean test data")
-    test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps, exp_result_dir=stdtrain_exp_result_dir)
-    
-    metrics_dic = { 
-                   'model': detector.modelname,
-                   'clean test Accuracy': test_acc,
-                   'clean test Loss': test_los,
-                   'clean test TP': test_TP,
-                   'clean test FP': test_FP,
-                   'clean test TN': test_TN,
-                   'clean test FN': test_FN,
-                   'clean test Recall': test_recall,
-                   'clean test Precision': test_precision,
-                   'clean test F1': test_F1,
-                }
-     
-    print(f"{detector.modelname} metrics_dic:\n {metrics_dic}")   
-    
- 
+        detector.stdtrain(timesteps=args.timesteps, exp_result_dir=stdtrain_exp_result_dir)
+        
+        print(f">>>>>>>> Evaluate {detector.modelname} on clean test data")
+        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps, exp_result_dir=stdtrain_exp_result_dir)
+        
+        metrics_dic = { 
+                    'model': detector.modelname,
+                    'clean test Accuracy': test_acc,
+                    'clean test Loss': test_los,
+                    'clean test TP': test_TP,
+                    'clean test FP': test_FP,
+                    'clean test TN': test_TN,
+                    'clean test FN': test_FN,
+                    'clean test Recall': test_recall,
+                    'clean test Precision': test_precision,
+                    'clean test F1': test_F1,
+                    }
+        
+        print(f"{detector.modelname} metrics_dic:\n {metrics_dic}")   
+        
+        detector_save_path = f'{exp_result_dir}/{detector.modelname}-acc-{test_acc:.4f}.h5'
+        detector.save_model(detector_save_path)
+        
+    elif args.stdtrain_pedetector is False:
+        print(f">>>>>>>> Evaluate load {detector.modelname} on clean test data")
+
+        pretrain_exp_result_dir = os.path.join(exp_result_dir,f'pretrain-psdetector')
+        os.makedirs(pretrain_exp_result_dir, exist_ok=True)
+                
+        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps, exp_result_dir=pretrain_exp_result_dir)
+        
+        metrics_dic = { 
+                    'model': detector.modelname,
+                    'clean test Accuracy': test_acc,
+                    'clean test Loss': test_los,
+                    'clean test TP': test_TP,
+                    'clean test FP': test_FP,
+                    'clean test TN': test_TN,
+                    'clean test FN': test_FN,
+                    'clean test Recall': test_recall,
+                    'clean test Precision': test_precision,
+                    'clean test F1': test_F1,
+                    }        
+        print(f"{detector.modelname} metrics_dic:\n {metrics_dic}")   
+        
+        
+        
+        
+        
 # ----------------adversarial attack vanilla per-step detectors----------------------
 print_header("Adversarial Attack Vanilla Per-Step Detector")
 for detector in [reconnaissance_detector, infection_detector, attack_detector]:
