@@ -31,25 +31,6 @@ print("正在导入art库...", flush=True)
 from art.estimators.classification.keras import KerasClassifier
 from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
 print("art库导入完成!", flush=True) 
-
-def calculate_tp_tn_fp_fn(y_true, y_pred):
-    tp = 0
-    tn = 0
-    fp = 0
-    fn = 0
-
-    for true, pred in zip(y_true, y_pred):
-        if true == 1 and pred == 1:
-            tp += 1
-        elif true == 0 and pred == 0:
-            tn += 1
-        elif true == 0 and pred == 1:
-            fp += 1
-        elif true == 1 and pred == 0:
-            fn += 1
-
-    return tp, tn, fp, fn
-
         
 def seq2seq_model(input_shape, output_shape, hidden_units):
     train_input = Input(shape=input_shape)
@@ -143,11 +124,25 @@ class PSDetector():
         
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
-   
+
+        # print(f"prepare training set and validation set for learning {self.modelname} ")
+        # print("shuffle training set")       
         trainset_x = self.dataset['train'][0]
         trainset_y = self.dataset['train'][1]
   
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
+        """ 
+        trainset_x.shape: (19152, 41)
+        trainset_y.shape: (19152,)
+        """
         trainset_x, trainset_y = shuffle(trainset_x, trainset_y)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)
+        """ 
+        trainset_x.shape: (19152, 41)
+        trainset_y.shape: (19152,)
+        """
         
         trainset_x = trainset_x.reshape((trainset_x.shape[0], timesteps, int(math.ceil(trainset_x.shape[1] / timesteps))))
 
@@ -155,6 +150,19 @@ class PSDetector():
         """
         trainset_x.shape: (19152, 1, 41)
         """
+        
+
+        # trainset_x, valset_x, trainset_y, valset_y = train_test_split(trainset_x, trainset_y, test_size=0.1, random_state=42)
+        # print("trainset_x.shape:",trainset_x.shape)
+        # print("trainset_y.shape:",trainset_y.shape)        
+        # print("valset_x.shape:",valset_x.shape)
+        # print("valset_y.shape:",valset_y.shape)        
+        # """ 
+        # trainset_x.shape: (17236, 1, 41)
+        # trainset_y.shape: (17236,)
+        # valset_x.shape: (1916, 1, 41)
+        # valset_y.shape: (1916,)
+        # """
         
         # 配置模型的训练过程
         self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
@@ -169,10 +177,6 @@ class PSDetector():
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
         epo_cost_time = timer_callback.epoch_times
-
-        # 将准确率历史记录转换为百分比
-        epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
-        epo_val_acc = [accuracy * 100 for accuracy in epo_val_acc]
 
         #--------save plt---------            
         loss_png_name = f'Loss of standard trained {self.modelname}'
@@ -213,10 +217,39 @@ class PSDetector():
              
     def evaluate(self, testset_x, testset_y):
         
+        # 使用model.evaluate计算测试损失
+        # test_los = self.model.evaluate(testset_x, testset_y)
         test_los, _ = self.model.evaluate(testset_x, testset_y)
+        
+
         output = self.model.predict(testset_x)
         # print("output:",output)
         # print("output.shape:",output.shape)
+        
+        """ 
+        output: 
+        [[5.2461257e-15]
+        [1.0004375e-10]
+        [1.0007104e-10]
+        ...
+        [1.0000000e+00]
+        [1.0000000e+00]
+        [1.0000000e+00]]
+        output.shape: (4224, 1)
+        """
+
+        
+        # # 检查目标值的不同类别数量
+        # num_classes = len(np.unique(testset_y))
+        # print("Number of testset_y classes:", num_classes)
+
+        # num_classes = len(np.unique(output))
+        # print("Number of output classes:", num_classes)
+        
+        # """ 
+        # Number of testset_y classes: 2
+        # Number of output classes: 400
+        # """
         
         predicts = []
         for p in output:
@@ -226,11 +259,24 @@ class PSDetector():
             
         output = np.array(predicts)
         
+        # num_classes = len(np.unique(output))
+        # print("Number of output classes:", num_classes)
+        # print("output.shape:",output.shape)     
+        # """ 
+        # Number of output classes: 2
+        # output.shape: (4224,)
+        # """
+        
+
+
+        # print("testset_y.shape:", testset_y.shape)
+        # print("testset_y[:3]:", testset_y[:3])
+        # print("output.shape:", output.shape)
+        # print("output:", output)        
         print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
         
-        # test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
-        # test_TN, test_FP, test_FN, test_TP = calculate_tp_tn_fp_fn(y_true=testset_y, y_pred=output)
-        test_TP, test_TN, test_FP, test_FN = calculate_tp_tn_fp_fn(y_true=testset_y, y_pred=output)
+        test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
+        
         
         test_acc = accuracy_score(testset_y, output)
         test_recall = recall_score(testset_y, output, average='macro')
@@ -432,16 +478,11 @@ class PSDetector():
         epo_val_acc = history.history['val_accuracy']
         epo_cost_time = timer_callback.epoch_times
 
-        # 将准确率历史记录转换为百分比
-        epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
-        epo_val_acc = [accuracy * 100 for accuracy in epo_val_acc]
-        
-        
         rou_cost_time = sum(epo_cost_time)
         #--------save plt---------            
-        loss_png_name = f'Loss of retrained {self.modelname}'
-        accuracy_png_name = f'Accuracy of retrained {self.modelname}'        
-        time_png_name = f'Cost time of retrained {self.modelname}'
+        loss_png_name = f'Loss of standard trained {self.modelname}'
+        accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
+        time_png_name = f'Cost time of standard trained {self.modelname}'
              
         plt.style.use('seaborn')
            
@@ -458,7 +499,7 @@ class PSDetector():
         plt.plot(epo_train_acc, label='Train Accuracy', marker='o')
         plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
         plt.xlabel('Epoch')
-        plt.ylabel('Accuracy (%)')
+        plt.ylabel('Accuracy')
         # plt.ylim(0, 1)
         plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
@@ -694,12 +735,9 @@ class Seq2Seq():
         y_pred_binary_1d: [0 0 0 ... 0 0 0]
         y_pred_binary_1d.shape: (4215,)
         """
-
-        print("confusion_matrix(y_test_binary_1d, y_pred_binary_1d).ravel():",confusion_matrix(y_test_binary_1d, y_pred_binary_1d).ravel())
+   
         # test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
-        # test_TN, test_FP, test_FN, test_TP = confusion_matrix(y_test_binary_1d, y_pred_binary_1d).ravel()
-        test_TP, test_TN, test_FP, test_FN = calculate_tp_tn_fp_fn(y_true=y_test_binary_1d, y_pred=y_pred_binary_1d)
-
+        test_TN, test_FP, test_FN, test_TP = confusion_matrix(y_test_binary_1d, y_pred_binary_1d).ravel()
 
         test_acc = accuracy_score(y_test_binary_1d, y_pred_binary_1d)
         print(f"Test accuracy: {100*test_acc} %")
@@ -720,76 +758,210 @@ class Seq2Seq():
     
         return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
       
-    def test(self, events, labels, exp_result_dir):
-        print("events.shape:",events.shape)
-        print("labels.shape:",labels.shape)  
-              
+    def test(self, testset_x, testset_y, exp_result_dir):
+        # print(f"test {self.modelname}")
+        
         slen = self.args.sequence_length
+        rv = self.args.rv
+        permute_truncated = self.args.permute_truncated
+        use_prob_embedding = self.args.use_prob_embedding
+        print("self.args.sequence_length:",self.args.sequence_length)
+        print("self.args.rv:",self.args.rv)
+        print("self.args.permute_truncated:",self.args.permute_truncated)
+        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)            
+        # print("events.shape:",events.shape)
+        # print("labels.shape:",labels.shape)
 
+        """
+        self.args.sequence_length: 10
+        self.args.rv: 1
+        self.args.permute_truncated: False
+        self.args.use_prob_embedding: False
+        """
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
-        # in_, out_ = [], []
-        # idx_order = []
-        # idx = 0
+        # print(f"prepare test set for evaluating {self.modelname} ")
+        # testset_x = self.dataset['test'][0]
+        # testset_y = self.dataset['test'][1]    
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)
+        """ 
+        testset_x.shape: (4224, 4)
+        testset_y.shape: (4224,)
+        """
 
-        testset_x, testset_y = [], []
+        in_, out_ = [], []
         idx_order = []
-        idx = 0        
-
+        idx = 0
         
-        for idx, (event, label) in enumerate(zip(events, labels)):
+        for idx, (event, label) in enumerate(zip(testset_x, testset_y)):
+            if use_prob_embedding:
+                event = self.probability_based_embedding(event, rv)            
+            # print(f"{idx}th event {event}: label {label}")
             
-            testset_x.append(event)
-            testset_y.append([label])
+            in_.append(event)
+            out_.append([label])
             idx_order.append(idx)
                     
-        testset_x, testset_y, truncated_idxs = self.truncate(testset_x, testset_y, idx_order, slen=slen)
-        # X_out_labels = np.array(X_out)[:,:,0].tolist()
+        X_in, X_out, truncated_idxs = self.truncate(in_, out_, idx_order, slen=slen)
+        X_out_labels = np.array(X_out)[:,:,0].tolist()
 
+        if permute_truncated:
+            print("Permute Truncated is enabled")
+            X_in, perm_truncated_idxs = self.permute_truncated(X_in, X_out_labels, truncated_idxs, slen=slen, inplace=False)
+        else:
+            print("Permute Truncated is disabled")
 
-        print("testset_x.shape:", testset_x.shape)
-        print("testset_y.shape:", testset_y.shape)
+        if use_prob_embedding:
+            X_in = np.expand_dims(X_in, axis=-1)
 
-        # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
-        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(testset_x, testset_y)
+        print("X_in.shape:", X_in.shape)
+        print("X_out.shape:", X_out.shape)
+
+        # print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
+        
+        """ 
+        X_in.shape: (4215, 10, 4)
+        X_out.shape: (4215, 10, 1)
+        X_out[:, :, :1].shape: (4215, 10, 1)
+        """
+        # input_test = Input(shape=(X_in.shape[-2], X_in.shape[-1]))
+        # output_test = Input(shape=(X_out.shape[-2], X_out.shape[-1]))
+                
+
+        # print("X_in[:1]:",X_in[:1])
+        # print("X_in[:1].shape:",X_in[:1].shape)
+        # print("X_out[:1]:",X_out[:1])
+        # print("X_out[:1].shape:",X_out[:1].shape)   
+        
+        """ 
+        X_in[:1]: 
+        [[[0.23675469 0.38697815 0.2339012  0.142366  ]
+        [0.2950452  0.17920779 0.29549697 0.23025008]
+        [0.2950452  0.17920779 0.29549697 0.23025008]
+        [0.29505262 0.17922108 0.29539937 0.2303269 ]
+        [0.2950452  0.17920779 0.29549697 0.23025008]
+        [0.2950452  0.17920779 0.29549697 0.23025008]
+        [0.2950452  0.17920779 0.29549697 0.23025008]
+        [0.2950452  0.17920779 0.29549697 0.23025009]
+        [0.29478398 0.17923193 0.29560506 0.23037903]
+        [0.2950452  0.17920779 0.29549697 0.23025008]]]
+        X_in[:1].shape: (1, 10, 4)
+        X_out[:1]: [[[0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]]]
+        X_out[:1].shape: (1, 10, 1)
+        """             
+        # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
+        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
         
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
             
-    def analysis(self, events, labels, exp_result_dir):
+    def analysis(self, testset_x, testset_y, exp_result_dir):
+        print(f"use trained {self.modelname} to analysis events")        
+
+        slen = self.args.sequence_length
+        rv = self.args.rv
+        permute_truncated = self.args.permute_truncated
+        use_prob_embedding = self.args.use_prob_embedding
+        print("self.args.sequence_length:",self.args.sequence_length)
+        print("self.args.rv:",self.args.rv)
+        print("self.args.permute_truncated:",self.args.permute_truncated)
+        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)            
+
+        """
+        self.args.sequence_length: 10
+        self.args.rv: 1
+        self.args.permute_truncated: False
+        self.args.use_prob_embedding: False
+        """
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
-        slen = self.args.sequence_length
-        print("self.args.sequence_length:",self.args.sequence_length)
-
-
-
         print(f"prepare test set for analysis {self.modelname} ")
   
-        print("events.shape:", events.shape)
-        print("labels.shape:", labels.shape)
- 
+        print("testset_x.shape:",testset_x.shape)
+        print("testset_y.shape:",testset_y.shape)
+        """ 
+        testset_x.shape: (4224, 4)
+        testset_y.shape: (4224,)
+        """
 
-        testset_x, testset_y = [], []
+        in_, out_ = [], []
         idx_order = []
         idx = 0
         
-        for idx, (event, label) in enumerate(zip(events, labels)):
-            # if use_prob_embedding:
-            #     event = self.probability_based_embedding(event, rv)            
-            # # print(f"{idx}th event {event}: label {label}")
+        for idx, (event, label) in enumerate(zip(testset_x, testset_y)):
+            if use_prob_embedding:
+                event = self.probability_based_embedding(event, rv)            
+            # print(f"{idx}th event {event}: label {label}")
             
-            testset_x.append(event)
-            testset_y.append([label])
+            in_.append(event)
+            out_.append([label])
             idx_order.append(idx)
                     
-        testset_x, testset_y, truncated_idxs = self.truncate(testset_x, testset_y, idx_order, slen=slen)
-        print("testset_x.shape:", testset_x.shape)
-        print("testset_y.shape:", testset_y.shape)
+        X_in, X_out, truncated_idxs = self.truncate(in_, out_, idx_order, slen=slen)
+        X_out_labels = np.array(X_out)[:,:,0].tolist()
+
+        if permute_truncated:
+            print("Permute Truncated is enabled")
+            X_in, perm_truncated_idxs = self.permute_truncated(X_in, X_out_labels, truncated_idxs, slen=slen, inplace=False)
+        else:
+            print("Permute Truncated is disabled")
+
+        if use_prob_embedding:
+            X_in = np.expand_dims(X_in, axis=-1)
+
+        print("X_in.shape:", X_in.shape)
+        print("X_out.shape:", X_out.shape)
+        # print("X_out[:, :, :1].shape:",X_out[:, :, :1].shape)
         
-        y_pred = self.model.predict(testset_x)
+        """ 
+        X_in.shape: (4215, 10, 4)
+        X_out.shape: (4215, 10, 1)
+        X_out[:, :, :1].shape: (4215, 10, 1)
+        """             
+
+        # print("X_in[:1]:",X_in[:1])
+        # print("X_in[:1].shape:",X_in[:1].shape)
+        # print("X_out[:1]:",X_out[:1])
+        # print("X_out[:1].shape:",X_out[:1].shape)   
+        
+        """ 
+        X_in[:1]: [[[0.17961185 0.4654549  0.1753892  0.17954406]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.46916515 0.17586853 0.17583415 0.17913216]
+        [0.4753528  0.17487994 0.17487994 0.17488736]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.4691657  0.17586847 0.17583407 0.17913179]
+        [0.46916515 0.17586853 0.17583415 0.17913216]
+        [0.4691652  0.17586854 0.17583413 0.17913215]
+        [0.175922   0.17950743 0.17592548 0.46864507]
+        [0.46916515 0.17586853 0.17583415 0.17913216]]]
+        X_in[:1].shape: (1, 10, 4)
+        X_out[:1]: [[[0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]
+        [0.]]]
+        X_out[:1].shape: (1, 10, 1)
+        """                     
+        
+        y_pred = self.model.predict(X_in)
         print("y_pred.shape:",y_pred.shape)
         # print("y_pred[:1]:",y_pred[:1])
         
@@ -841,6 +1013,7 @@ class Seq2Seq():
                 ret_idxs.append(idx)
 
         return ret_probs, ret_idxs
+
 
     def def_model(self, input_length, output_length, input_dim=4, output_dim=1, hidden_units=128):
         # print('define seq2seq model architecture')    
@@ -902,7 +1075,14 @@ class Seq2Seq():
         
         self.model = Model(inputs=train_input, outputs=out)
         print("--------------------end create seq2seq------------------------")    
-                                
+                
+    def load_model(self, model_path):
+        from keras.models import load_model
+        self.model = load_model(model_path)
+        
+    def save_model(self, save_path):
+        self.model.save(save_path)
+            
     def stdtrain(self, events, labels, exp_result_dir):
 
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
@@ -951,10 +1131,6 @@ class Seq2Seq():
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
 
-        # 将准确率历史记录转换为百分比
-        epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
-        epo_val_acc = [accuracy * 100 for accuracy in epo_val_acc]
-        
         #--------save plt---------            
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
@@ -979,11 +1155,3 @@ class Seq2Seq():
         plt.show()
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
-
-    def save_model(self, save_path):
-        self.model.save(save_path)
-
-    def load_model(self, model_path):
-        from keras.models import load_model
-        self.model = load_model(model_path)
- 
