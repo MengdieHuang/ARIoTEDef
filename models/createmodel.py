@@ -78,6 +78,19 @@ def init_seq2seq(multistep_dataset, args):
     infection_seq2seq.add_dataset(dataset=multistep_dataset['infection']) 
     print("infection_seq2seq.dataset['train'][0].shape:",infection_seq2seq.dataset['train'][0].shape)
     print("infection_seq2seq.dataset['train'][1].shape:",infection_seq2seq.dataset['train'][1].shape)
+    
+    
+    if args.seq2seq_model_path is None:
+        # infection_seq2seq.def_model(input_length=args.sequence_length, output_length =args.sequence_length)
+        print("由于存在error,只能支持fit前定义model")
+        """
+        tensorflow.python.framework.errors_impl.InvalidArgumentError: Node 'training/Adam/gradients/gradients/lstm_1_1/while_grad/lstm_1_1/while_grad': Connecting to invalid output 161 of source node lstm_1_1/while which has 161 outputs. 
+        """
+    elif args.seq2seq_model_path is not None:
+        print("args.seq2seq_model_path:", args.seq2seq_model_path)
+        model_path = args.seq2seq_model_path
+        infection_seq2seq.load_model(model_path)
+        
     # infection_seq2seq.def_model(XXX)
     # raise Exception("maggie stop")    
     return infection_seq2seq

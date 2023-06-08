@@ -20,64 +20,17 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import copy
 
-from keras.layers import RepeatVector, TimeDistributed, BatchNormalization, Activation, Input, dot, concatenate, Attention
+from keras.layers import RepeatVector, TimeDistributed, BatchNormalization, Activation, Input, dot, concatenate
 from tensorflow.keras.optimizers import Adam
 from keras.models import Model    
-from tensorflow.keras import optimizers
 
 import sys
 sys.stdout.flush()
-print("正在导入art库...", flush=True)
+print("start importing art lib...", flush=True)
 from art.estimators.classification.keras import KerasClassifier
 from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
-print("art库导入完成!", flush=True) 
+print("finish importing art lib!", flush=True) 
         
-def seq2seq_model(input_shape, output_shape, hidden_units):
-    train_input = Input(shape=input_shape)
-    train_output = Input(shape=output_shape)    
-    print("train_input.shape:", train_input.shape)
-    print("train_output.shape:", train_output.shape)
-    
-    encoder_stack_h, encoder_last_h, encoder_last_c = LSTM(
-            units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
-            return_sequences=True, return_state=True)(train_input)
-
-    encoder_last_h = BatchNormalization(momentum=0.6)(encoder_last_h)
-    encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
-
-    decoder_input = RepeatVector(train_output.shape[1])(encoder_last_h)
-    decoder_stack_h = LSTM(units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
-            return_state=False, return_sequences=True)(decoder_input, initial_state=[encoder_last_h, encoder_last_c])
-    
-    
-    print("encoder_stack_h.shape:",encoder_stack_h.shape)
-    print("decoder_stack_h.shape:",decoder_stack_h.shape)
-    
-    attention = dot([decoder_stack_h, encoder_stack_h], axes=[2,2])
-    attention = Activation('softmax')(attention)
-
-    context = dot([attention, encoder_stack_h], axes=[2,1])
-    context = BatchNormalization(momentum=0.6)(context)
-
-    decoder_combined_context = concatenate([context, decoder_stack_h])
-    out = TimeDistributed(Dense(train_output.shape[2]))(decoder_combined_context)
-    out = Activation('sigmoid')(out)
-
-    print("train_input.shape:",train_input.shape)                
-    print("out.shape:",out.shape)       
-    
-    """ 
-    encoder_stack_h.shape: (None, 10, 128)
-    decoder_stack_h.shape: (None, 10, 128)
-    input_train.shape: (None, 10, 4)
-    out.shape: (None, 10, 1)
-    """ 
-    
-    model = Model(inputs=train_input, outputs=out)
-    # self.model.summary()   
-    
-    return model
-
         
 class EpochTimer(Callback):
     def __init__(self):
@@ -89,6 +42,7 @@ class EpochTimer(Callback):
     def on_epoch_end(self, epoch, logs=None):
         elapsed_time = time.time() - self.start_time
         self.epoch_times.append(elapsed_time)
+
 
 class PSDetector():
     def __init__(self, name, args):
@@ -110,14 +64,35 @@ class PSDetector():
                 
     def def_model(self, input_dim=41, output_dim=1, timesteps=1):  
 
+        # strategy = tf.distribute.OneDeviceStrategy(device="/gpu:0")  # 指定使用的 GPU 设备
+        # with strategy.scope(): # 删除分配策略
+            
         model = Sequential()
-
+        # model.add(LSTM(units=128, activation='relu', return_sequences=True, input_shape=(timesteps, input_dim)))
+        # 输出128维
+        # model.add(LSTM(units=128, activation='relu', return_sequences=True, input_dim=input_dim))
         model.add(LSTM(units=128, activation='relu', return_sequences=True, input_shape=(timesteps, int(input_dim / timesteps))))
+        
+        
         model.add(LSTM(units=128, activation='relu', return_sequences=True))                        
         # 输出128维
         model.add(Dense(units=output_dim, activation='sigmoid'))
         # 输出1维
         model.add(Flatten())
+    
+        # metrics = [tf.keras.metrics.FalseNegatives(), tf.keras.metrics.FalsePositives(), tf.keras.metrics.Accuracy(), tf.keras.metrics.Recall()]
+        # metrics = ['accuracy']
+
+        # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=metrics)
+        
+        # from tensorflow.keras import optimizers
+        # # 配置模型的训练过程
+        # model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
+        
+        
+        
+        # model.summary()
         self.model = model
 
     def stdtrain(self, timesteps, exp_result_dir):
@@ -163,11 +138,15 @@ class PSDetector():
         # valset_x.shape: (1916, 1, 41)
         # valset_y.shape: (1916,)
         # """
+
         
+        from tensorflow.keras import optimizers
         # 配置模型的训练过程
         self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
+        
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
         timer_callback = EpochTimer()
+        
         callbacks = [early_stop, timer_callback]
         history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
 
@@ -273,7 +252,7 @@ class PSDetector():
         # print("testset_y[:3]:", testset_y[:3])
         # print("output.shape:", output.shape)
         # print("output:", output)        
-        print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
+        # print("confusion_matrix(testset_y, output).ravel():",confusion_matrix(testset_y, output).ravel())
         
         test_TN, test_FP, test_FN, test_TP = confusion_matrix(testset_y, output).ravel()
         
@@ -290,6 +269,10 @@ class PSDetector():
         # return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
     
         return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
+    
+    
+
+
     
     def test(self, testset_x, testset_y, timesteps, exp_result_dir):
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
@@ -400,9 +383,9 @@ class PSDetector():
         # print("self.testset_min:",self.testset_min)
         # print("self.testset_max:",self.testset_max)
         
-        # print("self.args.eps:",self.args.eps)
-        # print("self.args.eps_step:",self.args.eps_step)
-        # print("self.args.max_iter:",self.args.max_iter)
+        print("self.args.eps:",self.args.eps)
+        print("self.args.eps_step:",self.args.eps_step)
+        print("self.args.max_iter:",self.args.max_iter)
         
         # import sys
         # sys.stdout.flush()
@@ -440,6 +423,7 @@ class PSDetector():
     
         return adv_testset_x, adv_testset_y
 
+     
     def retrain(self, retrainset_x, retrainset_y, timesteps, curround_exp_result_dir):
         
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
@@ -518,7 +502,7 @@ class PSDetector():
         
         return rou_cost_time
         
-    def load_model(self, model_path):
+    def load_model(self,model_path):
         from keras.models import load_model
         self.model = load_model(model_path)
         
@@ -1196,143 +1180,4 @@ class Seq2Seq():
                 ret_idxs.append(idx)
 
         return ret_probs, ret_idxs
-
-
-    def def_model(self, input_length, output_length, input_dim=4, output_dim=1, hidden_units=128):
-        # print('define seq2seq model architecture')    
-        
-        # # 使用示例
-        # input_shape = (input_length, input_dim)  # 输入形状
-        # output_shape = (output_length, output_dim)  # 输出形状
-        # hidden_units = 128  # 隐藏层单元数
-
-        # model = seq2seq_model(input_shape, output_shape, hidden_units)
-        # self.model = model      
-        print("--------------------create seq2seq------------------------")        
-        train_input = Input(shape=(10, 4))
-        train_output = Input(shape=(10, 1))        
-        
-        print("train_input.shape:", train_input.shape)
-        print("train_output.shape:", train_output.shape)
-        """ 
-        train_input.shape: (None, 10, 4)
-        train_output.shape: (None, 10, 1)
-        """ 
-        
-        encoder_stack_h, encoder_last_h, encoder_last_c = LSTM(
-                units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
-                return_sequences=True, return_state=True)(train_input)
-
-        encoder_last_h = BatchNormalization(momentum=0.6)(encoder_last_h)
-        encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
-
-        decoder_input = RepeatVector(train_output.shape[1])(encoder_last_h)
-        decoder_stack_h = LSTM(units=128, activation='relu', dropout=0.2, recurrent_dropout=0.2,
-                return_state=False, return_sequences=True)(decoder_input, initial_state=[encoder_last_h, encoder_last_c])
-        
-        
-        print("encoder_stack_h.shape:",encoder_stack_h.shape)
-        print("decoder_stack_h.shape:",decoder_stack_h.shape)
-        
-        attention = dot([decoder_stack_h, encoder_stack_h], axes=[2,2])
-        attention = Activation('softmax')(attention)
-
-        context = dot([attention, encoder_stack_h], axes=[2,1])
-        context = BatchNormalization(momentum=0.6)(context)
-
-        decoder_combined_context = concatenate([context, decoder_stack_h])
-        out = TimeDistributed(Dense(train_output.shape[2]))(decoder_combined_context)
-        out = Activation('sigmoid')(out)
-
-        print("train_input.shape:",train_input.shape)                
-        print("out.shape:",out.shape)       
-        
-        """ 
-        encoder_stack_h.shape: (None, 10, 128)
-        decoder_stack_h.shape: (None, 10, 128)
-        train_input.shape: (None, 10, 4)
-        out.shape: (None, 10, 1)
-        """ 
-        
-        self.model = Model(inputs=train_input, outputs=out)
-        print("--------------------end create seq2seq------------------------")    
-                
-    def load_model(self, model_path):
-        from keras.models import load_model
-        self.model = load_model(model_path)
-        
-    def save_model(self, save_path):
-        self.model.save(save_path)
             
-    def stdtrain_2(self, events, labels, exp_result_dir):
-
-        if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print("Cuda and GPU are available")
-
-        print("events.shape:",events.shape)
-        print("labels.shape:",labels.shape)
-        
-        slen = self.args.sequence_length
-        print("self.args.sequence_length:",self.args.sequence_length)
-
-        trainset_x, trainset_y = [], []
-        idx_order = []
-        idx = 0
-        
-        for idx, (event, label) in enumerate(zip(events, labels)):   
-            # print("idx:",idx)         
-            trainset_x.append(event)
-            trainset_y.append([label])
-            idx_order.append(idx)
-            
-        trainset_x, trainset_y, truncated_idxs = self.truncate(trainset_x, trainset_y, idx_order, slen=slen)
-        trainset_x, trainset_y = shuffle(trainset_x, trainset_y)
-
-        print("trainset_x.shape:",trainset_x.shape)
-        print("trainset_y.shape:",trainset_y.shape)
-        
-        """
-        trainset_x.shape: (19809, 10, 4)
-        trainset_y.shape: (19809, 10, 1)
-        """
-
-        # 配置模型的训练过程
-        self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
-        early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
-        timer_callback = EpochTimer()
-        callbacks = [early_stop, timer_callback]
-        # tf.compat.v1.experimental.output_all_intermediates(True)
-        history = self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.seq2seq_batchsize, epochs=self.args.seq2seq_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)
-          
-        # raise Exception("maggie stop")
-          
-        # maggie
-        epo_train_loss = history.history['loss']
-        epo_val_loss = history.history['val_loss']
-        epo_train_acc = history.history['accuracy']
-        epo_val_acc = history.history['val_accuracy']
-
-        #--------save plt---------            
-        loss_png_name = f'Loss of standard trained {self.modelname}'
-        accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
-                   
-        plt.plot(list(range(len(epo_train_loss))), epo_train_loss, label='Train Loss', marker='o')
-        plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.legend(loc='best',frameon=True)
-        plt.title(f'{loss_png_name}')
-        plt.show()
-        plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
-        plt.close()
-                
-        plt.plot(list(range(len(epo_train_acc))), epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')
-        plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        # plt.ylim(0, 1)
-        plt.legend(loc='best',frameon=True)
-        plt.title(f'{accuracy_png_name}')        
-        plt.show()
-        plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
-        plt.close()
