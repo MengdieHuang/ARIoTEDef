@@ -245,7 +245,7 @@ class PSDetector():
     
         return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
     
-    def test(self, testset_x, testset_y, timesteps, exp_result_dir):
+    def test(self, testset_x, testset_y, timesteps):
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
@@ -271,7 +271,7 @@ class PSDetector():
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
              
-    def generate_advmail(self,timesteps, exp_result_dir):        
+    def generate_advmail(self,timesteps):        
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
@@ -484,6 +484,28 @@ class PSDetector():
     def save_model(self, save_path):
         self.model.save(save_path)
         
+    def analysis(self, test_windows_x):
+        # detector predict test_windows_x
+        detector_probs = self.model.predict(test_windows_x)
+        detector_probs = np.array(detector_probs).squeeze()
+        # print('detector_probs.shape:', detector_probs.shape)
+
+        detector_tagged_windows_idxs = []
+        detector_tagged_windows_probs = []
+        
+        for idx, pred in enumerate(detector_probs):
+            if pred>0.5:    # predicted label = infection
+                detector_tagged_windows_idxs.append(idx)
+                detector_tagged_windows_probs.append(pred)
+        """ 
+        detector_tagged_windows_idxs is the indx list of samples in test set predicted as infection by infection detector
+        """       
+
+        detector_tagged_windows_probs = np.array(detector_tagged_windows_probs)            
+        detector_tagged_windows_idxs = np.array(detector_tagged_windows_idxs)   
+         
+        return detector_tagged_windows_probs, detector_tagged_windows_idxs
+
 class Seq2Seq():
     def __init__(self, name, args):
         self.modelname = name
@@ -720,7 +742,7 @@ class Seq2Seq():
     
         return round(test_acc, 4), round(test_los, 4), test_TP, test_FP, test_TN, test_FN, round(test_recall, 4), round(test_precision, 4), round(test_F1, 4)
       
-    def test(self, events, labels, exp_result_dir):
+    def test(self, events, labels):
         print("events.shape:",events.shape)
         print("labels.shape:",labels.shape)  
               
@@ -757,20 +779,23 @@ class Seq2Seq():
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
             
-    def analysis(self, events, labels, exp_result_dir):
+    def analysis(self, events, labels):
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
         slen = self.args.sequence_length
-        print("self.args.sequence_length:",self.args.sequence_length)
+        # print("self.args.sequence_length:",self.args.sequence_length)
+        # self.args.sequence_length: 10
 
 
-
-        print(f"prepare test set for analysis {self.modelname} ")
+        # print(f"prepare test set for analysis {self.modelname} ")
   
-        print("events.shape:", events.shape)
-        print("labels.shape:", labels.shape)
- 
+        # print("events.shape:", events.shape)
+        # print("labels.shape:", labels.shape)
+        """ 
+        events.shape: (4551, 4)
+        labels.shape: (4551,)
+        """
 
         testset_x, testset_y = [], []
         idx_order = []
@@ -786,26 +811,22 @@ class Seq2Seq():
             idx_order.append(idx)
                     
         testset_x, testset_y, truncated_idxs = self.truncate(testset_x, testset_y, idx_order, slen=slen)
-        print("testset_x.shape:", testset_x.shape)
-        print("testset_y.shape:", testset_y.shape)
-        
+        # print("testset_x.shape:", testset_x.shape)
+        # print("testset_y.shape:", testset_y.shape)
+        """ 
+        testset_x.shape: (4542, 10, 4)
+        testset_y.shape: (4542, 10, 1)
+        """
         y_pred = self.model.predict(testset_x)
-        print("y_pred.shape:",y_pred.shape)
+        # print("y_pred.shape:",y_pred.shape)
         # print("y_pred[:1]:",y_pred[:1])
         
         """ 
-        y_pred.shape: (4215, 10, 1)
-        y_pred[:1]: [[[0.00705705]
-        [0.00941563]
-        [0.0075582 ]
-        [0.00797312]
-        [0.00803206]
-        [0.00810819]
-        [0.00802327]
-        [0.00786802]
-        [0.00766706]
-        [0.00744636]]]
+        y_pred.shape: (4542, 10, 1)
         """
+
+
+
 
         '''acumulates predictions'''
         idx = 0
@@ -840,6 +861,10 @@ class Seq2Seq():
                 ret_probs.append(prob)
                 ret_idxs.append(idx)
 
+
+        ret_probs = np.array(ret_probs)
+        ret_idxs = np.array(ret_idxs)
+                
         return ret_probs, ret_idxs
 
     def def_model(self, input_length, output_length, input_dim=4, output_dim=1, hidden_units=128):

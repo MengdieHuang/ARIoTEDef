@@ -54,6 +54,8 @@ def get_args(jupyter_args = None):
     parser.add_argument('--seq2seq_model_path', type=str, default= None, help='save path of seq2seq translation analyzer')
     parser.add_argument('--stdtrain_seq2seq', action='store_true', help='default is False')
     
+    parser.add_argument('--strategy', type=str, default= 'strategy1', help='retraining strategy')
+    
     
         
         
