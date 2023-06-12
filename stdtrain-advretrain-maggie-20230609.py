@@ -280,6 +280,9 @@ for detector in [infection_detector]:
         test_FPR_list = []
         test_F1_list = []
         cost_time_list =[]
+        
+        test_FPrate_list=[]
+        test_FNrate_list=[]
 
 
         adv_test_acc_list = [] 
@@ -289,6 +292,8 @@ for detector in [infection_detector]:
         adv_test_recall_list = []
         adv_test_precision_list = []
         adv_test_F1_list = []
+        adv_test_FNrate_list=[]
+        
         
         #---------------evaluate vanilia detector---------------
         print(f">>>>>>>> Evaluate vanillia {detector.modelname} on clean test data >>>>>>>>")
@@ -308,7 +313,13 @@ for detector in [infection_detector]:
                     }
         
         print(f"vanillia {detector.modelname} metrics_dic:\n {metrics_dic}")  
-
+        
+        FPrate = round((test_FP/(test_FP+test_TN)), 4)
+        FNrate = round((test_FN/(test_FN+test_TP)), 4)
+        test_FPrate_list.append(FPrate*100)
+        test_FNrate_list.append(FNrate*100)
+        
+        
         test_acc_list.append(test_acc*100)
         test_los_list.append(test_los)
         test_TP_list.append(test_TP)
@@ -319,6 +330,7 @@ for detector in [infection_detector]:
         test_precision_list.append(test_precision*100)
         test_F1_list.append(test_F1*100)
         cost_time_list.append(0)        
+        
                 
         print(f">>>>>>>> Evaluate vanillia {detector.modelname} on adversarial test data >>>>>>>>")
 
@@ -347,6 +359,9 @@ for detector in [infection_detector]:
         
         print(f"Vanillia {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")    
 
+        adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+        adv_test_FNrate_list.append(FNrate*100)
+        
         adv_test_acc_list.append(adv_test_acc*100)
         adv_test_los_list.append(adv_test_los)
         adv_test_TN_list.append(adv_test_TN)
@@ -567,7 +582,21 @@ for detector in [infection_detector]:
                     print("set_BC_x.shape:",set_BC_x.shape)
                     print("set_BC_y.shape:",set_BC_y.shape)              
 
-
+                elif args.strategy =='strategy4-groundtruth':
+                    
+                    set_B_pos_x = adv_testset_x 
+                    set_B_pos_y = adv_testset_y
+                    
+                    set_B_pos_x = np.array(set_B_pos_x)        
+                    set_B_pos_y = np.array(set_B_pos_y)        
+                    print("set_B_pos_x.shape:",set_B_pos_x.shape)
+                    print("set_B_pos_y.shape:",set_B_pos_y.shape)
+                     
+                    set_BC_x = set_B_pos_x
+                    set_BC_y = set_B_pos_y
+                    print("set_BC_x.shape:",set_BC_x.shape)
+                    print("set_BC_y.shape:",set_BC_y.shape)  
+                     
 
                 retrainset_x = np.concatenate((set_BC_x, detector.dataset['train'][0]))
                 retrainset_y = np.concatenate((set_BC_y, detector.dataset['train'][1]))            
@@ -599,7 +628,12 @@ for detector in [infection_detector]:
                         }
             
             print(f"{detector.modelname} metrics_dic:\n {metrics_dic}")  
-    
+
+            FPrate = round((test_FP/(test_FP+test_TN)), 4)
+            FNrate = round((test_FN/(test_FN+test_TP)), 4)
+            test_FPrate_list.append(FPrate*100)
+            test_FNrate_list.append(FNrate*100)
+            
             test_acc_list.append(test_acc*100)
             test_los_list.append(test_los)
             test_TP_list.append(test_TP)
@@ -655,6 +689,9 @@ for detector in [infection_detector]:
             
             print(f"{r+1}th-round retrained {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")    
 
+            adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+            adv_test_FNrate_list.append(FNrate*100)
+        
             adv_test_acc_list.append(adv_test_acc*100)
             adv_test_los_list.append(adv_test_los)
             adv_test_TN_list.append(adv_test_TN)
@@ -674,6 +711,7 @@ for detector in [infection_detector]:
         fn_fp_png_name = f'FP and FN of retrained {detector.modelname} on clean testset'
         recall_png_name = f'Recall of retrained {detector.modelname} on clean testset'
         f1_png_name = f'F1 of retrained {detector.modelname} on clean testset'
+        fnrate_fprate_png_name = f'FP rate and FN rate of retrained {detector.modelname} on clean testset'
         
         plt.style.use('seaborn')
 
@@ -715,6 +753,18 @@ for detector in [infection_detector]:
         plt.savefig(f'{retrain_cle_exp_result_dir}/{fn_fp_png_name}.png')
         plt.close()
 
+        plt.plot(list(range(len(test_FPrate_list))), test_FPrate_list, label='Test FP rate', marker='o')
+        plt.plot(list(range(len(test_FNrate_list))), test_FNrate_list, label='Test FN rate', marker='s')
+        plt.xlabel('Round')
+        plt.ylabel('FP rate and FN rate')
+        plt.xticks(range(min(list(range(len(test_FPrate_list)))), max(list(range(len(test_FPrate_list))))+1, 2))        
+        plt.legend()
+        plt.title(f'{fnrate_fprate_png_name}')        
+        plt.savefig(f'{retrain_cle_exp_result_dir}/{fnrate_fprate_png_name}.png')
+        plt.close()
+        
+        
+        
         plt.plot(list(range(len(test_recall_list))), test_recall_list, label='Test Recall', marker='o')
         plt.xlabel('Round')
         plt.ylabel('Test Recall (%)')
@@ -742,6 +792,7 @@ for detector in [infection_detector]:
         adv_fn_png_name = f'FN of retrained {detector.modelname} against white-box PGD evasion attack'
         adv_recall_png_name = f'Recall of retrained {detector.modelname} against white-box PGD evasion attack'
         adv_f1_png_name = f'F1 of retrained {detector.modelname} against white-box PGD evasion attack'
+        adv_fnrate_png_name = f'FN rate of retrained {detector.modelname} against white-box PGD evasion attack'
         
         plt.style.use('seaborn')
 
@@ -773,6 +824,16 @@ for detector in [infection_detector]:
         plt.savefig(f'{retrain_adv_exp_result_dir}/{adv_fn_png_name}.png')
         plt.close()
 
+        plt.plot(list(range(len(adv_test_FNrate_list))), adv_test_FNrate_list, label='Test False Negative rate', marker='o')
+        plt.xlabel('Round')
+        plt.ylabel('FN rate')
+        plt.xticks(range(min(list(range(len(adv_test_FNrate_list)))), max(list(range(len(adv_test_FNrate_list))))+1, 2))                
+        plt.legend()
+        plt.title(f'{adv_fnrate_png_name}')        
+        plt.savefig(f'{retrain_adv_exp_result_dir}/{adv_fnrate_png_name}.png')
+        plt.close()
+        
+        
         plt.plot(list(range(len(adv_test_recall_list))), adv_test_recall_list, label='Test Recall', marker='o')
         plt.xlabel('Round')
         plt.ylabel('Test Recall (%)')

@@ -5,12 +5,12 @@ import datetime
 
 def set_exp_result_dir(args):
 
-    if args.seed == 0:
-        print('args.seed=%i' % args.seed)
-        save_path = args.save_path   
-    else:
-        print('args.seed=%i' % args.seed)
-        save_path = f'{args.save_path}/{args.seed}'
+    # if args.seed == 0:
+    #     print('args.seed=%i' % args.seed)
+    #     save_path = args.save_path   
+    # else:
+    #     print('args.seed=%i' % args.seed)
+    save_path = f'{args.save_path}/seed-{args.seed}'
 
     cur=datetime.datetime.utcnow()
     date = f'{cur.year:04d}{cur.month:02d}{cur.day:02d}'
