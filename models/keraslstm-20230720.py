@@ -487,46 +487,24 @@ class PSDetector():
     def analysis(self, test_windows_x):
         # detector predict test_windows_x
         detector_probs = self.model.predict(test_windows_x)
-        print("detector_probs.shape",detector_probs.shape)
-        print("detector_probs:",detector_probs)
-        """ 
-        detector_probs.shape (4551, 1)
-        detector_probs: [[4.8123893e-15]
-        [8.9959319e-17]
-        [0.0000000e+00]
-        ...
-        [1.1422002e-32]
-        [0.0000000e+00]
-        [2.9146148e-09]]
-        """
         detector_probs = np.array(detector_probs).squeeze()
         # print('detector_probs.shape:', detector_probs.shape)
 
-        detector_tagged_mal_windows_idxs = []
-        detector_tagged_mal_windows_probs = []
-        detector_tagged_ben_windows_idxs = []
-        detector_tagged_ben_windows_probs = []
-                
+        detector_tagged_windows_idxs = []
+        detector_tagged_windows_probs = []
+        
         for idx, pred in enumerate(detector_probs):
             if pred>0.5:    # predicted label = infection
-                detector_tagged_mal_windows_idxs.append(idx)
-                detector_tagged_mal_windows_probs.append(pred)
-            elif pred<=0.5:
-                detector_tagged_ben_windows_idxs.append(idx)
-                detector_tagged_ben_windows_probs.append(pred)                
+                detector_tagged_windows_idxs.append(idx)
+                detector_tagged_windows_probs.append(pred)
         """ 
         detector_tagged_windows_idxs is the indx list of samples in test set predicted as infection by infection detector
         """       
 
-        detector_tagged_mal_windows_probs = np.array(detector_tagged_mal_windows_probs)            
-        detector_tagged_mal_windows_idxs = np.array(detector_tagged_mal_windows_idxs)   
-        print("detector_tagged_mal_windows_idxs.shape",detector_tagged_mal_windows_idxs.shape)
-        
-        detector_tagged_ben_windows_probs = np.array(detector_tagged_ben_windows_probs)            
-        detector_tagged_ben_windows_idxs = np.array(detector_tagged_ben_windows_idxs)   
-        print("detector_tagged_ben_windows_idxs.shape",detector_tagged_ben_windows_idxs.shape)
-                 
-        return detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs
+        detector_tagged_windows_probs = np.array(detector_tagged_windows_probs)            
+        detector_tagged_windows_idxs = np.array(detector_tagged_windows_idxs)   
+         
+        return detector_tagged_windows_probs, detector_tagged_windows_idxs
 
 class Seq2Seq():
     def __init__(self, name, args):
@@ -607,7 +585,7 @@ class Seq2Seq():
         in_, out_, truncated_idxs = [], [], []
 
         for i in range(len(x) - slen + 1):
-            in_.append(x[i:(i+slen)])
+            in_.append(x[i:i+slen])
             out_.append(y[i:(i+slen)])
             truncated_idxs.append(idxs_order[i:(i+slen)])
         return np.array(in_), np.array(out_), np.array(truncated_idxs)
@@ -664,7 +642,7 @@ class Seq2Seq():
         
 
         
-        print("testset_x.shape:",testset_x.shape)
+        # print("testset_x.shape:",testset_x.shape)
         # print("testset_y.shape:",testset_y.shape)
         # print("testset_y[:1]:",testset_y[:1])
         """ 
@@ -675,10 +653,10 @@ class Seq2Seq():
                 
         output = self.model.predict(testset_x)
         # print("output.shape:",output.shape)
-        # print("output:",output)
+        print("output[:1]:",output[:1])
         
         """ 
-        output.shape: (4224, 10, 1)
+        output.shape: (4215, 10, 1)
         """
          
        
@@ -767,11 +745,7 @@ class Seq2Seq():
     def test(self, events, labels):
         print("events.shape:",events.shape)
         print("labels.shape:",labels.shape)  
-        
-        """ 
-        events.shape: (4233, 4)
-        labels.shape: (4233,)
-        """
+              
         slen = self.args.sequence_length
 
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
@@ -798,11 +772,6 @@ class Seq2Seq():
 
         print("testset_x.shape:", testset_x.shape)
         print("testset_y.shape:", testset_y.shape)
-        
-        """ 
-        testset_x.shape: (4224, 10, 4)
-        testset_y.shape: (4224, 10, 1)
-        """
 
         # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(X_in, X_out[:, :, :1])
         test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(testset_x, testset_y)
@@ -821,8 +790,8 @@ class Seq2Seq():
 
         # print(f"prepare test set for analysis {self.modelname} ")
   
-        print("events.shape:", events.shape)
-        print("labels.shape:", labels.shape)
+        # print("events.shape:", events.shape)
+        # print("labels.shape:", labels.shape)
         """ 
         events.shape: (4551, 4)
         labels.shape: (4551,)
@@ -837,7 +806,7 @@ class Seq2Seq():
             #     event = self.probability_based_embedding(event, rv)            
             # # print(f"{idx}th event {event}: label {label}")
             
-            testset_x.append(event)         # windows_x
+            testset_x.append(event)
             testset_y.append([label])
             idx_order.append(idx)
                     
@@ -849,22 +818,11 @@ class Seq2Seq():
         testset_y.shape: (4542, 10, 1)
         """
         y_pred = self.model.predict(testset_x)
-        print("y_pred.shape:",y_pred.shape)
-        # print("y_pred[1]:",y_pred[:1])
-        # print("y_pred[2]:",y_pred[:1])
+        # print("y_pred.shape:",y_pred.shape)
+        # print("y_pred[:1]:",y_pred[:1])
         
         """ 
         y_pred.shape: (4542, 10, 1)
-        y_pred[1]: [[[0.00295924]
-        [0.00575834]
-        [0.00600289]
-        [0.00745905]
-        [0.00826413]
-        [0.00844826]
-        [0.00811213]
-        [0.0075889 ]
-        [0.00705934]
-        [0.00652591]]]
         """
 
 
@@ -873,76 +831,41 @@ class Seq2Seq():
         '''acumulates predictions'''
         idx = 0
         predictions = {}   
-        for pred in y_pred: # 遍历测试集logit 测试集序列是通过滑动event得到的 因此一个event会被预测多次，pred shape [10,1]
+        for pred in y_pred: # 遍历测试集logit
 
             '''iterates through remaining truncated seq len if surpassing the limit'''
-            if len(y_pred) - idx > slen: # 最后一个序列
-                lst = range(len(pred)) # 10=slen
+            if len(y_pred) - idx > slen:
+                lst = range(len(pred))
             else:
                 lst = range(len(y_pred)-idx)
 
             '''acumulates truncated predictions: e.g. {idx1: [1,1,0,0], idx2: [1,0,0,1], idx3: [0,0,1,1], ...]'''
-            for i in lst:       #y_i
+            for i in lst:
                 if idx + i not in predictions:
                     predictions[idx + i] = []
-                predictions[idx + i].append(pred[i][0])     #同一个event在不同sequence中的结果被放到一个predictions list中
+                predictions[idx + i].append(pred[i][0])
             idx += 1
-        
-        # print("predictions:",predictions)    
+            
         '''looks like it takes the average of predictions for each truncated sequence? not sure'''
         results = []
-        # for idx in range(len(testset_x) - slen + 1):
-        for idx in range(len(events) - slen + 1): #4551-10=1=4542=len(y_pred)
-            res = sum(predictions[idx])/len(predictions[idx])   # 在几个sequence中被预测了就取几个值的平均
+        for idx in range(len(testset_x) - slen + 1):
+            res = sum(predictions[idx])/len(predictions[idx])
             results.append(res)
-        
-        # print("len(results):",len(results))       # results长度应该跟suquence个数一致，表明的是前len(testset_x) - slen + 1个event的预测结果
-        # len(results): 4542
-        # print("results:",results)   #没有大于0.01的值
             
-        # ret_probs = []  # 表示analysis对该event的平均判断结果概率
-        # ret_idxs = []   # event编号
+        ret_probs = []
+        ret_idxs = []
         
-        # for idx in range(len(results)):
-        #     if results[idx] > 0.01:
-        #         prob = results[idx]
-        #         ret_probs.append(prob)
-        #         ret_idxs.append(idx)
-
-        # ret_probs = np.array(ret_probs)
-        # ret_idxs = np.array(ret_idxs)
-        # return ret_probs, ret_idxs
- 
-        
-        seq2seq_tagged_mal_event_probs = []
-        seq2seq_tagged_mal_event_idxs = [] 
-        seq2seq_tagged_ben_event_probs=[]
-        seq2seq_tagged_ben_event_idxs=[]
-        
-        print("self.args.seq2seq_threshold:",self.args.seq2seq_threshold)
         for idx in range(len(results)):
-            # if results[idx] > 0.5:
-            # if results[idx] > 0.1:
-            # if results[idx] > 0.05:
-            if results[idx] > self.args.seq2seq_threshold:
+            if results[idx] > 0.01:
+                prob = results[idx]
+                ret_probs.append(prob)
+                ret_idxs.append(idx)
 
-                # prob = results[idx]
-                seq2seq_tagged_mal_event_probs.append(results[idx])
-                seq2seq_tagged_mal_event_idxs.append(idx)
-            else: 
-                seq2seq_tagged_ben_event_probs.append(results[idx])
-                seq2seq_tagged_ben_event_idxs.append(idx)
+
+        ret_probs = np.array(ret_probs)
+        ret_idxs = np.array(ret_idxs)
                 
-        seq2seq_tagged_mal_event_probs = np.array(seq2seq_tagged_mal_event_probs)
-        seq2seq_tagged_mal_event_idxs = np.array(seq2seq_tagged_mal_event_idxs)
-        seq2seq_tagged_ben_event_probs = np.array(seq2seq_tagged_ben_event_probs)
-        seq2seq_tagged_ben_event_idxs = np.array(seq2seq_tagged_ben_event_idxs)
-        
-                        
-        print("seq2seq_tagged_mal_event_idxs.shape:",seq2seq_tagged_mal_event_idxs.shape)   
-        print("seq2seq_tagged_ben_event_idxs.shape:",seq2seq_tagged_ben_event_idxs.shape)   
-             
-        return seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs
+        return ret_probs, ret_idxs
 
     def def_model(self, input_length, output_length, input_dim=4, output_dim=1, hidden_units=128):
         # print('define seq2seq model architecture')    
@@ -1135,7 +1058,6 @@ class Seq2Seq():
         # 切换为训练模式
         self.model.trainable = True
         print("trainable success")
-        # tf.compat.v1.experimental.output_all_intermediates(True)
 
         # tf.keras.backend.set_learning_phase(1)  # 或者使用 tf.constant(1)
         # history = self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.seq2seq_batchsize, epochs=self.args.seq2seq_epochs, verbose=2, callbacks=callbacks, validation_split=0.2,training=True)

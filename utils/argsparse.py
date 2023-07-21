@@ -55,6 +55,7 @@ def get_args(jupyter_args = None):
     parser.add_argument('--stdtrain_seq2seq', action='store_true', help='default is False')
     
     parser.add_argument('--strategy', type=str, default= 'strategy1', help='retraining strategy')
+    parser.add_argument('--seq2seq_threshold', type=float, default=0.01, help="seq2seq threshold")              
     
     
         
