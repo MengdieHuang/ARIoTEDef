@@ -15,7 +15,7 @@ def set_exp_result_dir(args):
     cur=datetime.datetime.utcnow()
     date = f'{cur.year:04d}{cur.month:02d}{cur.day:02d}'
     print("date:",date)
-    exp_result_dir=f'{save_path}/{date}/{args.strategy}'    
+    exp_result_dir=f'{save_path}/{date}/{args.strategy}/{args.seq2seq_threshold}'    
 
     # add run id for exp_result_dir
     cur_run_id = GetRunID(exp_result_dir)

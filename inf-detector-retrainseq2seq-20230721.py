@@ -359,7 +359,8 @@ for detector in [infection_detector]:
         print(f"Vanillia {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")    
 
         adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
-        adv_test_FNrate_list.append(FNrate*100)
+        # adv_test_FNrate_list.append(FNrate*100)
+        adv_test_FNrate_list.append(adv_FNrate*100)
         
         adv_test_acc_list.append(adv_test_acc*100)
         adv_test_los_list.append(adv_test_los)
@@ -460,23 +461,98 @@ for detector in [infection_detector]:
 
             #----------detector predict test_windows_x----------
             print("test_windows_x.shape:",test_windows_x.shape)
-            detector_tagged_windows_probs, detector_tagged_windows_idxs = detector.analysis(test_windows_x)
-            print('detector_tagged_windows_probs.shape:', detector_tagged_windows_probs.shape)
-            print('detector_tagged_windows_idxs.shape:', detector_tagged_windows_idxs.shape)
+            # detector_tagged_windows_probs, detector_tagged_windows_idxs = detector.analysis(test_windows_x)
+            # print('detector_tagged_windows_probs.shape:', detector_tagged_windows_probs.shape)
+            # print('detector_tagged_windows_idxs.shape:', detector_tagged_windows_idxs.shape)
             """ 
             detector_tagged_windows_probs.shape: (154,)
             detector_tagged_windows_idxs.shape: (154,)
             """
             
+            detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs = detector.analysis(test_windows_x)
+            
+            # #----------update seq2seq-------------------------
+            
+            if args.retrain_seq2seq is True: 
+                if r>=1: #非初次retrain
+                    # create trainset
+                    cle_train_windows_x = seq2seq.dataset['train'][0]
+                    cle_train_windows_y = seq2seq.dataset['train'][1]
+                    
+                    # print("cle_train_windows_x.shape:",cle_train_windows_x.shape)
+                    # print("cle_train_windows_y.shape:",cle_train_windows_y.shape)
+                    cle_train_windows_x = cle_train_windows_x.reshape((cle_train_windows_x.shape[0], args.timesteps, int(math.ceil(cle_train_windows_x.shape[1] / args.timesteps))))
+                    print("cle_train_windows_x.shape:",cle_train_windows_x.shape)
+                    
+                    """
+                    test_windows_x.shape: (4551, 1, 41)
+                    """
+                    
+
+                    seq2seq_train_events = get_events_from_windows(reconnaissance_detector, infection_detector, attack_detector, cle_train_windows_x)
+                    print("seq2seq_train_events.shape:",seq2seq_train_events.shape)
+                    """ 
+                    seq2seq_train_events.shape: (19818, 4)
+                    """    
+                    seq2seq.def_model(input_length=args.sequence_length, output_length =args.sequence_length)
+                    
+                    retrain_exp_result_dir = os.path.join(curround_exp_result_dir,f'retrain-seq2seq')
+                    os.makedirs(retrain_exp_result_dir, exist_ok=True)
+                    
+                    print(f">>>>>>>> Retrain {seq2seq.modelname} >>>>>>>>")      
+                    seq2seq.retrain(events=seq2seq_train_events, labels=cle_train_windows_y, exp_result_dir=retrain_exp_result_dir)
+                        
+                
+                    print(f">>>>>>>> Evaluate {seq2seq.modelname} on clean test data")
+                    
+                    # create testset
+                    cle_test_windows_x = seq2seq.dataset['test'][0]
+                    cle_test_windows_y = seq2seq.dataset['test'][1]
+                    # print("cle_test_windows_x.shape:",cle_test_windows_x.shape)
+                    # print("cle_test_windows_y.shape:",cle_test_windows_y.shape)
+                    cle_test_windows_x = cle_test_windows_x.reshape((cle_test_windows_x.shape[0], args.timesteps, int(math.ceil(cle_test_windows_x.shape[1] / args.timesteps))))
+                    print("cle_test_windows_x.shape:",cle_test_windows_x.shape)
+                    
+                    """ 
+                    cle_test_windows_x.shape: (4224, 41)
+                    cle_test_windows_y.shape: (4224,)
+                    cle_test_windows_x.shape: (4224, 1, 41)
+                    """
+                    
+                    cle_test_events_x = get_events_from_windows(reconnaissance_detector, infection_detector, attack_detector, cle_test_windows_x)
+                    print("cle_test_events_x.shape:",cle_test_events_x.shape)
+                    """ 
+                    cle_test_events_x.shape: (4224, 4)
+                    """        
+                    test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = seq2seq.test(events=cle_test_events_x, labels=cle_test_windows_y)
+                    
+                    metrics_dic = { 
+                                'model': seq2seq.modelname,
+                                'clean test Accuracy': f'{test_acc*100:.2f}%',
+                                'clean test Loss': test_los,
+                                'clean test TP': test_TP,
+                                'clean test FP': test_FP,
+                                'clean test TN': test_TN,
+                                'clean test FN': test_FN,
+                                'clean test Recall': f'{test_recall*100:.2f}%',
+                                'clean test Precision': f'{test_precision*100:.2f}%',
+                                'clean test F1': f'{test_F1*100:.2f}%',
+                                }
+                    
+                    print(f"{seq2seq.modelname} metrics_dic:\n {metrics_dic}")                   
+            
+            
             #----------seq2seq predict test_events_x----------
             print("test_events_x.shape:",test_events_x.shape)            
-            seq2seq_tagged_events_probs, seq2seq_tagged_events_idxs = seq2seq.analysis(test_events_x, test_windows_y) # seq2seq 有更新吗 No
-            print('seq2seq_tagged_events_probs.shape:', seq2seq_tagged_events_probs.shape)
-            print('seq2seq_tagged_events_idxs.shape:', seq2seq_tagged_events_idxs.shape)
+            # seq2seq_tagged_events_probs, seq2seq_tagged_events_idxs = seq2seq.analysis(test_events_x, test_windows_y) # seq2seq 有更新吗 No
+            # print('seq2seq_tagged_events_probs.shape:', seq2seq_tagged_events_probs.shape)
+            # print('seq2seq_tagged_events_idxs.shape:', seq2seq_tagged_events_idxs.shape)
             """ 
             seq2seq_tagged_events_probs.shape: (331,)
             seq2seq_tagged_events_idxs.shape: (331,) 
             """            
+            
+            seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs = seq2seq.analysis(test_events_x, test_windows_y) # seq2seq 有更新吗 No
             
             
             #---------------------------------------------
@@ -488,22 +564,35 @@ for detector in [infection_detector]:
             set_C_neg_idx = []
 
             # way 1
-            for idx in seq2seq_tagged_events_idxs:                
+            for idx in seq2seq_tagged_mal_event_idxs:                
                 set_B_pos_idx.append(idx)                       #   B
                 
-            for idx in detector_tagged_windows_idxs:            #   A
-                if idx not in seq2seq_tagged_events_idxs:        
+            for idx in detector_tagged_mal_windows_idxs:            #   A
+                if idx not in seq2seq_tagged_mal_event_idxs:        
                     set_C_neg_idx.append(idx)                   #   C       
             
             # # way 2
-            # for idx in detector_tagged_windows_idxs:            #   A
-            #     if idx in seq2seq_tagged_events_idxs:           #   B
-            #         set_B_pos_idx.append(idx)
+            # for idx in detector_tagged_mal_windows_idxs:            #   A
+            #     if idx in seq2seq_tagged_mal_event_idxs:           #   B
+            #         set_B_pos_idx.append(idx)                   # double malicious
             #     else:                                           
-            #         set_C_neg_idx.append(idx)                   #   C
+            #         set_C_neg_idx.append(idx)                   # dif benign
                                     
+            # # way 3            
+            # for idx in seq2seq_tagged_mal_event_probs:                
+            #     # if idx in detector_tagged_mal_windows_idxs:
+            #     #     set_B_pos_idx.append(idx)                       #   double malicious
+            #     if idx in detector_tagged_ben_windows_idxs:
+            #         set_B_pos_idx.append(idx)                       #   dif malicious
+                                
+
+            # for idx in seq2seq_tagged_ben_event_idxs:               
+            #     # if idx in detector_tagged_ben_windows_idxs:        
+            #     #     set_C_neg_idx.append(idx)                       #   double benign  
+            #     if idx in detector_tagged_mal_windows_idxs:
+            #         set_C_neg_idx.append(idx)                       #   dif benign
             
-            
+                        
             print(f">>>>>>>> Prepare {r+1} round Retraining clean dataset >>>>>>>>")    
 
             # extract relabeled test sampels in clean infection test
@@ -647,7 +736,6 @@ for detector in [infection_detector]:
             print("retrainset_x.shape:",retrainset_x.shape)
             print("retrainset_y.shape:",retrainset_y.shape)            
 
-
             #---------------------------------------------
             #
             # retrain 
@@ -735,7 +823,8 @@ for detector in [infection_detector]:
             print(f"{r+1}th-round retrained {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")    
 
             adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
-            adv_test_FNrate_list.append(FNrate*100)
+            # adv_test_FNrate_list.append(FNrate*100)
+            adv_test_FNrate_list.append(adv_FNrate*100)
         
             adv_test_acc_list.append(adv_test_acc*100)
             adv_test_los_list.append(adv_test_los)
@@ -767,7 +856,7 @@ for detector in [infection_detector]:
         f1_png_name = f'F1 of retrained {detector.modelname} on clean testset'
         fnrate_fprate_png_name = f'FP rate and FN rate of retrained {detector.modelname} on clean testset'
         
-        # plt.style.use('seaborn')
+        plt.style.use('seaborn')
 
         plt.plot(list(range(len(test_los_list))), test_los_list, label='Test Loss', marker='o')
         plt.xlabel('Round')
