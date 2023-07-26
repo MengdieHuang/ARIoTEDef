@@ -179,10 +179,18 @@ class PSDetector():
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
         time_png_name = f'Cost time of standard trained {self.modelname}'
          
-        plt.style.use('seaborn')           
-        plt.plot(list(range(len(epo_train_loss))), epo_train_loss, label='Train Loss', marker='o')
+        # plt.style.use('seaborn')           
+        plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
         # plt.plot(epo_val_loss, label='Validation Loss', marker='s')
-        plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
+        plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_loss))))+1, max(list(range(len(epo_train_loss))))+1, int(len(epo_train_loss)/10)))
+        if len(epo_train_loss) <= 20:
+            plt.xticks(range(1, len(epo_train_loss)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_loss)+1, 2))
+        
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend(loc='best',frameon=True)
@@ -191,20 +199,38 @@ class PSDetector():
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(list(range(len(epo_train_acc))), epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')        
+        plt.plot(list(range(1, len(epo_train_acc)+1)), epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(list(range(1, len(epo_val_acc)+1)), epo_val_acc, label='Validation Accuracy', marker='s')     
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_acc))))+1, max(list(range(len(epo_train_acc))))+1, int(len(epo_train_acc)/10)))        
+        # plt.ylim(0, 100)
+        # plt.xticks(range(1, len(epo_train_acc)+1, 1))        
+        if len(epo_train_acc) <= 20:
+            plt.xticks(range(1, len(epo_train_acc)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_acc)+1, 2))   
+                    
         plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        # plt.ylim(0, 1)
+        plt.ylabel('Accuracy (%)')
         plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(list(range(len(epo_cost_time))), epo_cost_time, marker='o')
+        plt.plot(list(range(1, len(epo_cost_time)+1)), epo_cost_time, marker='o')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_cost_time))))+1, max(list(range(len(epo_cost_time))))+1, int(len(epo_cost_time)/10)))          
+        # plt.xticks(range(1, len(epo_cost_time)+1, 1))          
+        if len(epo_cost_time) <= 20:
+            plt.xticks(range(1, len(epo_cost_time)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_cost_time)+1, 2))   
+            
         plt.xlabel('Epoch')
-        plt.ylabel('Cost Time')
+        plt.ylabel('Cost Time (seconds)')
         # plt.legend(loc='best',frameon=True)
         plt.title(f'{time_png_name}')        
         # plt.show()
@@ -443,10 +469,19 @@ class PSDetector():
         accuracy_png_name = f'Accuracy of retrained {self.modelname}'        
         time_png_name = f'Cost time of retrained {self.modelname}'
              
-        plt.style.use('seaborn')
+        # plt.style.use('seaborn')
            
-        plt.plot(epo_train_loss, label='Train Loss', marker='o')
-        plt.plot(epo_val_loss, label='Validation Loss', marker='s')
+        plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_val_loss))))+1, max(list(range(len(epo_val_loss))))+1, int(len(epo_val_loss)/10)))           
+        # plt.xticks(range(1, len(epo_val_loss)+1, 1))           
+        if len(epo_val_loss) <= 20:
+            plt.xticks(range(1, len(epo_val_loss)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_val_loss)+1, 2))   
+            
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend(loc='best',frameon=True)
@@ -455,20 +490,38 @@ class PSDetector():
         plt.savefig(f'{curround_exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(epo_val_acc, label='Validation Accuracy', marker='s')
+        plt.plot(list(range(1, len(epo_train_acc)+1)), epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(list(range(1, len(epo_val_acc)+1)), epo_val_acc, label='Validation Accuracy', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_acc))))+1, max(list(range(len(epo_train_acc))))+1, int(len(epo_train_acc)/10)))           
+        # plt.ylim(0, 100)
+        # plt.xticks(range(+1, len(epo_train_acc)+1, 1))           
+        if len(epo_train_acc) <= 20:
+            plt.xticks(range(1, len(epo_train_acc)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_acc)+1, 2))   
+                    
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy (%)')
-        # plt.ylim(0, 1)
         plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         # plt.show()
         plt.savefig(f'{curround_exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(epo_cost_time, marker='o')
+        plt.plot(list(range(1, len(epo_cost_time)+1)), epo_cost_time, marker='o')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_cost_time))))+1, max(list(range(len(epo_cost_time))))+1, int(len(epo_cost_time)/10)))            
+        # plt.xticks(range(+1, len(epo_cost_time)+1, 1))            
+        if len(epo_cost_time) <= 20:
+            plt.xticks(range(1, len(epo_cost_time)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_cost_time)+1, 2))   
+                    
         plt.xlabel('Epoch')
-        plt.ylabel('Cost Time')
+        plt.ylabel('Cost Time (seconds)')
         plt.legend(loc='best',frameon=True)
         plt.title(f'{time_png_name}')        
         # plt.show()
@@ -1061,8 +1114,17 @@ class Seq2Seq():
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
                    
-        plt.plot(list(range(len(epo_train_loss))), epo_train_loss, label='Train Loss', marker='o')
-        plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
+        plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_loss))))+1, max(list(range(len(epo_train_loss))))+1, int(len(epo_train_loss)/10)))           
+        # plt.xticks(range(1, len(epo_train_loss)+1, 1))           
+        if len(epo_train_loss) <= 20:
+            plt.xticks(range(1, len(epo_train_loss)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_loss)+1, 2))   
+                    
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend(loc='best',frameon=True)
@@ -1071,11 +1133,20 @@ class Seq2Seq():
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(list(range(len(epo_train_acc))), epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')
+        plt.plot(list(range(1, len(epo_train_acc)+1)), epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(list(range(1, len(epo_val_acc)+1)), epo_val_acc, label='Validation Accuracy', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_acc))))+1, max(list(range(len(epo_train_acc))))+1, int(len(epo_train_acc)/10)))      
+        # plt.ylim(0, 100)
+        # plt.xticks(range(1, len(epo_train_acc)+1, 1))      
+        if len(epo_train_acc) <= 20:
+            plt.xticks(range(1, len(epo_train_acc)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_acc)+1, 2))   
+                           
         plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        # plt.ylim(0, 1)
+        plt.ylabel('Accuracy (%)')
         plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         plt.show()
@@ -1158,8 +1229,17 @@ class Seq2Seq():
         loss_png_name = f'Loss of retrained {self.modelname}'
         accuracy_png_name = f'Accuracy of retrained {self.modelname}'        
                    
-        plt.plot(list(range(len(epo_train_loss))), epo_train_loss, label='Train Loss', marker='o')
-        plt.plot(list(range(len(epo_val_loss))), epo_val_loss, label='Validation Loss', marker='s')
+        plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
+        plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_loss))))+1, max(list(range(len(epo_train_loss))))+1, int(len(epo_train_loss)/10)))             
+        # plt.xticks(range(1, len(epo_train_loss)+1, 1))           
+        if len(epo_train_loss) <= 20:
+            plt.xticks(range(1, len(epo_train_loss)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_loss)+1, 2))   
+            
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.legend(loc='best',frameon=True)
@@ -1168,11 +1248,20 @@ class Seq2Seq():
         plt.savefig(f'{exp_result_dir}/{loss_png_name}.png')
         plt.close()
                 
-        plt.plot(list(range(len(epo_train_acc))), epo_train_acc, label='Train Accuracy', marker='o')
-        plt.plot(list(range(len(epo_val_acc))), epo_val_acc, label='Validation Accuracy', marker='s')
+        plt.plot(list(range(1, len(epo_train_acc)+1)), epo_train_acc, label='Train Accuracy', marker='o')
+        plt.plot(list(range(1, len(epo_val_acc)+1)), epo_val_acc, label='Validation Accuracy', marker='s')
+        # plt.xlim(left=0)
+        # plt.ylim(bottom=0)            
+        # plt.xticks(range(min(list(range(len(epo_train_acc))))+1, max(list(range(len(epo_train_acc))))+1, int(len(epo_train_acc)/10)))       
+        # plt.ylim(0, 100)
+        # plt.xticks(range(1, len(epo_train_acc)+1, 1))       
+        if len(epo_train_acc) <= 20:
+            plt.xticks(range(1, len(epo_train_acc)+1, 1))
+        else:
+            plt.xticks(range(1, len(epo_train_acc)+1, 2))  
+                               
         plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        # plt.ylim(0, 1)
+        plt.ylabel('Accuracy (%)')
         plt.legend(loc='best',frameon=True)
         plt.title(f'{accuracy_png_name}')        
         plt.show()

@@ -48,7 +48,8 @@ def init_psdetector(multistep_dataset, args):
         model_path = args.inf_model_path
         infection_detector.load_model(model_path)
         
-    attack_detector = PSDetector(name="attack-detector", args=args)
+    # attack_detector = PSDetector(name="attack-detector", args=args)
+    attack_detector = PSDetector(name="action-detector", args=args)
     attack_detector.add_dataset(dataset=multistep_dataset['attack']) 
     print("attack_detector.dataset['train'][0].shape:",attack_detector.dataset['train'][0].shape)
     print("attack_detector.dataset['train'][1].shape:",attack_detector.dataset['train'][1].shape)
