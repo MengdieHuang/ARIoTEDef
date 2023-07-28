@@ -27,11 +27,6 @@ import pandas as pd
 # -----------parse parameters-----------
 print("\n")
 args = get_args()
-# seq2seq_config = {"sequence_length": args.sequence_length, 
-#                   "permute_truncated": args.permute_truncated,
-#                   "use_prob_embedding": args.use_prob_embedding,
-#                   "rv": args.rv
-#                   }   
 print("args:",args)
 
 # -----------set save path-----------
@@ -260,7 +255,8 @@ for seq2seq in [infection_seq2seq]:
                     }
         
         print(f"{seq2seq.modelname} metrics_dic:\n {metrics_dic}")         
-                      
+
+# raise Exception("no retrain infection detector")                      
 # ----------------retrain vanilla per-step detectors----------------------
 print_header("Retrain Vanilla Infection Detector")
 
@@ -959,16 +955,18 @@ for detector in [infection_detector]:
         plt.savefig(f'{retrain_cle_exp_result_dir}/{f1_png_name}.png')
         plt.close()                                 
 
+
+
         #---------------evaluate on adv testset--------------------------------
         retrain_adv_exp_result_dir = os.path.join(exp_result_dir,f'retrain-evaluate-adv')
         os.makedirs(retrain_adv_exp_result_dir, exist_ok=True)
 
-        adv_loss_png_name = f'Test loss of retrained {detector.modelname} on PGD examples'
-        adv_accuracy_png_name = f'Accuracy of retrained {detector.modelname} on PGD examples'
-        adv_fn_png_name = f'FN of retrained {detector.modelname} on PGD examples'
-        adv_recall_png_name = f'Recall of retrained {detector.modelname} on PGD examples'
-        adv_f1_png_name = f'F1 of retrained {detector.modelname} on PGD examples'
-        adv_fnrate_png_name = f'FN rate of retrained {detector.modelname} on PGD examples'
+        adv_loss_png_name = f'Test loss of retrained {detector.modelname} on {args.attack} examples'
+        adv_accuracy_png_name = f'Accuracy of retrained {detector.modelname} on {args.attack} examples'
+        adv_fn_png_name = f'FN of retrained {detector.modelname} on {args.attack} examples'
+        adv_recall_png_name = f'Recall of retrained {detector.modelname} on {args.attack} examples'
+        adv_f1_png_name = f'F1 of retrained {detector.modelname} on {args.attack} examples'
+        adv_fnrate_png_name = f'FN rate of retrained {detector.modelname} on {args.attack} examples'
         
         # plt.style.use('seaborn')
 

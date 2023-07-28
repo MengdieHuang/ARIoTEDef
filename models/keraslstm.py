@@ -13,7 +13,8 @@ import math
 import numpy as np
 import time
 from keras.callbacks import Callback
-from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score, f1_score
+from sklearn.metrics import confusion_matrix
+# , accuracy_score, recall_score, precision_score, f1_score
 
 import matplotlib
 matplotlib.use('Agg')
@@ -61,6 +62,40 @@ def calculate_tp_tn_fp_fn(y_true, y_pred):
             fn += 1
 
     return tp, tn, fp, fn
+
+def accuracy_score(tp,tn,fp,fn):
+    if (tp+tn+fp+fn)==0:
+        print("tp+tn+fp+fn=0")
+        accuracy=0
+    else:
+        accuracy=(tp+tn)/(tp+tn+fp+fn)
+    return accuracy
+
+def recall_score(tp,fn):
+    if (tp+fn)==0:
+        print("tp+fn=0")
+        recall=0
+    else:
+        recall=tp/(tp+fn)
+    return recall
+    
+def precision_score(tp,fp):
+    if (tp+fp)==0:
+        print("tp+fp=0")
+        precision=0
+    else:    
+        precision=tp/(tp+fp)
+        
+    return precision
+
+def f1_score(precision,recall):
+    if (precision + recall)==0:
+        print("precision + recall=0")
+        f1=0        
+    else:
+        f1 = 2 * (precision * recall) / (precision + recall)
+    return f1
+    
 
         
 def seq2seq_model(input_shape, output_shape, hidden_units):
@@ -288,11 +323,15 @@ class PSDetector():
         # test_TN, test_FP, test_FN, test_TP = calculate_tp_tn_fp_fn(y_true=testset_y, y_pred=output)
         test_TP, test_TN, test_FP, test_FN = calculate_tp_tn_fp_fn(y_true=testset_y, y_pred=output)
         
-        test_acc = accuracy_score(testset_y, output)
-        test_recall = recall_score(testset_y, output, average='macro')
-        test_precision = precision_score(testset_y, output, average='macro')
-        test_F1 = f1_score(testset_y, output, average='macro')
-        
+        # test_acc = accuracy_score(testset_y, output)
+        # test_recall = recall_score(testset_y, output, average='macro')
+        # test_precision = precision_score(testset_y, output, average='macro')
+        # test_F1 = f1_score(testset_y, output, average='macro')
+        test_acc = accuracy_score(tp=test_TP, tn=test_TN, fp=test_FP, fn=test_FN)
+        test_recall = recall_score(tp=test_TP, fn=test_FN)
+        test_precision = precision_score(tp=test_TP, fp=test_FP)
+        test_F1 = f1_score(precision=test_precision, recall=test_recall)
+                
         # test_FPR = test_FP / (test_FP + test_TN)
         
         # return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1
@@ -442,7 +481,7 @@ class PSDetector():
         #     # attack = FeatureAdversariesNumpy(classifier=art_classifier, delta=self.args.eps)                      
         #     attack = FeatureAdversariesPyTorch(estimator=art_classifier, delta=self.args.eps, step_size=self.args.eps_step, max_iter=self.args.max_iter)                 
         #     # attack = FeatureAdversariesTensorFlowV2(estimator=art_classifier, delta=self.args.eps, step_size=self.args.eps_stepmax_iter=self.args.max_iter)  
-        elif self.args.attack == 'hopskip':
+        elif self.args.attack == 'hopskipjump':
             attack = HopSkipJump(classifier=art_classifier, max_iter=self.args.max_iter)         
  
                     
@@ -1043,13 +1082,18 @@ class Seq2Seq():
         test_TP, test_TN, test_FP, test_FN = calculate_tp_tn_fp_fn(y_true=y_test_binary_1d, y_pred=y_pred_binary_1d)
 
 
-        test_acc = accuracy_score(y_test_binary_1d, y_pred_binary_1d)
-        print(f"Test accuracy: {100*test_acc} %")
-        test_recall = recall_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
-        test_precision = precision_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
-        test_F1 = f1_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
-        # test_FPR = test_FP / (test_FP + test_TN)
+        # test_acc = accuracy_score(y_test_binary_1d, y_pred_binary_1d)
+        # print(f"Test accuracy: {100*test_acc} %")
+        # test_recall = recall_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
+        # test_precision = precision_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
+        # test_F1 = f1_score(y_test_binary_1d, y_pred_binary_1d, average='macro')
+        # # test_FPR = test_FP / (test_FP + test_TN)
 
+        test_acc = accuracy_score(tp=test_TP, tn=test_TN, fp=test_FP, fn=test_FN)
+        test_recall = recall_score(tp=test_TP, fn=test_FN)
+        test_precision = precision_score(tp=test_TP, fp=test_FP)
+        test_F1 = f1_score(precision=test_precision, recall=test_recall)
+        
         
         # test_los, test_acc_v2 = self.model.evaluate(x=testset_x, y=testset_y)
         test_los, _ = self.model.evaluate(x=testset_x, y=y_test_binary)
