@@ -27,11 +27,11 @@ import pandas as pd
 # -----------parse parameters-----------
 print("\n")
 args = get_args()
-seq2seq_config = {"sequence_length": args.sequence_length, 
-                  "permute_truncated": args.permute_truncated,
-                  "use_prob_embedding": args.use_prob_embedding,
-                  "rv": args.rv
-                  }   
+# seq2seq_config = {"sequence_length": args.sequence_length, 
+#                   "permute_truncated": args.permute_truncated,
+#                   "use_prob_embedding": args.use_prob_embedding,
+#                   "rv": args.rv
+#                   }   
 print("args:",args)
 
 # -----------set save path-----------
@@ -241,7 +241,9 @@ for seq2seq in [infection_seq2seq]:
         """ 
         cle_test_events_x.shape: (4224, 4)
         """        
-                
+        print("cle_test_events_x[:2]:",cle_test_events_x[:2])
+        
+        # event=[P_r, P_i, P_a, P_b]        
         test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = seq2seq.test(events=cle_test_events_x, labels=cle_test_windows_y)
         
         metrics_dic = { 

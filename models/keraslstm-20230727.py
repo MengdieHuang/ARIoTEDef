@@ -30,18 +30,6 @@ sys.stdout.flush()
 print("正在导入art库...", flush=True)
 from art.estimators.classification.keras import KerasClassifier
 from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
-from art.attacks.evasion.fast_gradient import FastGradientMethod
-from art.attacks.evasion.zoo import ZooAttack   # 本文不能用
-from art.attacks.evasion.boundary import BoundaryAttack
-from art.attacks.evasion.square_attack import SquareAttack # 本文不能用
-from art.attacks.evasion.feature_adversaries.feature_adversaries_numpy import FeatureAdversariesNumpy
-from art.attacks.evasion.feature_adversaries.feature_adversaries_pytorch import FeatureAdversariesPyTorch
-from art.attacks.evasion.feature_adversaries.feature_adversaries_tensorflow import FeatureAdversariesTensorFlowV2
-from art.attacks.evasion.hop_skip_jump import HopSkipJump
-
-
-
-
 print("art库导入完成!", flush=True) 
 
 def calculate_tp_tn_fp_fn(y_true, y_pred):
@@ -158,39 +146,21 @@ class PSDetector():
    
         trainset_x = self.dataset['train'][0]
         trainset_y = self.dataset['train'][1]
-        
-        print("trainset_x.shape:",trainset_x.shape)
-        print("trainset_y.shape:",trainset_y.shape)
-        
+  
         trainset_x, trainset_y = shuffle(trainset_x, trainset_y)
         
         trainset_x = trainset_x.reshape((trainset_x.shape[0], timesteps, int(math.ceil(trainset_x.shape[1] / timesteps))))
 
+        # print("trainset_x.shape:",trainset_x.shape)
         """
         trainset_x.shape: (19152, 1, 41)
         """
-
-        # compute mal beni num
-        # extract malicious set
-        condition = trainset_y.astype(bool)
-        malicious_trainset_y = np.extract(condition,trainset_y)
-        print("malicious_trainset_y.shape:",malicious_trainset_y.shape)
-        print("malicious_trainset_y:",malicious_trainset_y)
-    
-        benign_trainset_y = np.extract(1-condition,trainset_y)
-        print("benign_trainset_y.shape:",benign_trainset_y.shape)
-        print("benign_trainset_y:",benign_trainset_y)        
-                
+        
         # 配置模型的训练过程
         self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
         timer_callback = EpochTimer()
         callbacks = [early_stop, timer_callback]
-        
-        print("trainset_x.shape:",trainset_x.shape)
-        print("trainset_y.shape:",trainset_y.shape)
-
-
         history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
 
 
@@ -308,8 +278,8 @@ class PSDetector():
         # print(f"prepare test set for evaluating {self.modelname} ")
         # testset_x = self.dataset['test'][0]
         # testset_y = self.dataset['test'][1]    
-        print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
+        # print("testset_x.shape:",testset_x.shape)
+        # print("testset_y.shape:",testset_y.shape)
         
         testset_x = testset_x.reshape((testset_x.shape[0], timesteps, int(math.ceil(testset_x.shape[1] / timesteps))))
         # print("testset_x.shape:",testset_x.shape)
@@ -321,10 +291,7 @@ class PSDetector():
         """
     
         # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_FPR, test_F1 = self.evaluate(testset_x, testset_y)
-
-        print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
-                
+        
         test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.evaluate(testset_x, testset_y)
 
         
@@ -364,11 +331,7 @@ class PSDetector():
         malicious_cle_testset_y = np.extract(condition,cle_testset_y)
         print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
         print("malicious_cle_testset_y:",malicious_cle_testset_y)
-
-        benign_cle_testset_y = np.extract(1-condition,cle_testset_y)
-        print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
-        print("benign_cle_testset_y:",benign_cle_testset_y)                                   
-
+                                
         """ 
         condition.shape: (4233,)
         condition[:10]: [False False False False False False False False False False]
@@ -430,29 +393,17 @@ class PSDetector():
              
         art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
 
+        pgd_attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter)
+
         print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
-        
-        if self.args.attack == 'pgd':
-            attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter)
-        elif self.args.attack == 'fgsm':
-            attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps)
-        elif self.args.attack == 'boundary':
-            attack = BoundaryAttack(estimator=art_classifier, targeted=False, epsilon=self.args.eps, max_iter=self.args.max_iter)          
-        # elif self.args.attack == 'feaadv':
-        #     # attack = FeatureAdversariesNumpy(classifier=art_classifier, delta=self.args.eps)                      
-        #     attack = FeatureAdversariesPyTorch(estimator=art_classifier, delta=self.args.eps, step_size=self.args.eps_step, max_iter=self.args.max_iter)                 
-        #     # attack = FeatureAdversariesTensorFlowV2(estimator=art_classifier, delta=self.args.eps, step_size=self.args.eps_stepmax_iter=self.args.max_iter)  
-        elif self.args.attack == 'hopskip':
-            attack = HopSkipJump(classifier=art_classifier, max_iter=self.args.max_iter)         
- 
-                    
+
         """ 
         self.args.eps: 1.0
         self.args.eps_step: 0.5
         self.args.max_iter: 20
         eps=1.0,eps_step=0.5,max_iter=20
         """
-        adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+        adv_testset_x = pgd_attack.generate(x=malicious_cle_testset_x)
         adv_testset_y = malicious_cle_testset_y
         
         # print("adv_testset_x.shape:",adv_testset_x.shape)
@@ -590,7 +541,7 @@ class PSDetector():
         # detector predict test_windows_x
         detector_probs = self.model.predict(test_windows_x)
         print("detector_probs.shape",detector_probs.shape)
-        # print("detector_probs:",detector_probs)
+        print("detector_probs:",detector_probs)
         """ 
         detector_probs.shape (4551, 1)
         detector_probs: [[4.8123893e-15]
@@ -647,259 +598,63 @@ class Seq2Seq():
         print(f"{self.modelname} trainset_max:{self.trainset_max:.4f}")
         print(f"{self.modelname} testset_min:{self.testset_min:.4f}")
         print(f"{self.modelname} testset_max:{self.testset_max:.4f}")  
-
+    
     def probability_based_embedding(self, p, d):
-        # print("p;",p)
-        # print("d;",d)
-        # """ 
-        # p; [0.17531008 0.47399938 0.17502125 0.17566921]  # event=[P_r, P_i, P_a, P_b]  
-        # [0.2, 0.5, 0.2, 0.2]
-        # d; 1
-        # """
-        # # p = np.array(p)
-        # # print("p;",p)
-        
-        # # 保留小数点后1位
-        # p_rounded = np.round(p, d)
-        # print("p_rounded;",p_rounded)
+        ret = 0
+        pr = {}
 
-        # # # 归一化处理使其和为1
-        # # p_normalized = p_rounded / np.sum(p_rounded)
-        # # print("p_normalized;",p_normalized)
-        
-        embedding_event=np.round(p, d)
-        
-        return embedding_event
-            
-
-    # def probability_based_embedding(self, p, d):
-    #     print("p;",p)
-    #     print("d;",d)
-    #     """ 
-    #     p; [0.17531008 0.47399938 0.17502125 0.17566921]  # event=[P_r, P_i, P_a, P_b]  
-    #     [0.2, 0.5, 0.2, 0.2]
-    #     d; 1
-    #     """
-    #     ret = 0
-    #     pr = {}
-
-    #     tmp = zip(range(4), p)
-    #     order = [k for k, _ in sorted(tmp, key=lambda x: x[1], reverse=True)]
-          
-    #     print("order:",order) # order: [1, 3, 0, 2] value大到小的index
+        tmp = zip(range(4), p)
+        order = [k for k, _ in sorted(tmp, key=lambda x: x[1], reverse=True)]
                     
-    #     ru = 0
-    #     rd = 0
-        
-    #     for i in range(4):
-    #         r = round(p[i], d)      #对每一个概率四舍五入
-    #         print("r:",r)
-    #         c = math.ceil(p[i] * 10 ** d) / 10 ** d #   对每一个概率向上取整
-    #         print("c:",c)
-            
-    #         f = math.floor(p[i] * 10 ** d) / 10 ** d    #   对每一个概率向下取整
-    #         print("f:",f)
-            
-    #         """ 
-    #         r: 0.2
-    #         c: 0.2
-    #         f: 0.1
-    #         """
-    #         """ 
-    #         r: 0.5
-    #         c: 0.5
-    #         f: 0.4
-    #         """
-    #         print("r - c:",r - c)
-    #         print("r - f:",r - f)
-            
-    #         if (r - c) == 0:
-    #             ru += 1         #向上取整的个数加1
-    #         # elif (r - f) == 0:
-    #         else:
-    #             rd += 1         #向下取整的个数加1
-    #         print("ru:",ru)
-    #         print("rd:",rd)
-    #         """ 
-    #         r: 0.2
-    #         c: 0.2
-    #         f: 0.1
-    #         ru: 0
-    #         rd: 0
-    #         """    
-    #     print("ru:",ru)
-    #     print("rd:",rd)
-        
-    #     """ 
-    #     ru: 1
-    #     rd: 3
-    #     pr: {0: 0.2, 1: 0.5, 2: 0.2, 3: 0.2}
-    #     """
-    #     lst = []
+        ru = 0
+        rd = 0
+        for i in range(4):
+            r = round(p[i], d)
+            c = math.ceil(p[i] * 10 ** d) / 10 ** d
+            f = math.floor(p[i] * 10 ** d) / 10 ** d
+            if r - c == 0:
+                ru += 1
+            elif r - f == 0:
+                rd += 1
 
-    #     """ 
-    #     ru: 1
-    #     rd: 0
-    #     """
-        
-    #     # floor向下取整
-    #     if ru >= 2:
-    #         for i in range(4):
-    #             if i == order[-1]:
-    #                 lst.append(math.floor(p[i] * 10 ** d) / 10 ** d)
-    #             else:
-    #                 lst.append(round(p[i], d))
-    #         if sum(lst) > 0.999 and sum(lst) < 1.001:
-    #             for i in range(4):
-    #                 pr[i] = lst[i]
-    #         else:
-    #             for i in range(4):
-    #                 if i == order[-1] or i == order[-2]:
-    #                     pr[i] = math.floor(p[i] * 10 ** d) / 10 ** d
-    #                 else:
-    #                     pr[i] = round(p[i], d)
-        
-    #     # ceil向上取整                
-    #     elif rd >= 2:
-    #         for i in range(4):
-    #             if i == order[0]:
-    #                 lst.append(math.ceil(p[i] * 10 ** d) / 10 ** d)
-    #             else:
-    #                 lst.append(round(p[i], d))
-    #         if sum(lst) > 0.999 and sum(lst) < 1.001:
-    #             for i in range(4):
-    #                 pr[i] = lst[i]
-    #         else:
-    #             for i in range(4):
-    #                 if i == order[0] or i == order[1]:
-    #                     pr[i] = math.ceil(p[i] * 10 ** d) / 10 ** d
-    #                 else:
-    #                     pr[i] = round(p[i], d)
+        lst = []
+        if ru >= 2:
+            for i in range(4):
+                if i == order[-1]:
+                    lst.append(math.floor(p[i] * 10 ** d) / 10 ** d)
+                else:
+                    lst.append(round(p[i], d))
+            if sum(lst) > 0.999 and sum(lst) < 1.001:
+                for i in range(4):
+                    pr[i] = lst[i]
+            else:
+                for i in range(4):
+                    if i == order[-1] or i == order[-2]:
+                        pr[i] = math.floor(p[i] * 10 ** d) / 10 ** d
+                    else:
+                        pr[i] = round(p[i], d)
 
-    #     print("pr:",pr) # pr: {}
-        
-    #     for i in [2, 1, 0, 3]:   # event=[P_r, P_i, P_a, P_b]   pr[2]=P_a, pr[1]=P_i, pr[0]=P_r, pr[3]=P_b
-    #         print("i:",i)           # i=2
-    #         print("ret:",ret)       # ret =0      
-    #         ret *= 10 ** d
-    #         print("ret:",ret)       # ret = ret*10^1=0
-            
-    #         ret += round(pr[i] * (10 ** d), 0)  # ret= ret + round(pr[i] * (10 ** d), 0)
-    #         print("ret:",ret)
-        
-    #     return ret
-        
-    # def probability_based_embedding(self, p, d):
-    #     print("p;",p)
-    #     print("d;",d)
-    #     """ 
-    #     p; [0.17531008 0.47399938 0.17502125 0.17566921]
-    #     [0.2, 0.5, 0.2, 0.2]
-    #     d; 1
-    #     """
-    #     ret = 0
-    #     pr = {}
+        elif rd >= 2:
+            for i in range(4):
+                if i == order[0]:
+                    lst.append(math.ceil(p[i] * 10 ** d) / 10 ** d)
+                else:
+                    lst.append(round(p[i], d))
+            if sum(lst) > 0.999 and sum(lst) < 1.001:
+                for i in range(4):
+                    pr[i] = lst[i]
+            else:
+                for i in range(4):
+                    if i == order[0] or i == order[1]:
+                        pr[i] = math.ceil(p[i] * 10 ** d) / 10 ** d
+                    else:
+                        pr[i] = round(p[i], d)
 
-    #     tmp = zip(range(4), p)
-    #     order = [k for k, _ in sorted(tmp, key=lambda x: x[1], reverse=True)]
-          
-    #     print("order:",order) # order: [1, 3, 0, 2] value大到小的index
-                    
-    #     ru = 0
-    #     rd = 0
+        for i in [2, 1, 0, 3]:
+            ret *= 10 ** d
+            ret += round(pr[i] * (10 ** d), 0)
         
-    #     for i in range(4):
-    #         r = round(p[i], d)      #对每一个概率四舍五入
-    #         print("r:",r)
-    #         c = math.ceil(p[i] * 10 ** d) / 10 ** d #   对每一个概率向上取整
-    #         print("c:",c)
-            
-    #         f = math.floor(p[i] * 10 ** d) / 10 ** d    #   对每一个概率向下取整
-    #         print("f:",f)
-            
-    #         """ 
-    #         r: 0.2
-    #         c: 0.2
-    #         f: 0.1
-    #         """
-    #         """ 
-    #         r: 0.5
-    #         c: 0.5
-    #         f: 0.4
-    #         """
-    #         print("r - c:",r - c)
-    #         print("r - f:",r - f)
-            
-    #         if (r - c) == 0:
-    #             ru += 1         #向上取整的个数加1
-    #         elif (r - f) == 0:
-    #             rd += 1         #向下取整的个数加1
-    #         print("ru:",ru)
-    #         print("rd:",rd)
-    #         """ 
-    #         r: 0.2
-    #         c: 0.2
-    #         f: 0.1
-    #         ru: 0
-    #         rd: 0
-    #         """    
-    #     print("ru:",ru)
-    #     print("rd:",rd)
-        
-        
-    #     lst = []
-
-    #     """ 
-    #     ru: 1
-    #     rd: 0
-    #     """
-        
-    #     # floor向下取整
-    #     if ru >= 2:
-    #         for i in range(4):
-    #             if i == order[-1]:
-    #                 lst.append(math.floor(p[i] * 10 ** d) / 10 ** d)
-    #             else:
-    #                 lst.append(round(p[i], d))
-    #         if sum(lst) > 0.999 and sum(lst) < 1.001:
-    #             for i in range(4):
-    #                 pr[i] = lst[i]
-    #         else:
-    #             for i in range(4):
-    #                 if i == order[-1] or i == order[-2]:
-    #                     pr[i] = math.floor(p[i] * 10 ** d) / 10 ** d
-    #                 else:
-    #                     pr[i] = round(p[i], d)
-        
-    #     # ceil向上取整                
-    #     elif rd >= 2:
-    #         for i in range(4):
-    #             if i == order[0]:
-    #                 lst.append(math.ceil(p[i] * 10 ** d) / 10 ** d)
-    #             else:
-    #                 lst.append(round(p[i], d))
-    #         if sum(lst) > 0.999 and sum(lst) < 1.001:
-    #             for i in range(4):
-    #                 pr[i] = lst[i]
-    #         else:
-    #             for i in range(4):
-    #                 if i == order[0] or i == order[1]:
-    #                     pr[i] = math.ceil(p[i] * 10 ** d) / 10 ** d
-    #                 else:
-    #                     pr[i] = round(p[i], d)
-
-    #     print("pr:",pr) # pr: {}
-        
-    #     for i in [2, 1, 0, 3]:
-    #         print("i:",i)           # i=2
-    #         print("ret:",ret)       # ret =0      
-    #         ret *= 10 ** d
-    #         print("ret:",ret)       # ret = ret*10^1=0
-            
-    #         ret += round(pr[i] * (10 ** d), 0)  # ret= ret + round(pr[i] * (10 ** d), 0)
-    #         print("ret:",ret)
-        
-    #     return ret
+        return ret
 
     def truncate(self, x, y, idxs_order, slen=100):
         in_, out_, truncated_idxs = [], [], []
@@ -1083,25 +838,9 @@ class Seq2Seq():
         idx_order = []
         idx = 0        
 
-        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)
-        print("self.args.roundvalue_d:",self.args.roundvalue_d)        
+        
         for idx, (event, label) in enumerate(zip(events, labels)):
-            # print("idx:",idx)
             
-            # print("event:",event)
-            # print("event.type():",event.type()) #numpy.ndarray
-            # print("label:",label)
-            
-            """
-            idx: 0
-            event: [0.17531008 0.47399938 0.17502125 0.17566921] event=[P_r, P_i, P_a, P_b]  
-            label: 0.0
-            """
-            
-            if self.args.use_prob_embedding:
-                event = self.probability_based_embedding(event, self.args.roundvalue_d)   
-            
-            # raise Exception("maggie")                
             testset_x.append(event)
             testset_y.append([label])
             idx_order.append(idx)
@@ -1146,12 +885,11 @@ class Seq2Seq():
         idx_order = []
         idx = 0
         
-        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)
-        print("self.args.roundvalue_d:",self.args.roundvalue_d)        
         for idx, (event, label) in enumerate(zip(events, labels)):
-            if self.args.use_prob_embedding:
-                event = self.probability_based_embedding(event, self.args.roundvalue_d)            
-             
+            # if use_prob_embedding:
+            #     event = self.probability_based_embedding(event, rv)            
+            # # print(f"{idx}th event {event}: label {label}")
+            
             testset_x.append(event)         # windows_x
             testset_y.append([label])
             idx_order.append(idx)
@@ -1335,12 +1073,8 @@ class Seq2Seq():
         idx_order = []
         idx = 0
         
-        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)
-        print("self.args.roundvalue_d:",self.args.roundvalue_d)
         for idx, (event, label) in enumerate(zip(events, labels)):   
-            if self.args.use_prob_embedding:
-                event = self.probability_based_embedding(event, self.args.roundvalue_d)
-                
+            # print("idx:",idx)         
             trainset_x.append(event)
             trainset_y.append([label])
             idx_order.append(idx)
@@ -1443,13 +1177,9 @@ class Seq2Seq():
         trainset_x, trainset_y = [], []
         idx_order = []
         idx = 0
-
-        print("self.args.use_prob_embedding:",self.args.use_prob_embedding)
-        print("self.args.roundvalue_d:",self.args.roundvalue_d)        
+        
         for idx, (event, label) in enumerate(zip(events, labels)):   
-            if self.args.use_prob_embedding:
-                event = self.probability_based_embedding(event, self.args.roundvalue_d)   
-                
+            # print("idx:",idx)         
             trainset_x.append(event)
             trainset_y.append([label])
             idx_order.append(idx)

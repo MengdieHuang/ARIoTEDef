@@ -6,13 +6,11 @@ def get_args(jupyter_args = None):
 
     parser.add_argument('--permute_truncated', required=False, action='store_true', 
                         help="Bool for activating permutation invariance")
-    # parser.add_argument('--retrain_seq2seq', required=False, action='store_true', 
-                        # help="Bool for retraining seq2seq module from scratch at each relabel round ")
     parser.add_argument('--use_prob_embedding', required=False, action='store_true', 
                         help="Bool for using original probability based embedding proposed in the original paper")
     parser.add_argument('--sequence_length', required=False, type=int, default=10, 
                         help="Length of truncated subsequences used in the seq2seq training")
-    parser.add_argument('--rv', required=False, type=int, default=1, 
+    parser.add_argument('--roundvalue_d', required=False, type=int, default=1, 
                         help="'round value' hyperparameter used for probability embedding, if activated")
     parser.add_argument('--ps_epochs', required=False, type=int, default=50, 
                         help="number of training epochs for per-step detectors")
@@ -58,6 +56,8 @@ def get_args(jupyter_args = None):
     parser.add_argument('--seq2seq_threshold', type=float, default=0.01, help="seq2seq threshold")              
     
     parser.add_argument('--retrain_seq2seq', action='store_true', help='default is False')
+    
+    parser.add_argument('--attack',type=str, default='pgd',help='type of evasion attack')
     
     
     
