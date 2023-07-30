@@ -471,50 +471,35 @@ class PSDetector():
         art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
 
         print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
-
-
+        
         if self.args.attack == 'pgd':
-            if self.args.targeted:
-                attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=True)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))                
-            else:    
-                attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=False)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+            attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter)
+            adv_testset_x = attack.generate(x=malicious_cle_testset_x)
             
         elif self.args.attack == 'fgsm':
+            attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps)
+            adv_testset_x = attack.generate(x=malicious_cle_testset_x)
             
-            if self.args.targeted:
-                attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=True)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:
-                attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=False)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-                            
+            
         elif self.args.attack == 'boundary':
-            if self.args.targeted:
-                attack = BoundaryAttack(estimator=art_classifier, targeted=True, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:    
-                attack = BoundaryAttack(estimator=art_classifier, targeted=False, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-                              
+            y_target = np.zeros(len(malicious_cle_testset_x))                 
+            attack = BoundaryAttack(estimator=art_classifier, targeted=True, epsilon=self.args.eps, max_iter=self.args.max_iter)    
+            adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=y_target)
+                  
         elif self.args.attack == 'hopskipjump':
-            # y_target = np.zeros(len(malicious_cle_testset_x))          
+            # attack = HopSkipJump(classifier=art_classifier, norm="inf",max_iter=self.args.max_iter)
+            y_target = np.zeros(len(malicious_cle_testset_x))     
+            print("y_target.shape:",y_target.shape)         
+            print("y_target:",y_target)         
             """ 
             y_target.shape: (3077,)
             y_target: [0. 0. 0. ... 0. 0. 0.]
-            """     
-            if self.args.targeted: 
-                attack = HopSkipJump(classifier=art_classifier, targeted=True, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:
-                attack = HopSkipJump(classifier=art_classifier, targeted=False, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-            
-        print("self.args.attack:",self.args.attack)        
-        print("self.args.targeted:",self.args.targeted)            
-        print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
-            
+            """                     
+                                 
+            attack = HopSkipJump(classifier=art_classifier, targeted=True, norm="inf", max_iter=self.args.max_iter)         
+
+            adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=y_target)
+
  
         print("malicious_cle_testset_x.shape:", malicious_cle_testset_x.shape)
         # adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=0)
@@ -1442,7 +1427,6 @@ class Seq2Seq():
         epo_val_loss = history.history['val_loss']
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
-        epo_cost_time = timer_callback.epoch_times
 
         # 将准确率历史记录转换为百分比
         epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
@@ -1451,7 +1435,6 @@ class Seq2Seq():
         #--------save plt---------            
         loss_png_name = f'Loss of standard trained {self.modelname}'
         accuracy_png_name = f'Accuracy of standard trained {self.modelname}'        
-        time_png_name = f'Cost time of standard trained {self.modelname}'
                    
         plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
         plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
@@ -1483,7 +1466,7 @@ class Seq2Seq():
             plt.xticks(range(1, len(epo_train_acc)+1, 1))
         else:
             plt.xticks(range(1, len(epo_train_acc)+1, 2))   
-                                       
+                           
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy (%)')
         plt.legend(loc='best',frameon=True)
@@ -1492,24 +1475,6 @@ class Seq2Seq():
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
         plt.close()
 
-        plt.plot(list(range(1, len(epo_cost_time)+1)), epo_cost_time, marker='o')
-        # plt.xlim(left=0)
-        # plt.ylim(bottom=0)            
-        # plt.xticks(range(min(list(range(len(epo_cost_time))))+1, max(list(range(len(epo_cost_time))))+1, int(len(epo_cost_time)/10)))          
-        # plt.xticks(range(1, len(epo_cost_time)+1, 1))          
-        if len(epo_cost_time) <= 20:
-            plt.xticks(range(1, len(epo_cost_time)+1, 1))
-        else:
-            plt.xticks(range(1, len(epo_cost_time)+1, 2))   
-
-        plt.xlabel('Epoch')
-        plt.ylabel('Cost Time (seconds)')
-        # plt.legend(loc='best',frameon=True)
-        plt.title(f'{time_png_name}')        
-        # plt.show()
-        plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
-        plt.close()
-                    
     def save_model(self, save_path):
         self.model.save(save_path)
 
@@ -1581,7 +1546,6 @@ class Seq2Seq():
         epo_val_loss = history.history['val_loss']
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
-        epo_cost_time = timer_callback.epoch_times
 
         # 将准确率历史记录转换为百分比
         epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
@@ -1590,7 +1554,6 @@ class Seq2Seq():
         #--------save plt---------            
         loss_png_name = f'Loss of retrained {self.modelname}'
         accuracy_png_name = f'Accuracy of retrained {self.modelname}'        
-        time_png_name = f'Cost time of retrained {self.modelname}'
                    
         plt.plot(list(range(1, len(epo_train_loss)+1)), epo_train_loss, label='Train Loss', marker='o')
         plt.plot(list(range(1, len(epo_val_loss)+1)), epo_val_loss, label='Validation Loss', marker='s')
@@ -1629,22 +1592,4 @@ class Seq2Seq():
         plt.title(f'{accuracy_png_name}')        
         plt.show()
         plt.savefig(f'{exp_result_dir}/{accuracy_png_name}.png')
-        plt.close()        
-        
-        plt.plot(list(range(1, len(epo_cost_time)+1)), epo_cost_time, marker='o')
-        # plt.xlim(left=0)
-        # plt.ylim(bottom=0)            
-        # plt.xticks(range(min(list(range(len(epo_cost_time))))+1, max(list(range(len(epo_cost_time))))+1, int(len(epo_cost_time)/10)))          
-        # plt.xticks(range(1, len(epo_cost_time)+1, 1))          
-        if len(epo_cost_time) <= 20:
-            plt.xticks(range(1, len(epo_cost_time)+1, 1))
-        else:
-            plt.xticks(range(1, len(epo_cost_time)+1, 2))   
-
-        plt.xlabel('Epoch')
-        plt.ylabel('Cost Time (seconds)')
-        # plt.legend(loc='best',frameon=True)
-        plt.title(f'{time_png_name}')        
-        # plt.show()
-        plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
         plt.close()        

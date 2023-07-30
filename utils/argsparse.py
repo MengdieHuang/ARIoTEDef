@@ -58,6 +58,9 @@ def get_args(jupyter_args = None):
     parser.add_argument('--retrain_seq2seq', action='store_true', help='default is False')
     
     parser.add_argument('--attack',type=str, default='pgd',help='type of evasion attack')
+    parser.add_argument('--targeted', action='store_true', help='default is False, targeted attack')
+    
+    
     
     
     
