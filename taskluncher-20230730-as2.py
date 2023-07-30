@@ -264,7 +264,12 @@ print_header("Retrain Vanilla Infection Detector")
 for detector in [infection_detector]:
 
     for seq2seq in [infection_seq2seq]:
-        
+
+        #---------------------------------------------
+        #
+        # prepare for plt
+        #
+        #---------------------------------------------         
         test_acc_list = [] 
         test_los_list = []
         test_TP_list = []
@@ -289,19 +294,20 @@ for detector in [infection_detector]:
         adv_test_F1_list = []
         adv_test_FNrate_list=[]
         
+        detector_tagged_mal_event_num_list=[]
+        detector_tagged_ben_event_num_list=[]
+        seq2seq_tagged_mal_event_num_list=[]
+        seq2seq_tagged_ben_event_num_list=[]
         #---------------------------------------------
         #
         # evaluate vanillia infection detector
         #
         #---------------------------------------------    
-               
         print(f">>>>>>>> Evaluate vanillia {detector.modelname} on clean test data >>>>>>>>")
         test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
-        
-
-        
         FPrate = round((test_FP/(test_FP+test_TN)), 4)
         FNrate = round((test_FN/(test_FN+test_TP)), 4)
+        
         metrics_dic = { 
                     'model': detector.modelname,
                     'clean test Accuracy': f'{test_acc*100:.2f}%',
@@ -315,9 +321,7 @@ for detector in [infection_detector]:
                     'clean test F1': f'{test_F1*100:.2f}%',
                     'clean test FPrate':f'{FPrate*100:.2f}%',
                     'clean test FNrate':f'{FNrate*100:.2f}%',
-                    
                     }
-        
         print(f"vanillia {detector.modelname} metrics_dic:\n {metrics_dic}")          
         
         test_FPrate_list.append(FPrate*100)
@@ -335,20 +339,15 @@ for detector in [infection_detector]:
         
                 
         print(f">>>>>>>> Evaluate vanillia {detector.modelname} on adversarial test data >>>>>>>>")
-
         adv_exp_result_dir = os.path.join(exp_result_dir,f'advattack')
         os.makedirs(adv_exp_result_dir, exist_ok=True)
-            
         adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
-        
         print("adv_testset_x.shape:",adv_testset_x.shape)    
-        print("adv_testset_y.shape:",adv_testset_y.shape)    
-        
+        print("adv_testset_y.shape:",adv_testset_y.shape)   
+         
         adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
-        
-  
-
         adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+        
         adv_metrics_dic = { 
                     'model': detector.modelname,
                     'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
@@ -360,10 +359,8 @@ for detector in [infection_detector]:
                     'adv test Recall': f'{adv_test_recall*100:.2f}%',
                     'adv test Precision': f'{adv_test_precision*100:.2f}%',
                     'adv test F1': f'{adv_test_F1*100:.2f}%',
-                    'adv test FNrate': f'{adv_FNrate*100:.2f}%',
-                    
+                    'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
                     }
-        
         print(f"Vanillia {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")          
         
         adv_test_FNrate_list.append(adv_FNrate*100)
@@ -375,18 +372,14 @@ for detector in [infection_detector]:
         adv_test_precision_list.append(adv_test_precision*100)
         adv_test_F1_list.append(adv_test_F1*100)
 
-
-
         #---------------------------------------------
         #
         # multi rounds retraining
         #
         #---------------------------------------------                    
-                     
-                
         for r in range(args.relabel_rounds):
             
-            print(f">>>>>>>>>>>>>> {r+1} Round Retraining: >>>>>>>>>>>>>> ")    
+            # print(f">>>>>>>>>>>>>> {r+1} Round Retraining: >>>>>>>>>>>>>> ")    
             curround_exp_result_dir = os.path.join(exp_result_dir,f'round-{r+1}')
             os.makedirs(curround_exp_result_dir, exist_ok=True)
 
@@ -421,16 +414,29 @@ for detector in [infection_detector]:
             adv_testset_y.shape: (318,)
             """               
 
-            #----------create adv+clean windows testset----------
-            test_x = np.concatenate((adv_testset_x,cle_test_x))
-            test_y = np.concatenate((adv_testset_y,cle_test_y))            
-            # print("test_x.shape:",test_x.shape)
-            # print("test_y.shape:",test_y.shape)                 
-            """ 
-            test_x.shape: (4551, 41)
-            test_y.shape: (4551,)
-            """
-
+            if args.retrain_testset_mode == 'cle_adv':
+                #----------create adv+clean windows testset----------
+                test_x = np.concatenate((adv_testset_x,cle_test_x))
+                test_y = np.concatenate((adv_testset_y,cle_test_y))            
+                print("retrain_test_(cle_adv)_x.shape:",test_x.shape)
+                print("retrain_test_(cle_adv)_y.shape:",test_y.shape)                 
+                """ 
+                test_x.shape: (4551, 41)
+                test_y.shape: (4551,)
+                """
+            elif args.retrain_testset_mode == 'adv':
+                test_x = adv_testset_x
+                test_y = adv_testset_y   
+                print("retrain_test_(adv)_x.shape:",test_x.shape)
+                print("retrain_test_(adv)_y.shape:",test_y.shape)   
+                                
+            elif args.retrain_testset_mode == 'cle':
+                test_x = cle_test_x
+                test_y = cle_test_y 
+                print("retrain_test_(cle)_x.shape:",test_x.shape)
+                print("retrain_test_(cle)_y.shape:",test_y.shape)   
+                                          
+                                                  
             #----------create adv+clean events testset----------
             test_windows_x = copy.deepcopy(test_x)
             test_windows_y = copy.deepcopy(test_y)           
@@ -476,8 +482,10 @@ for detector in [infection_detector]:
             
             detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs = detector.analysis(test_windows_x)
             
-            # #----------update seq2seq-------------------------
+            detector_tagged_mal_event_num_list.append(detector_tagged_mal_windows_idxs.shape[0])
+            detector_tagged_ben_event_num_list.append(detector_tagged_ben_windows_idxs.shape[0])
             
+            # #----------update seq2seq-------------------------
             if args.retrain_seq2seq is True: 
                 if r>=1: #非初次retrain
                     # create trainset
@@ -559,6 +567,8 @@ for detector in [infection_detector]:
             
             seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs = seq2seq.analysis(test_events_x, test_windows_y) # seq2seq 有更新吗 No
             
+            seq2seq_tagged_mal_event_num_list.append(seq2seq_tagged_mal_event_idxs.shape[0])
+            seq2seq_tagged_ben_event_num_list.append(seq2seq_tagged_ben_event_idxs.shape[0])
             
             #---------------------------------------------
             #
@@ -757,14 +767,11 @@ for detector in [infection_detector]:
             # evaluate retrained infection detector
             #
             #---------------------------------------------         
-            
             print(f">>>>>>>> Evaluate {r+1} round retrained {detector.modelname} on clean test data")
             test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
-            
-
-
             FPrate = round((test_FP/(test_FP+test_TN)), 4)
             FNrate = round((test_FN/(test_FN+test_TP)), 4)
+            
             metrics_dic = { 
                         'model': detector.modelname,
                         'clean test Accuracy': f'{test_acc*100:.2f}%',
@@ -777,15 +784,12 @@ for detector in [infection_detector]:
                         'clean test Precision': f'{test_precision*100:.2f}%',
                         'clean test F1': f'{test_F1*100:.2f}%',
                         'clean test FPrate': f'{FPrate*100:.2f}%',
-                        'clean test FNrate': f'{FNrate*100:.2f}%',
-                        
+                        'clean test FNrate': f'{FNrate*100:.2f}%',    
                         }
-            
             print(f"{detector.modelname} metrics_dic:\n {metrics_dic}")              
             
             test_FPrate_list.append(FPrate*100)
             test_FNrate_list.append(FNrate*100)
-            
             test_acc_list.append(test_acc*100)
             test_los_list.append(test_los)
             test_TP_list.append(test_TP)
@@ -797,17 +801,10 @@ for detector in [infection_detector]:
             test_F1_list.append(test_F1*100)
             cost_time_list.append(rou_cost_time)
 
-
             print(f">>>>>>>> Evaluate {r+1} round retrained {detector.modelname} on adversarial test data")
-
-            # # generate adversarial mailicious testset
-            # print(f"Generate adversarial mailicious exapmples based white-box {detector.modelname}")
-
             adv_exp_result_dir = os.path.join(curround_exp_result_dir,f'advattack')
             os.makedirs(adv_exp_result_dir, exist_ok=True)
-                
             adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
-            
             # print("adv_testset_x.shape:",adv_testset_x.shape)    
             # print("adv_testset_y.shape:",adv_testset_y.shape)    
             # """ 
@@ -816,9 +813,6 @@ for detector in [infection_detector]:
             # """
 
             adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
-            
-
-
             adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
 
             adv_metrics_dic = { 
@@ -833,9 +827,7 @@ for detector in [infection_detector]:
                         'adv test Precision': f'{adv_test_precision*100:.2f}%',
                         'adv test F1': f'{adv_test_F1*100:.2f}%',
                         'adv test FNrate': f'{adv_FNrate*100:.2f}%',
-                        
                         }
-            
             print(f"{r+1}th-round retrained {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")    
             
             adv_test_FNrate_list.append(adv_FNrate*100)
@@ -846,9 +838,6 @@ for detector in [infection_detector]:
             adv_test_recall_list.append(adv_test_recall*100)
             adv_test_precision_list.append(adv_test_precision*100)
             adv_test_F1_list.append(adv_test_F1*100)
-        
-        
-        
         
         
         #---------------------------------------------
@@ -868,6 +857,7 @@ for detector in [infection_detector]:
         recall_png_name = f'Recall of retrained {detector.modelname} on clean testset'
         f1_png_name = f'F1 of retrained {detector.modelname} on clean testset'
         fnrate_fprate_png_name = f'FP rate and FN rate of retrained {detector.modelname} on clean testset'
+        num_tagged_png_name = f'Number of tagged malicious or benign samples'
         
         # plt.style.use('seaborn')
 
@@ -1043,7 +1033,29 @@ for detector in [infection_detector]:
         plt.savefig(f'{retrain_adv_exp_result_dir}/{adv_f1_png_name}.png')
         plt.close()                                 
  
+
+        #-------------------
+        plt.plot(list(range(len(seq2seq_tagged_mal_event_num_list))), seq2seq_tagged_mal_event_num_list, label=' tagged malicious by seq2seq', marker='o')
+        plt.plot(list(range(len(seq2seq_tagged_ben_event_num_list))), seq2seq_tagged_ben_event_num_list, label='tagged benign by seq2seq ', marker='s')
+        plt.plot(list(range(len(detector_tagged_mal_event_num_list))), detector_tagged_mal_event_num_list, label='tagged malicious by detector', marker='*')
+        plt.plot(list(range(len(detector_tagged_ben_event_num_list))), detector_tagged_ben_event_num_list, label='tagged benign by detector ', marker='^')
+                        
+        plt.xlabel('Round')
+        plt.ylabel('Number of Tagged Malicious/Benign Events')
+        plt.xticks(range(1, len(seq2seq_tagged_mal_event_num_list)+1, math.ceil(len(seq2seq_tagged_mal_event_num_list)/10))  )   
+
+        plt.legend(loc='best',frameon=True)
+        plt.title(f'{num_tagged_png_name}')        
+        plt.savefig(f'{retrain_cle_exp_result_dir}/{num_tagged_png_name}.png')
+        plt.close()
+                
+        # detector_tagged_mal_event_num_list=[]
+        # detector_tagged_ben_event_num_list=[]        
         
+        # seq2seq_tagged_mal_event_num_list=[]
+        # seq2seq_tagged_ben_event_num_list=[]        
+        
+                
         #---------------save xlsx data---------------
 
         cle_figure_xlsx_result_dir = os.path.join(retrain_cle_exp_result_dir,f'figure-xlsx')
