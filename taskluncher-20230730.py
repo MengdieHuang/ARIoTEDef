@@ -852,13 +852,14 @@ for detector in [infection_detector]:
 
         loss_png_name = f'Test loss of retrained {detector.modelname} on clean testset'
         accuracy_png_name = f'Accuracy of retrained {detector.modelname} on clean testset'
-        costtime_png_name = f'Cost Time of retrain {detector.modelname} on clean testset'
+        costtime_png_name = f'Cost Time of retrain {detector.modelname}'
         fn_fp_png_name = f'FP and FN of retrained {detector.modelname} on clean testset'
         recall_png_name = f'Recall of retrained {detector.modelname} on clean testset'
         f1_png_name = f'F1 of retrained {detector.modelname} on clean testset'
         fnrate_fprate_png_name = f'FP rate and FN rate of retrained {detector.modelname} on clean testset'
-        num_tagged_png_name = f'Number of tagged malicious or benign samples'
-        
+        num_tagged_mal_png_name = f'Number of tagged malicious amples'
+        num_tagged_ben_png_name = f'Number of tagged benign samples'
+        num_tagged_png_name = f'Number of tagged malicious or benign samples'        
         # plt.style.use('seaborn')
 
         plt.plot(list(range(len(test_los_list))), test_los_list, label='Test Loss', marker='o')
@@ -958,6 +959,7 @@ for detector in [infection_detector]:
         adv_recall_png_name = f'Recall of retrained {detector.modelname} on {args.attack} examples'
         adv_f1_png_name = f'F1 of retrained {detector.modelname} on {args.attack} examples'
         adv_fnrate_png_name = f'FN rate of retrained {detector.modelname} on {args.attack} examples'
+        adv_precision_png_name = f'Precision of retrained {detector.modelname} on {args.attack} examples'
         
         # plt.style.use('seaborn')
 
@@ -1021,6 +1023,18 @@ for detector in [infection_detector]:
         plt.savefig(f'{retrain_adv_exp_result_dir}/{adv_recall_png_name}.png')
         plt.close()        
 
+        plt.plot(list(range(len(adv_test_precision_list))), adv_test_precision_list, label='Test Precision', marker='o')
+        plt.xlabel('Round')
+        plt.ylabel('Precision (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_precision_list)))), max(list(range(len(adv_test_precision_list))))+1, math.ceil(len(adv_test_precision_list)/10))    )
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)                      
+        # plt.legend()
+        plt.title(f'{adv_precision_png_name}')        
+        plt.savefig(f'{retrain_adv_exp_result_dir}/{adv_precision_png_name}.png')
+        plt.close()      
+        
         plt.plot(list(range(len(adv_test_F1_list))), adv_test_F1_list, label='Test F1', marker='o')
         plt.xlabel('Round')
         plt.ylabel('F1 (%) on Adversarial Test Set')
@@ -1034,27 +1048,54 @@ for detector in [infection_detector]:
         plt.close()                                 
  
 
-        #-------------------
-        plt.plot(list(range(len(seq2seq_tagged_mal_event_num_list))), seq2seq_tagged_mal_event_num_list, label=' tagged malicious by seq2seq', marker='o')
-        plt.plot(list(range(len(seq2seq_tagged_ben_event_num_list))), seq2seq_tagged_ben_event_num_list, label='tagged benign by seq2seq ', marker='s')
-        plt.plot(list(range(len(detector_tagged_mal_event_num_list))), detector_tagged_mal_event_num_list, label='tagged malicious by detector', marker='*')
-        plt.plot(list(range(len(detector_tagged_ben_event_num_list))), detector_tagged_ben_event_num_list, label='tagged benign by detector ', marker='^')
+        #-------------------tagged num---------------------
+        plt.plot(list(range(1, len(seq2seq_tagged_mal_event_num_list)+1)), seq2seq_tagged_mal_event_num_list, label='tagged by seq2seq', marker='o')
+        plt.plot(list(range(1, len(detector_tagged_mal_event_num_list)+1)), detector_tagged_mal_event_num_list, label='tagged by detector', marker='*')
                         
         plt.xlabel('Round')
-        plt.ylabel('Number of Tagged Malicious/Benign Events')
+        plt.ylabel('Number of Tagged Malicious Events')
         plt.xticks(range(1, len(seq2seq_tagged_mal_event_num_list)+1, math.ceil(len(seq2seq_tagged_mal_event_num_list)/10))  )   
+
+        plt.legend(loc='best',frameon=True)
+        plt.title(f'{num_tagged_mal_png_name}')        
+        plt.savefig(f'{retrain_cle_exp_result_dir}/{num_tagged_mal_png_name}.png')
+        plt.close()
+                
+                
+                
+                
+        plt.plot(list(range(1, len(seq2seq_tagged_ben_event_num_list)+1)), seq2seq_tagged_ben_event_num_list, label='tagged by seq2seq ', marker='s')
+        plt.plot(list(range(1, len(detector_tagged_ben_event_num_list)+1)), detector_tagged_ben_event_num_list, label='tagged by detector ', marker='^')
+                        
+        plt.xlabel('Round')
+        plt.ylabel('Number of Tagged Benign Events')
+        plt.xticks(range(1, len(seq2seq_tagged_ben_event_num_list)+1, math.ceil(len(seq2seq_tagged_ben_event_num_list)/10))  )   
+
+        plt.legend(loc='best',frameon=True)
+        plt.title(f'{num_tagged_ben_png_name}')        
+        plt.savefig(f'{retrain_cle_exp_result_dir}/{num_tagged_ben_png_name}.png')
+        plt.close()  
+        
+        
+        
+        
+        plt.plot(list(range(1, len(seq2seq_tagged_mal_event_num_list)+1)), seq2seq_tagged_mal_event_num_list, label='tagged malicious by seq2seq', marker='o')
+        plt.plot(list(range(1, len(seq2seq_tagged_ben_event_num_list)+1)), seq2seq_tagged_ben_event_num_list, label='tagged malicious by seq2seq ', marker='s')        
+        plt.plot(list(range(1, len(detector_tagged_mal_event_num_list)+1)), detector_tagged_mal_event_num_list, label='tagged benign by detector', marker='*')        
+        plt.plot(list(range(1, len(detector_tagged_ben_event_num_list)+1)), detector_tagged_ben_event_num_list, label='tagged benign by detector ', marker='^')
+
+        plt.xlabel('Round')
+        plt.ylabel('Number of Tagged Malicious/Benign Events')
+        plt.xticks(range(1, len(seq2seq_tagged_ben_event_num_list)+1, math.ceil(len(seq2seq_tagged_ben_event_num_list)/10))  )   
 
         plt.legend(loc='best',frameon=True)
         plt.title(f'{num_tagged_png_name}')        
         plt.savefig(f'{retrain_cle_exp_result_dir}/{num_tagged_png_name}.png')
-        plt.close()
-                
-        # detector_tagged_mal_event_num_list=[]
-        # detector_tagged_ben_event_num_list=[]        
+        plt.close()  
         
-        # seq2seq_tagged_mal_event_num_list=[]
-        # seq2seq_tagged_ben_event_num_list=[]        
-        
+
+
+
                 
         #---------------save xlsx data---------------
 
@@ -1072,7 +1113,11 @@ for detector in [infection_detector]:
         pd.DataFrame(test_precision_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_precision_list.xlsx')
         pd.DataFrame(test_F1_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_F1_list.xlsx')
         pd.DataFrame(cost_time_list).to_excel(f'{cle_figure_xlsx_result_dir}/cost_time_list.xlsx')                
-
+        pd.DataFrame(seq2seq_tagged_mal_event_num_list).to_excel(f'{cle_figure_xlsx_result_dir}/seq2seq_tagged_mal_event_num_list.xlsx')
+        pd.DataFrame(seq2seq_tagged_ben_event_num_list).to_excel(f'{cle_figure_xlsx_result_dir}/seq2seq_tagged_ben_event_num_list.xlsx')      
+        
+        
+             
 
         adv_figure_xlsx_result_dir = os.path.join(retrain_adv_exp_result_dir,f'figure-xlsx')
         os.makedirs(adv_figure_xlsx_result_dir, exist_ok=True)          

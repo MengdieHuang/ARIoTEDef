@@ -267,6 +267,26 @@ for detector in [infection_detector]:
 
         #---------------------------------------------
         #
+        # split infection test set into N+1 parts
+        #
+        #---------------------------------------------   
+        
+        ori_cle_testset_x=detector.dataset['test'][0]
+        ori_cle_testset_y=detector.dataset['test'][1]
+        
+        print(f'Original clean test set lenght {len(ori_cle_testset_x)}') # 318
+        
+        sub_cle_testset_num = args.relabel_rounds + 1
+        sub_cle_testset_size = len(ori_cle_testset_x) // sub_cle_testset_num
+        print(f'Total attack {args.relabel_rounds} rounds, ARIoTEDef evolves {args.relabel_rounds} rounds, {sub_cle_testset_size} Samples are used for attack at each time!')
+        
+        # Total attack 20 rounds, ARIoTEDef evolves 20 rounds, 201 Samples are used for attack at each time!
+        
+        raise Exception("maggie stop")
+         
+
+        #---------------------------------------------
+        #
         # prepare for plt
         #
         #---------------------------------------------         
