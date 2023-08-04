@@ -370,13 +370,22 @@ class PSDetector():
         
         return test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1
              
-    def generate_advmail(self,timesteps):        
+    # def generate_advmail(self,timesteps):        
+    #     if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+    #         print("Cuda and GPU are available")
+
+    #     # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
+    #     cle_testset_x = self.dataset['test'][0]
+    #     cle_testset_y = self.dataset['test'][1]    
+        
+    def generate_advmail(self,timesteps,cle_testset_x,cle_testset_y):        
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
             print("Cuda and GPU are available")
 
         # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
-        cle_testset_x = self.dataset['test'][0]
-        cle_testset_y = self.dataset['test'][1]    
+        # cle_testset_x = self.dataset['test'][0]
+        # cle_testset_y = self.dataset['test'][1]          
+        
         # print("cle_testset_x.shape:",cle_testset_x.shape)
         # print("cle_testset_y.shape:",cle_testset_y.shape)
         # print("cle_testset_y[:10]:",cle_testset_y[:10])        
@@ -1234,6 +1243,7 @@ class Seq2Seq():
         testset_x.shape: (4542, 10, 4)
         testset_y.shape: (4542, 10, 1)
         """
+        print("testset_x.shape:",testset_x.shape)
         y_pred = self.model.predict(testset_x)
         print("y_pred.shape:",y_pred.shape)
         # print("y_pred[1]:",y_pred[:1])
