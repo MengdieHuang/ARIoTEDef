@@ -45,9 +45,6 @@ from art.attacks.evasion.carlini import CarliniL2Method
 
 
 print("art库导入完成!", flush=True) 
-def apply_custom_threshold(predictions, threshold=0.5):
-    return (predictions >= threshold).astype(int)
-
 
 def calculate_tp_tn_fp_fn(y_true, y_pred):
     tp = 0
@@ -1037,11 +1034,12 @@ class Seq2Seq():
     
     def evaluate(self, testset_x, testset_y):
         
-        print("test seq2seq on clean test")
+        
 
+        
         print("testset_x.shape:",testset_x.shape)
-        print("testset_y.shape:",testset_y.shape)
-        print("testset_y[:3]:",testset_y[:3])
+        # print("testset_y.shape:",testset_y.shape)
+        # print("testset_y[:1]:",testset_y[:1])
         """ 
         testset_x.shape: (4215, 10, 4)
         testset_y.shape: (4215, 10, 1)
@@ -1049,28 +1047,21 @@ class Seq2Seq():
         
                 
         output = self.model.predict(testset_x)
-        print("output.shape:",output.shape)
-        print("output[:3]:",output[:3])
+        # print("output.shape:",output.shape)
+        # print("output:",output)
         
         """ 
         output.shape: (4224, 10, 1)
         """
          
        
-        #---------------maggie we should make the threshold consistent with that in analysis------------
-        # y_pred_binary = np.round(output).astype(int)        # 默认转成整数，那就是以0.5为阈值
-        # y_test_binary = np.round(testset_y).astype(int)     # 默认转成整数，那就是以0.5为阈值
+        y_pred_binary = np.round(output).astype(int)
+        y_test_binary = np.round(testset_y).astype(int)       
         
-
-        # 使用0.4为阈值将小数转化为整数
-        y_pred_binary = apply_custom_threshold(output, threshold=self.args.seq2seq_threshold)
-        y_test_binary = apply_custom_threshold(testset_y, threshold=self.args.seq2seq_threshold)        
-        
-        #-----------------------------------------------------------------------------------------------
-        print("y_pred_binary.shape:",y_pred_binary.shape)
-        print("y_pred_binary[:3]:",y_pred_binary[:3])
-        print("y_test_binary.shape:",y_test_binary.shape)                  
-        print("y_test_binary[:3]:",y_test_binary[:3])                  
+        # print("y_pred_binary.shape:",y_pred_binary.shape)
+        # print("y_pred_binary:",y_pred_binary)
+        # print("y_test_binary.shape:",y_test_binary.shape)                  
+        # print("y_test_binary:",y_test_binary)                  
         
         """ 
         y_pred_binary.shape: (4215, 10, 1)
@@ -1090,7 +1081,6 @@ class Seq2Seq():
         """ 
         y_test_binary_2d.shape: (4215, 10)
         """
-        # raise Exception("maggie stop")
         
         y_test_binary_1d = []
         for row in y_test_binary_2d:
@@ -1449,11 +1439,11 @@ class Seq2Seq():
 
         # 配置模型的训练过程
         self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
-        
         early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
         timer_callback = EpochTimer()
         callbacks = [early_stop, timer_callback]
-
+        # tf.compat.v1.experimental.output_all_intermediates(True)
+        
         history = self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.seq2seq_batchsize, epochs=self.args.seq2seq_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)
           
         # raise Exception("maggie stop")
