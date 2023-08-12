@@ -1,0 +1,7 @@
+﻿round,model,TP,FN,FNR,Recall
+5,Pre-evolved,0,53,100,0
+5,Evolved,8,45,85.53,14.47
+10,Pre-evolved,0,28,100,0
+10,Evolved,4,24,85.71,14.29
+20,Pre-evolved,0,15,100,0
+20,Evolved,1,14,93.33,6.67

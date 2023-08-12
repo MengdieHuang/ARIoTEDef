@@ -41,9 +41,9 @@ _, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.5), tight_layout=True, dpi=
 
 
 sns_plot=sns.lineplot(data=advset1_rounds80_F1_on_cle_merge_df, x='round', y='F1', color='b')
-ax.set_xlabel('Evolve Round', fontsize=12)
+ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_ylabel('F1 (%) on Clean Test Set', fontsize=12)
-plt.ylim(0, 100)
+plt.ylim(-5, 105)
 
 ax.set_title('Adversarial Setting I', fontsize=14); 
 

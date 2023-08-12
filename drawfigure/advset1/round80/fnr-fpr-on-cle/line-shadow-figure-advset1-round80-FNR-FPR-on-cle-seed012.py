@@ -42,9 +42,9 @@ _, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.5), tight_layout=True, dpi=
 
 
 sns_plot=sns.lineplot(data=advset1_rounds80_FNrate_on_cle_merge_df, x='round', y='FNR', color='b')
-ax.set_xlabel('Evolve Round', fontsize=12)
+ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_ylabel('FNR (%) on Clean Test Set', fontsize=12)
-plt.ylim(0, 100)
+plt.ylim(-5, 105)
 
 ax.set_title('Adversarial Setting I', fontsize=14); 
 
@@ -95,9 +95,9 @@ _, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.5), tight_layout=True, dpi=
 
 
 sns_plot=sns.lineplot(data=advset1_rounds80_FPrate_on_cle_merge_df, x='round', y='FPR', color='g')
-ax.set_xlabel('Evolve Round', fontsize=12)
+ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_ylabel('FPR (%) on Clean Test Set', fontsize=12)
-plt.ylim(0, 100)
+plt.ylim(-5, 105)
 
 ax.set_title('Adversarial Setting I', fontsize=14); 
 
@@ -123,9 +123,9 @@ plt.legend(
 plt.legend(title=None)
 
 
-ax.set_xlabel('Evolve Round', fontsize=12)
+ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_ylabel('FNR and FPR (%) on Clean Test Set', fontsize=12)
-plt.ylim(0, 100)
+plt.ylim(-5, 105)
 
 ax.set_title('Adversarial Setting I', fontsize=14); 
 

@@ -259,7 +259,7 @@ for seq2seq in [infection_seq2seq]:
         
         print(f"{seq2seq.modelname} metrics_dic:\n {metrics_dic}")         
 
-raise Exception("no retrain infection detector")                      
+# raise Exception("no retrain infection detector")                      
 # ----------------retrain vanilla per-step detectors----------------------
 print_header("Retrain Vanilla Infection Detector")
 
