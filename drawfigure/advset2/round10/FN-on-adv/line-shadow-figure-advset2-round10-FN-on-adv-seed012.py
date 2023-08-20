@@ -41,7 +41,7 @@ _, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.5), tight_layout=True, dpi=
 
 
 sns_plot=sns.lineplot(data=advset2_rounds10_FN_on_advmal_merge_df, x='round', y='FN', color='b')
-ax.set_xlabel('Evolve Round', fontsize=12)
+ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_ylabel('FN on Adversarial Infections', fontsize=12)
 ax.set_title('Adversarial Setting II', fontsize=14); 
 plt.ylim(9, 61)
