@@ -417,7 +417,7 @@ class PSDetector():
         
         malicious_cle_testset_y = np.extract(condition,cle_testset_y)
         print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
-        print("malicious_cle_testset_y:",malicious_cle_testset_y)
+        # print("malicious_cle_testset_y:",malicious_cle_testset_y)
 
         benign_cle_testset_y = np.extract(1-condition,cle_testset_y)
         print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
@@ -586,7 +586,7 @@ class PSDetector():
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
         epo_cost_time = timer_callback.epoch_times
-
+        print("retrain infection detector epo_cost_time:",epo_cost_time)
         # 将准确率历史记录转换为百分比
         epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
         epo_val_acc = [accuracy * 100 for accuracy in epo_val_acc]
@@ -669,9 +669,15 @@ class PSDetector():
         
         
     def analysis(self, test_windows_x):
+        
+        start_time = time.time()
         # detector predict test_windows_x
         detector_probs = self.model.predict(test_windows_x)
-        print("detector_probs.shape",detector_probs.shape)
+        
+        end_time = time.time()
+        detector_infer_time = end_time - start_time
+                
+        # print("detector_probs.shape",detector_probs.shape)
         # print("detector_probs:",detector_probs)
         """ 
         detector_probs.shape (4551, 1)
@@ -710,7 +716,10 @@ class PSDetector():
         detector_tagged_ben_windows_idxs = np.array(detector_tagged_ben_windows_idxs)   
         print("detector_tagged_ben_windows_idxs.shape",detector_tagged_ben_windows_idxs.shape)
                  
-        return detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs
+        # return detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs,
+        return detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs,detector_infer_time
+    
+    
 
 class Seq2Seq():
     def __init__(self, name, args):
@@ -1045,7 +1054,7 @@ class Seq2Seq():
 
         print("testset_x.shape:",testset_x.shape)
         print("testset_y.shape:",testset_y.shape)
-        print("testset_y[:3]:",testset_y[:3])
+        # print("testset_y[:3]:",testset_y[:3])
         """ 
         testset_x.shape: (4215, 10, 4)
         testset_y.shape: (4215, 10, 1)
@@ -1054,7 +1063,7 @@ class Seq2Seq():
                 
         output = self.model.predict(testset_x)
         print("output.shape:",output.shape)
-        print("output[:3]:",output[:3])
+        # print("output[:3]:",output[:3])
         
         """ 
         output.shape: (4224, 10, 1)
@@ -1072,9 +1081,9 @@ class Seq2Seq():
         
         #-----------------------------------------------------------------------------------------------
         print("y_pred_binary.shape:",y_pred_binary.shape)
-        print("y_pred_binary[:3]:",y_pred_binary[:3])
+        # print("y_pred_binary[:3]:",y_pred_binary[:3])
         print("y_test_binary.shape:",y_test_binary.shape)                  
-        print("y_test_binary[:3]:",y_test_binary[:3])                  
+        # print("y_test_binary[:3]:",y_test_binary[:3])                  
         
         """ 
         y_pred_binary.shape: (4215, 10, 1)
@@ -1258,8 +1267,14 @@ class Seq2Seq():
         testset_y.shape: (4542, 10, 1)
         """
         print("testset_x.shape:",testset_x.shape)
+        print("self.args.seq2seq_threshold:",self.args.seq2seq_threshold)
+        
+
+        start_time = time.time()
         y_pred = self.model.predict(testset_x)
-        print("y_pred.shape:",y_pred.shape)
+
+                
+        # print("y_pred.shape:",y_pred.shape)
         # print("y_pred[1]:",y_pred[:1])
         # print("y_pred[2]:",y_pred[:1])
         
@@ -1329,7 +1344,6 @@ class Seq2Seq():
         seq2seq_tagged_ben_event_probs=[]
         seq2seq_tagged_ben_event_idxs=[]
         
-        print("self.args.seq2seq_threshold:",self.args.seq2seq_threshold)
         for idx in range(len(results)):
             # if results[idx] > 0.5:
             # if results[idx] > 0.1:
@@ -1342,7 +1356,11 @@ class Seq2Seq():
             else: 
                 seq2seq_tagged_ben_event_probs.append(results[idx])
                 seq2seq_tagged_ben_event_idxs.append(idx)
-                
+
+
+        end_time = time.time()
+        analyzer_infer_time = end_time - start_time        
+                        
         seq2seq_tagged_mal_event_probs = np.array(seq2seq_tagged_mal_event_probs)
         seq2seq_tagged_mal_event_idxs = np.array(seq2seq_tagged_mal_event_idxs)
         seq2seq_tagged_ben_event_probs = np.array(seq2seq_tagged_ben_event_probs)
@@ -1352,7 +1370,9 @@ class Seq2Seq():
         print("seq2seq_tagged_mal_event_idxs.shape:",seq2seq_tagged_mal_event_idxs.shape)   
         print("seq2seq_tagged_ben_event_idxs.shape:",seq2seq_tagged_ben_event_idxs.shape)   
              
-        return seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs
+        # return seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs
+        return seq2seq_tagged_mal_event_probs, seq2seq_tagged_mal_event_idxs, seq2seq_tagged_ben_event_probs, seq2seq_tagged_ben_event_idxs,analyzer_infer_time
+
 
     def def_model(self, input_length, output_length, input_dim=4, output_dim=1, hidden_units=128):
         # print('define seq2seq model architecture')    
