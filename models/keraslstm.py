@@ -41,6 +41,7 @@ from art.attacks.evasion.feature_adversaries.feature_adversaries_tensorflow impo
 from art.attacks.evasion.hop_skip_jump import HopSkipJump
 from art.attacks.evasion.carlini import CarliniL2Method
 
+import pandas as pd
 
 
 
@@ -305,6 +306,7 @@ class PSDetector():
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
         plt.close()
+        pd.DataFrame(epo_cost_time).to_excel(f'{exp_result_dir}/{time_png_name}.xlsx')
              
     def evaluate(self, testset_x, testset_y):
         
@@ -663,6 +665,8 @@ class PSDetector():
         
     def save_model(self, save_path):
         self.model.save(save_path)
+        print("model.summary():", self.model.summary())
+        
         
     def analysis(self, test_windows_x):
         # detector predict test_windows_x
@@ -1459,11 +1463,11 @@ class Seq2Seq():
         # raise Exception("maggie stop")
           
         # maggie
+        epo_cost_time = timer_callback.epoch_times        
         epo_train_loss = history.history['loss']
         epo_val_loss = history.history['val_loss']
         epo_train_acc = history.history['accuracy']
         epo_val_acc = history.history['val_accuracy']
-        epo_cost_time = timer_callback.epoch_times
 
         # 将准确率历史记录转换为百分比
         epo_train_acc = [accuracy * 100 for accuracy in epo_train_acc]
@@ -1530,9 +1534,14 @@ class Seq2Seq():
         # plt.show()
         plt.savefig(f'{exp_result_dir}/{time_png_name}.png')
         plt.close()
+        pd.DataFrame(epo_cost_time).to_excel(f'{exp_result_dir}/{time_png_name}.xlsx')
+
+
+
                     
     def save_model(self, save_path):
         self.model.save(save_path)
+        print("model.summary():", self.model.summary())
 
     def load_model(self, model_path):
         from keras.models import load_model
