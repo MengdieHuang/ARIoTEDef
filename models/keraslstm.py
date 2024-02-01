@@ -231,7 +231,16 @@ class PSDetector():
         print("trainset_y.shape:",trainset_y.shape)
 
 
-        history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)       
+        history=self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.batchsize, epochs=self.args.ps_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)   
+            
+        # # 获取GPU信息
+        # import torch
+        # gpu_memory_usage = torch.cuda.max_memory_allocated(device=torch.device('cuda:0')) / (1024 ** 3)  # 显存使用情况（GB）
+        # gpu_power_usage = torch.cuda.power_max(device=torch.device('cuda:0'))  # GPU功耗
+        # # 获取GPU信息
+        # # gpu_memory_usage = tf.config.experimental.get_memory_info('GPU:0').current / (1024 ** 3)  # 显存使用情况（GB）
+        # # gpu_power_usage = tf.config.experimental.get_gpu_memory_info('GPU:0').power_usage  # GPU功耗
+        # print(f"train ps-detector>>>gpu_memory_usage:{gpu_memory_usage}>>>gpu_power_usage:{gpu_power_usage}")
 
 
         epo_train_loss = history.history['loss']
@@ -669,6 +678,8 @@ class PSDetector():
         
         
     def analysis(self, test_windows_x):
+        
+        maggie_test=input("123")
         
         start_time = time.time()
         # detector predict test_windows_x
@@ -1480,8 +1491,11 @@ class Seq2Seq():
 
         history = self.model.fit(x=trainset_x, y=trainset_y, batch_size=self.args.seq2seq_batchsize, epochs=self.args.seq2seq_epochs, verbose=2, callbacks=callbacks, validation_split=0.2)
           
-        # raise Exception("maggie stop")
-          
+        # # raise Exception("maggie stop")
+        # gpu_memory_usage = tf.config.experimental.get_memory_info('GPU:0').current / (1024 ** 3)  # 显存使用情况（GB）
+        # gpu_power_usage = tf.config.experimental.get_gpu_memory_info('GPU:0').power_usage  # GPU功耗
+        # print(f"train sequence analyzer>>>gpu_memory_usage:{gpu_memory_usage}>>>gpu_power_usage:{gpu_power_usage}")
+         
         # maggie
         epo_cost_time = timer_callback.epoch_times        
         epo_train_loss = history.history['loss']
