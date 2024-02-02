@@ -393,8 +393,8 @@ class PSDetector():
     #     cle_testset_y = self.dataset['test'][1]    
         
     def generate_advmail(self,timesteps,cle_testset_x,cle_testset_y):        
-        if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print("Cuda and GPU are available")
+        # if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+        #     print("Cuda and GPU are available")
 
         # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
         # cle_testset_x = self.dataset['test'][0]
@@ -425,12 +425,12 @@ class PSDetector():
         # print("condition[:10]:",condition[:10])
         
         malicious_cle_testset_y = np.extract(condition,cle_testset_y)
-        print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
+        # print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
         # print("malicious_cle_testset_y:",malicious_cle_testset_y)
 
         benign_cle_testset_y = np.extract(1-condition,cle_testset_y)
-        print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
-        print("benign_cle_testset_y:",benign_cle_testset_y)                                   
+        # print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
+        # print("benign_cle_testset_y:",benign_cle_testset_y)                                   
 
         """ 
         condition.shape: (4233,)
@@ -470,7 +470,7 @@ class PSDetector():
         
         
         malicious_cle_testset_x = malicious_cle_testset_x.reshape((malicious_cle_testset_x.shape[0], timesteps, int(math.ceil(malicious_cle_testset_x.shape[1] / timesteps))))
-        print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
+        # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
         
         """ 
         malicious_cle_testset_x.shape: (123, 1, 41)
@@ -491,55 +491,62 @@ class PSDetector():
         # from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
         # print("art库导入完成!", flush=True)   
              
-        art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
-
-        print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
-
-
-        if self.args.attack == 'pgd':
-            if self.args.targeted:
-                attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=True)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))                
-            else:    
-                attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=False)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+             
+        if len(malicious_cle_testset_x) > 0:
             
-        elif self.args.attack == 'fgsm':
+            art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
+
+            print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
+
+
+            if self.args.attack == 'pgd':
+                if self.args.targeted:
+                    attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=True)
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)), verbose=False)                
+                else:    
+                    attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=False)
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x,verbose=False)
+                
+            elif self.args.attack == 'fgsm':
+                
+                if self.args.targeted:
+                    attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=True)
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
+                else:
+                    attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=False)
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+                                
+            elif self.args.attack == 'boundary':
+                if self.args.targeted:
+                    attack = BoundaryAttack(estimator=art_classifier, targeted=True, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
+                else:    
+                    attack = BoundaryAttack(estimator=art_classifier, targeted=False, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+                                
+            elif self.args.attack == 'hopskipjump':
+                # y_target = np.zeros(len(malicious_cle_testset_x))          
+                """ 
+                y_target.shape: (3077,)
+                y_target: [0. 0. 0. ... 0. 0. 0.]
+                """     
+                if self.args.targeted: 
+                    attack = HopSkipJump(classifier=art_classifier, targeted=True, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
+                else:
+                    attack = HopSkipJump(classifier=art_classifier, targeted=False, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
+                    adv_testset_x = attack.generate(x=malicious_cle_testset_x)
+        else:
+            adv_testset_x = malicious_cle_testset_x
+            # print("no adversarial samples generated")
             
-            if self.args.targeted:
-                attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=True)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:
-                attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=False)
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-                            
-        elif self.args.attack == 'boundary':
-            if self.args.targeted:
-                attack = BoundaryAttack(estimator=art_classifier, targeted=True, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:    
-                attack = BoundaryAttack(estimator=art_classifier, targeted=False, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-                              
-        elif self.args.attack == 'hopskipjump':
-            # y_target = np.zeros(len(malicious_cle_testset_x))          
-            """ 
-            y_target.shape: (3077,)
-            y_target: [0. 0. 0. ... 0. 0. 0.]
-            """     
-            if self.args.targeted: 
-                attack = HopSkipJump(classifier=art_classifier, targeted=True, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=np.zeros(len(malicious_cle_testset_x)))
-            else:
-                attack = HopSkipJump(classifier=art_classifier, targeted=False, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
-                adv_testset_x = attack.generate(x=malicious_cle_testset_x)
-            
-        print("self.args.attack:",self.args.attack)        
-        print("self.args.targeted:",self.args.targeted)            
-        print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
+               
+        # print("self.args.attack:",self.args.attack)        
+        # print("self.args.targeted:",self.args.targeted)            
+        # print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
             
  
-        print("malicious_cle_testset_x.shape:", malicious_cle_testset_x.shape)
+        # print("malicious_cle_testset_x.shape:", malicious_cle_testset_x.shape)
         # adv_testset_x = attack.generate(x=malicious_cle_testset_x, y=0)
         
         adv_testset_y = malicious_cle_testset_y
@@ -553,6 +560,7 @@ class PSDetector():
         
         adv_testset_x = adv_testset_x.reshape((adv_testset_x.shape[0],adv_testset_x.shape[2]))
         # print("adv_testset_x.shape:",adv_testset_x.shape)
+        # print("adv_testset_x:",adv_testset_x)
         # adv_testset_x.shape: (318, 41)
                 
     
@@ -731,7 +739,702 @@ class PSDetector():
         return detector_tagged_mal_windows_probs, detector_tagged_mal_windows_idxs, detector_tagged_ben_windows_probs,detector_tagged_ben_windows_idxs,detector_infer_time
     
     
+    
+    # def advtrain(self, timesteps, exp_result_dir):
+    #     print("PGD adversarial train")  
+    
 
+    #     from tensorflow.keras import losses
+    #     def pgd_attack(model, images, labels, epsilon, alpha, iterations):
+    #         adv_images = images + tf.random.uniform(shape=tf.shape(images), minval=-epsilon, maxval=epsilon)
+    #         for _ in range(iterations):
+    #             with tf.GradientTape() as tape:
+    #                 tape.watch(adv_images)
+    #                 predictions = model(adv_images)
+    #                 loss = losses.sparse_categorical_crossentropy(labels, predictions)
+    #             gradient = tape.gradient(loss, adv_images)
+    #             adv_images = adv_images + alpha * tf.sign(gradient)
+    #             adv_images = tf.clip_by_value(adv_images, images - epsilon, images + epsilon)
+    #             adv_images = tf.clip_by_value(adv_images, 0, 1)  # Clip to [0, 1] range for image data
+    #         return adv_images
+
+
+    #     # Adversarial training loop
+    #     epochs = self.args.ps_epochs
+    #     epsilon = self.args.eps
+    #     alpha = self.args.eps_step
+    #     iterations = self.args.max_iter
+
+    #     for epoch in range(epochs):
+    #         for batch in self.dataset['train'][0]:
+    #             images, labels = batch
+    #             adv_images = pgd_attack(self.model, images, labels, epsilon, alpha, iterations)
+    #             self.model.train_on_batch(adv_images, labels)
+
+    #     # Evaluate the model on clean and adversarial test data
+    #     clean_accuracy = self.model.evaluate(self.dataset['test'][0])[1]
+        
+    #     adv_test_images = pgd_attack(self.model, self.dataset['test'][0], self.dataset['test'][1], epsilon, alpha, iterations)
+    #     adv_accuracy = self.model.evaluate(adv_test_images, self.dataset['test'][1])[1]
+        
+    #     print("clean_accuracy:",clean_accuracy)
+    #     print("adv_accuracy:",adv_accuracy)
+            
+    
+    def generate_advmailbenign(self,timesteps,cle_testset_x,cle_testset_y):        
+        # if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+        #     print("Cuda and GPU are available")
+
+        # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
+        # cle_testset_x = self.dataset['test'][0]
+        # cle_testset_y = self.dataset['test'][1]          
+        
+        # print("cle_testset_x.shape:",cle_testset_x.shape)
+        # print("cle_testset_y.shape:",cle_testset_y.shape)
+        # print("cle_testset_y[:10]:",cle_testset_y[:10])        
+        """
+        cle_testset_x.shape: (4224, 41)
+        cle_testset_y.shape: (4224,)
+        cle_testset_y[:10]: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+        """
+        # print(f"{self.modelname} cle_testset_min:{self.testset_min}")
+        # print(f"{self.modelname} cle_testset_max:{self.testset_max}")      
+       
+        """ 
+        attack-detector cle_testset_min:-3.30513966135273
+        attack-detector cle_testset_max:21.144568401380717
+        """
+        # benign 0 malicious 1
+        
+        
+        
+        # # extract malicious set
+        # condition = cle_testset_y.astype(bool)
+        # # print("condition.shape:",condition.shape)
+        # # print("condition[:10]:",condition[:10])
+        
+        # malicious_cle_testset_y = np.extract(condition,cle_testset_y)
+        # # print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
+        # # print("malicious_cle_testset_y:",malicious_cle_testset_y)
+
+        # benign_cle_testset_y = np.extract(1-condition,cle_testset_y)
+        # # print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
+        # # print("benign_cle_testset_y:",benign_cle_testset_y)                                   
+
+        # """ 
+        # condition.shape: (4233,)
+        # condition[:10]: [False False False False False False False False False False]
+        # malicious_cle_testset_y.shape: (123,)
+        # malicious_cle_testset_y: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+        # """
+        
+        # cond=np.expand_dims(condition,1)
+        # # print("cond.shape:",cond.shape)
+        # # 创建形状为(4233, 41)的全False数组
+        # cond_expend = np.full((cle_testset_x.shape[0], cle_testset_x.shape[1]), False, dtype=bool)
+        # # 将条件数组广播到result数组中
+        # cond = np.logical_or(cond_expend, cond)        
+        # # print("cond.shape:",cond.shape)        
+        # """
+        # cond.shape: (4233, 1)
+        # cond.shape: (4233, 41)
+        # """
+        
+        # malicious_cle_testset_x = np.extract(cond,cle_testset_x)
+        # # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)        
+
+        # """
+        # malicious_cle_testset_x.shape: (5043,)
+
+        # """        
+        # malicious_cle_testset_x = np.reshape(malicious_cle_testset_x, (malicious_cle_testset_y.shape[0], cle_testset_x.shape[1]))        
+        # # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
+        # """ 
+        # malicious_cle_testset_x.shape: (123, 41)
+        # """
+        
+        
+        cle_testset_x = cle_testset_x.reshape((cle_testset_x.shape[0], timesteps, int(math.ceil(cle_testset_x.shape[1] / timesteps))))
+        # print("cle_testset_x.shape:",cle_testset_x.shape)
+        
+        """ 
+        cle_testset_x.shape: (123, 1, 41)
+        """
+               
+
+        # print("self.testset_min:",self.testset_min)
+        # print("self.testset_max:",self.testset_max)
+        
+        # print("self.args.eps:",self.args.eps)
+        # print("self.args.eps_step:",self.args.eps_step)
+        # print("self.args.max_iter:",self.args.max_iter)
+        
+        # import sys
+        # sys.stdout.flush()
+        # print("正在导入art库...", flush=True)
+        # from art.estimators.classification.keras import KerasClassifier
+        # from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
+        # print("art库导入完成!", flush=True)   
+             
+             
+        if len(cle_testset_x) > 0:
+            
+            art_classifier = KerasClassifier(model=self.model, clip_values=(self.testset_min, self.testset_max), use_logits=False)
+
+            print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
+
+
+            if self.args.attack == 'pgd':
+                if self.args.targeted:
+                    attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=True)
+                    adv_testset_x = attack.generate(x=cle_testset_x, y=np.zeros(len(cle_testset_x)),verbose=False)                
+                else:    
+                    attack = ProjectedGradientDescent(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps_step, max_iter=self.args.max_iter, targeted=False)
+                    adv_testset_x = attack.generate(x=cle_testset_x,verbose=False)
+                
+            elif self.args.attack == 'fgsm':
+                
+                if self.args.targeted:
+                    attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=True)
+                    adv_testset_x = attack.generate(x=cle_testset_x, y=np.zeros(len(cle_testset_x)))
+                else:
+                    attack = FastGradientMethod(estimator=art_classifier, eps=self.args.eps, eps_step=self.args.eps, targeted=False)
+                    adv_testset_x = attack.generate(x=cle_testset_x)
+                                
+            elif self.args.attack == 'boundary':
+                if self.args.targeted:
+                    attack = BoundaryAttack(estimator=art_classifier, targeted=True, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
+                    adv_testset_x = attack.generate(x=cle_testset_x, y=np.zeros(len(cle_testset_x)))
+                else:    
+                    attack = BoundaryAttack(estimator=art_classifier, targeted=False, delta=self.args.eps, epsilon=self.args.eps, max_iter=self.args.max_iter, num_trial=100000, init_size=100000)    
+                    adv_testset_x = attack.generate(x=cle_testset_x)
+                                
+            elif self.args.attack == 'hopskipjump':
+                # y_target = np.zeros(len(cle_testset_x))          
+                """ 
+                y_target.shape: (3077,)
+                y_target: [0. 0. 0. ... 0. 0. 0.]
+                """     
+                if self.args.targeted: 
+                    attack = HopSkipJump(classifier=art_classifier, targeted=True, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
+                    adv_testset_x = attack.generate(x=cle_testset_x, y=np.zeros(len(cle_testset_x)))
+                else:
+                    attack = HopSkipJump(classifier=art_classifier, targeted=False, norm="inf", max_iter=self.args.max_iter, init_eval=10000, init_size=10000)         
+                    adv_testset_x = attack.generate(x=cle_testset_x)
+        else:
+            adv_testset_x = cle_testset_x
+            # print("no adversarial samples generated")
+            
+               
+        # print("self.args.attack:",self.args.attack)        
+        # print("self.args.targeted:",self.args.targeted)            
+        # print(f'eps={self.args.eps},eps_step={self.args.eps_step},max_iter={self.args.max_iter}')
+            
+ 
+        # print("cle_testset_x.shape:", cle_testset_x.shape)
+        # adv_testset_x = attack.generate(x=cle_testset_x, y=0)
+        
+        adv_testset_y = cle_testset_y
+        
+        # print("adv_testset_x.shape:",adv_testset_x.shape)
+        # print("adv_testset_y.shape:",adv_testset_y.shape)
+        """ 
+        adv_testset_x.shape: (318, 1, 41)
+        adv_testset_y.shape: (318,)
+        """
+        
+        adv_testset_x = adv_testset_x.reshape((adv_testset_x.shape[0],adv_testset_x.shape[2]))
+        # print("adv_testset_x.shape:",adv_testset_x.shape)
+        # adv_testset_x.shape: (318, 41)
+                
+    
+        return adv_testset_x, adv_testset_y    
+    
+    def advtrain(self, timesteps, exp_result_dir):
+        print("PGD adversarial train")  
+        
+        if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+            print("Cuda and GPU are available")
+        
+        def set_memory_growth():
+            # Get GPU index from CUDA_VISIBLE_DEVICES environment variable
+            cuda_visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", None)
+
+            if cuda_visible_devices is not None:
+                gpu_index = int(cuda_visible_devices.split(',')[0])  # Take the first GPU if multiple are specified
+                print(f"Using GPU with index: {gpu_index}")
+
+                # Set GPU device
+                physical_devices = tf.config.list_physical_devices('GPU')
+                if len(physical_devices) > gpu_index:
+                    tf.config.experimental.set_memory_growth(physical_devices[gpu_index], True)
+                else:
+                    print(f"GPU index {gpu_index} is out of range. Using default GPU configuration.")
+            else:
+                print("CUDA_VISIBLE_DEVICES not set. Using default GPU configuration.")
+
+        # Call the function to set memory growth
+        set_memory_growth()
+
+
+        #==================dataset================
+        trainset_x = self.dataset['train'][0]
+        trainset_y = self.dataset['train'][1]
+        
+        print("trainset_x.shape:",trainset_x.shape)
+        print("trainset_y.shape:",trainset_y.shape)
+        """ 
+        trainset_x.shape: (19818, 41)
+        trainset_y.shape: (19818,)
+        trainset_x.shape: (19818, 41)
+        trainset_y.shape: (19818,)
+        """
+        trainset_x, trainset_y = shuffle(trainset_x, trainset_y)
+    
+        # """ 
+        # malicious_cle_y.shape: (9909,)
+        # benign_cle_y.shape: (9909,)
+        # """   
+        
+        test_acc_list = [] 
+        test_los_list = []
+        test_TP_list = []
+        test_FP_list = []
+        test_TN_list = []
+        test_FN_list = []
+        test_recall_list = []
+        test_precision_list = []
+        test_F1_list = []
+        cost_time_list =[]
+        
+        test_FPrate_list=[]
+        test_FNrate_list=[]
+
+        adv_test_acc_list = [] 
+        adv_test_los_list = []
+        adv_test_TN_list = []
+        adv_test_FN_list = []
+        adv_test_recall_list = []
+        adv_test_precision_list = []
+        adv_test_F1_list = []
+        adv_test_FNrate_list=[]
+        
+        
+        start_time = time.time()
+        
+        
+        # 配置模型的训练过程
+        self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
+        # early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
+        # timer_callback = EpochTimer()
+        # callbacks = [early_stop, timer_callback]
+        # raise Exception("maggie")
+    
+        for epoch in range(self.args.ps_epochs):
+            # for batch in self.dataset['train'][0]:
+            print(f"{epoch} epoch / {self.args.ps_epochs} epochs")
+
+            epoch_start_time= time.time()
+            
+            for i in range(0, len(trainset_x), self.args.batchsize):  # Assuming batch_size is defined
+                print(f"{int(i/self.args.batchsize)} batch / {int(len(trainset_x)/self.args.batchsize)} batches")
+                
+                cle_batch_x = trainset_x[i:i + self.args.batchsize]
+                cle_batch_y = trainset_y[i:i + self.args.batchsize]
+                
+                # print("cle_batch_x.shape:",cle_batch_x.shape)    
+                # print("cle_batch_y.shape:",cle_batch_y.shape)    
+                """ 
+                cle_batch_x.shape: (32, 41)
+                cle_batch_y.shape: (32,)
+                """
+                # cle_batch_x, cle_batch_y = batch
+                # adv_batch_x = pgd_attack(self.model, batch_x, batch_y, epsilon, alpha, iterations)
+                
+                if self.args.onlyadvmail is True:
+                    adv_batch_x, adv_batch_y = self.generate_advmail(timesteps=self.args.timesteps,cle_testset_x=cle_batch_x,cle_testset_y=cle_batch_y)
+                    print("generate only adv mail")                                                            
+                    
+                else:
+                    adv_batch_x, adv_batch_y = self.generate_advmailbenign(timesteps=self.args.timesteps,cle_testset_x=cle_batch_x,cle_testset_y=cle_batch_y)         
+                    print("generate adv mail + adv beni")                                                            
+                           
+                # print("adv_batch_x.shape:",adv_batch_x.shape)    
+                # print("adv_batch_y.shape:",adv_batch_y.shape)                  
+                """ 
+                adv_batch_x.shape: (7, 41)
+                adv_batch_y.shape: (7,)
+                """
+                # raise Exception("maggie stop")
+            
+                adv_batch_x = adv_batch_x.reshape((adv_batch_x.shape[0], timesteps, int(math.ceil(adv_batch_x.shape[1] / timesteps))))
+                # print("adv_batch_x.shape:",adv_batch_x.shape)    
+                """ 
+                adv_batch_x.shape: (7, 1, 41)
+                """ 
+                
+                # print("adv_batch_x.shape[0]:",adv_batch_x.shape[0])
+                # print("len(adv_batch_x):",len(adv_batch_x))
+                """ 
+                adv_batch_x.shape[0]: 7
+                len(adv_batch_x): 7
+                """
+                
+                if self.args.advtrain_adv_cle is True:
+                    print("train adv+cle")                                        
+                    cle_batch_x = cle_batch_x.reshape((cle_batch_x.shape[0], timesteps, int(math.ceil(cle_batch_x.shape[1] / timesteps))))
+                    train_batch_x = concatenate([adv_batch_x, cle_batch_x], axis=0) 
+                    train_batch_y = concatenate([adv_batch_y, cle_batch_y], axis=0)
+                    # print("train_batch_x.shape:",train_batch_x.shape)
+                    # print("train_batch_y.shape:",train_batch_y.shape)
+                    
+                else:
+                    print("train only adv")                    
+                    train_batch_x = adv_batch_x
+                    train_batch_y = adv_batch_y
+                    
+                if adv_batch_x.shape[0] > 0:
+                    # self.model.train_on_batch(adv_batch_x, adv_batch_y)
+                    self.model.train_on_batch(train_batch_x, train_batch_y)
+            
+            
+            epoch_end_time = time.time()
+            epoch_adv_train_time = epoch_end_time - epoch_start_time               
+            # evaluate each epoch performance    
+                
+ 
+            # print(f">>>>>>>> Evaluate current epoch Adversarial trained {self.modelname} on clean test data")
+            test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = self.test(testset_x=self.dataset['test'][0], testset_y=self.dataset['test'][1],timesteps=self.args.timesteps)
+            FPrate = round((test_FP/(test_FP+test_TN)), 4)
+            FNrate = round((test_FN/(test_FN+test_TP)), 4)
+            
+            metrics_dic = { 
+                        'model': self.modelname,
+                        'clean test Accuracy': f'{test_acc*100:.2f}%',
+                        'clean test Loss': test_los,
+                        'clean test TP': test_TP,
+                        'clean test FP': test_FP,
+                        'clean test TN': test_TN,
+                        'clean test FN': test_FN,
+                        'clean test Recall': f'{test_recall*100:.2f}%',
+                        'clean test Precision': f'{test_precision*100:.2f}%',
+                        'clean test F1': f'{test_F1*100:.2f}%',
+                        'clean test FPrate':f'{FPrate*100:.2f}%',
+                        'clean test FNrate':f'{FNrate*100:.2f}%',
+                        }
+            print(f"{epoch} epoch Adversarial trained {self.modelname} metrics_dic:\n {metrics_dic}")       
+
+            test_FPrate_list.append(FPrate*100)
+            test_FNrate_list.append(FNrate*100)
+            test_acc_list.append(test_acc*100)
+            test_los_list.append(test_los)
+            test_TP_list.append(test_TP)
+            test_FP_list.append(test_FP)
+            test_TN_list.append(test_TN)
+            test_FN_list.append(test_FN)
+            test_recall_list.append(test_recall*100)
+            test_precision_list.append(test_precision*100)
+            test_F1_list.append(test_F1*100)
+            cost_time_list.append(epoch_adv_train_time)       
+        
+        
+            # print(f">>>>>>>> Evaluate current epoch Adversarial trained {self.modelname} on adversarial test data >>>>>>>>")
+            epoch_adv_testset_x, epoch_adv_testset_y = self.generate_advmail(timesteps=self.args.timesteps,cle_testset_x=self.dataset['test'][0],cle_testset_y=self.dataset['test'][1])  
+            # print("epoch_adv_testset_x.shape:",epoch_adv_testset_x.shape)    
+                     
+            adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = self.test(testset_x=epoch_adv_testset_x, testset_y=epoch_adv_testset_y, timesteps=self.args.timesteps)
+            adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+            
+            adv_metrics_dic = { 
+                        'model': self.modelname,
+                        'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
+                        'adv test Loss': adv_test_los,
+                        'adv test TP': adv_test_TP,
+                        'adv test FP': adv_test_FP,
+                        'adv test TN': adv_test_TN,
+                        'adv test FN': adv_test_FN,
+                        'adv test Recall': f'{adv_test_recall*100:.2f}%',
+                        'adv test Precision': f'{adv_test_precision*100:.2f}%',
+                        'adv test F1': f'{adv_test_F1*100:.2f}%',
+                        'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
+                        }
+            print(f"{epoch} epoch Adversarial trained {self.modelname} adv_metrics_dic:\n {adv_metrics_dic}")   
+            
+            adv_test_FNrate_list.append(adv_FNrate*100)
+            adv_test_acc_list.append(adv_test_acc*100)
+            adv_test_los_list.append(adv_test_los)
+            adv_test_TN_list.append(adv_test_TN)
+            adv_test_FN_list.append(adv_test_FN)
+            adv_test_recall_list.append(adv_test_recall*100)
+            adv_test_precision_list.append(adv_test_precision*100)
+            adv_test_F1_list.append(adv_test_F1*100)
+
+        end_time = time.time()
+        adv_train_time = end_time - start_time   
+
+        print("adv_train_time:",adv_train_time)     
+        print("finish adversarial training")
+
+
+ 
+                    
+        #---------------save xlsx data---------------
+        advtrain_cle_exp_result_dir = os.path.join(exp_result_dir,f'advtrain-evaluate-cle')
+        os.makedirs(advtrain_cle_exp_result_dir, exist_ok=True)
+        
+        cle_figure_xlsx_result_dir = os.path.join(advtrain_cle_exp_result_dir,f'figure-xlsx')
+        os.makedirs(cle_figure_xlsx_result_dir, exist_ok=True)        
+
+
+        
+        pd.DataFrame(test_FPrate_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_FPrate_list.xlsx')
+        pd.DataFrame(test_FNrate_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_FNrate_list.xlsx')
+        pd.DataFrame(test_acc_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_acc_list.xlsx')
+        pd.DataFrame(test_los_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_los_list.xlsx')
+        pd.DataFrame(test_TP_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_TP_list.xlsx')
+        pd.DataFrame(test_FP_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_FP_list.xlsx')
+        pd.DataFrame(test_TN_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_TN_list.xlsx')
+        pd.DataFrame(test_FN_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_FN_list.xlsx')
+        pd.DataFrame(test_recall_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_recall_list.xlsx')
+        pd.DataFrame(test_precision_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_precision_list.xlsx')
+        pd.DataFrame(test_F1_list).to_excel(f'{cle_figure_xlsx_result_dir}/test_F1_list.xlsx')
+
+        pd.DataFrame(cost_time_list).to_excel(f'{cle_figure_xlsx_result_dir}/cost_time_list.xlsx')
+   
+   
+   
+
+        advtrain_adv_exp_result_dir = os.path.join(exp_result_dir,f'advtrain-evaluate-adv')
+        os.makedirs(advtrain_adv_exp_result_dir, exist_ok=True)
+        
+        adv_figure_xlsx_result_dir = os.path.join(advtrain_adv_exp_result_dir,f'figure-xlsx')
+        os.makedirs(adv_figure_xlsx_result_dir, exist_ok=True)       
+        
+        pd.DataFrame(adv_test_FNrate_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_FNrate_list.xlsx')
+        pd.DataFrame(adv_test_acc_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_acc_list.xlsx')
+        pd.DataFrame(adv_test_los_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_los_list.xlsx')
+        pd.DataFrame(adv_test_TN_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_TN_list.xlsx')
+        pd.DataFrame(adv_test_FN_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_FN_list.xlsx')
+        pd.DataFrame(adv_test_recall_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_recall_list.xlsx')
+        pd.DataFrame(adv_test_precision_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_precision_list.xlsx')
+        pd.DataFrame(adv_test_F1_list).to_excel(f'{adv_figure_xlsx_result_dir}/adv_test_F1_list.xlsx')
+            
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+        #----------------------------------------------
+
+        loss_png_name = f'Test loss of advtrained {self.modelname} on clean testset'
+        accuracy_png_name = f'Accuracy of advtrained {self.modelname} on clean testset'
+        costtime_png_name = f'Cost Time of retrain {self.modelname}'
+        fn_fp_png_name = f'FP and FN of advtrained {self.modelname} on clean testset'
+        recall_png_name = f'Recall of advtrained {self.modelname} on clean testset'
+        f1_png_name = f'F1 of advtrained {self.modelname} on clean testset'
+        fnrate_fprate_png_name = f'FP rate and FN rate of advtrained {self.modelname} on clean testset'
+        # num_tagged_mal_png_name = f'Number of tagged malicious amples'
+        # num_tagged_ben_png_name = f'Number of tagged benign samples'
+        # num_tagged_png_name = f'Number of tagged malicious or benign samples'        
+        # plt.style.use('seaborn')
+                    
+        plt.plot(list(range(len(test_los_list))), test_los_list, label='Test Loss', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss on Clean Test Set')
+        plt.xticks(range(min(list(range(len(test_los_list)))), max(list(range(len(test_los_list))))+1, math.ceil(len(test_los_list)/10)))
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)
+        # plt.legend()
+        plt.title(f'{loss_png_name}')
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{loss_png_name}.png')
+        plt.close()
+                
+        plt.plot(list(range(len(test_acc_list))), test_acc_list, label='Test Accuracy', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy (%) on Clean Test Set')
+        plt.xticks(range(min(list(range(len(test_acc_list)))), max(list(range(len(test_acc_list))))+1, math.ceil(len(test_acc_list)/10)))
+        plt.ylim(0, 100)
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)
+        # plt.legend()
+        plt.title(f'{accuracy_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{accuracy_png_name}.png')
+        plt.close()
+
+        plt.plot(list(range(len(cost_time_list))), cost_time_list, label='Cost Time', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Cost Time (second)')
+        plt.xticks(range(min(list(range(len(cost_time_list)))), max(list(range(len(cost_time_list))))+1, math.ceil(len(cost_time_list)/10)))       
+        plt.xlim(left=0)
+        plt.ylim(bottom=0) 
+        # plt.legend()
+        plt.title(f'{costtime_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{costtime_png_name}.png')
+        plt.close()
+
+        plt.plot(list(range(len(test_FP_list))), test_FP_list, label='Test FP', marker='o')
+        plt.plot(list(range(len(test_FN_list))), test_FN_list, label='Test FN', marker='s')
+        plt.xlabel('Epoch')
+        plt.ylabel('FP and FN on Clean Test Set')
+        plt.xticks(range(min(list(range(len(test_FP_list)))), max(list(range(len(test_FP_list))))+1, math.ceil(len(test_FP_list)/10)))        
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)
+        plt.legend(loc='best',frameon=True)
+        plt.title(f'{fn_fp_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{fn_fp_png_name}.png')
+        plt.close()
+
+        plt.plot(list(range(len(test_FPrate_list))), test_FPrate_list, label='Test FP rate', marker='o')
+        plt.plot(list(range(len(test_FNrate_list))), test_FNrate_list, label='Test FN rate', marker='s')
+        plt.xlabel('Epoch')
+        plt.ylabel('FP Rate and FN Rate (%) on Clean Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(test_FPrate_list)))), max(list(range(len(test_FPrate_list))))+1, math.ceil(len(test_FPrate_list)/10))  )   
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)   
+        plt.legend(loc='best',frameon=True)
+        plt.title(f'{fnrate_fprate_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{fnrate_fprate_png_name}.png')
+        plt.close()
+        
+        
+        
+        plt.plot(list(range(len(test_recall_list))), test_recall_list, label='Test Recall', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Recall (%) on Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(test_recall_list)))), max(list(range(len(test_recall_list))))+1, math.ceil(len(test_recall_list)/10))  )   
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)   
+        # plt.legend()
+        plt.title(f'{recall_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{recall_png_name}.png')
+        plt.close()        
+
+        plt.plot(list(range(len(test_F1_list))), test_F1_list, label='Test F1', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('F1 (%) on Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(test_F1_list)))), max(list(range(len(test_F1_list))))+1, math.ceil(len(test_F1_list)/10))   ) 
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)            
+        # plt.legend()
+        plt.title(f'{f1_png_name}')        
+        plt.savefig(f'{advtrain_cle_exp_result_dir}/{f1_png_name}.png')
+        plt.close()                                 
+
+        #----------------------------------------------        
+ 
+        adv_loss_png_name = f'Test loss of retrained {self.modelname} on {self.args.attack} examples'
+        adv_accuracy_png_name = f'Accuracy of retrained {self.modelname} on {self.args.attack} examples'
+        adv_fn_png_name = f'FN of retrained {self.modelname} on {self.args.attack} examples'
+        adv_recall_png_name = f'Recall of retrained {self.modelname} on {self.args.attack} examples'
+        adv_f1_png_name = f'F1 of retrained {self.modelname} on {self.args.attack} examples'
+        adv_fnrate_png_name = f'FN rate of retrained {self.modelname} on {self.args.attack} examples'
+        adv_precision_png_name = f'Precision of retrained {self.modelname} on {self.args.attack} examples'
+        
+
+        plt.plot(list(range(len(adv_test_los_list))), adv_test_los_list, label='Test Loss', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss on Adversarial Test Set')
+        # 设置x轴刻度为整数
+        plt.xticks(range(min(list(range(len(adv_test_los_list)))), max(list(range(len(adv_test_los_list))))+1, math.ceil(len(adv_test_los_list)/10))   )  
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)           
+        # plt.legend()
+        plt.title(f'{adv_loss_png_name}')
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_loss_png_name}.png')
+        plt.close()
+                
+        plt.plot(list(range(len(adv_test_acc_list))), adv_test_acc_list, label='Test Accuracy', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_acc_list)))), max(list(range(len(adv_test_acc_list))))+1, math.ceil(len(adv_test_acc_list)/10))     )
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)                     
+        # plt.legend()
+        plt.title(f'{adv_accuracy_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_accuracy_png_name}.png')
+        plt.close()
+
+        plt.plot(list(range(len(adv_test_FN_list))), adv_test_FN_list, label='Test False Negative', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('FN on Adversarial Test Set')
+        plt.xticks(range(min(list(range(len(adv_test_FN_list)))), max(list(range(len(adv_test_FN_list))))+1, math.ceil(len(adv_test_FN_list)/10)))                
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)  
+        # plt.legend()
+        plt.title(f'{adv_fn_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_fn_png_name}.png')
+        plt.close()
+
+        plt.plot(list(range(len(adv_test_FNrate_list))), adv_test_FNrate_list, label='Test False Negative rate', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('FN Rate (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_FNrate_list)))), max(list(range(len(adv_test_FNrate_list))))+1, math.ceil(len(adv_test_FNrate_list)/10)) )      
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)                   
+        # plt.legend()
+        plt.title(f'{adv_fnrate_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_fnrate_png_name}.png')
+        plt.close()
+        
+        
+        plt.plot(list(range(len(adv_test_recall_list))), adv_test_recall_list, label='Test Recall', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Recall (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_recall_list)))), max(list(range(len(adv_test_recall_list))))+1, math.ceil(len(adv_test_recall_list)/10))    )
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)                      
+        # plt.legend()
+        plt.title(f'{adv_recall_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_recall_png_name}.png')
+        plt.close()        
+
+        plt.plot(list(range(len(adv_test_precision_list))), adv_test_precision_list, label='Test Precision', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('Precision (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_precision_list)))), max(list(range(len(adv_test_precision_list))))+1, math.ceil(len(adv_test_precision_list)/10))    )
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)                      
+        # plt.legend()
+        plt.title(f'{adv_precision_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_precision_png_name}.png')
+        plt.close()      
+        
+        plt.plot(list(range(len(adv_test_F1_list))), adv_test_F1_list, label='Test F1', marker='o')
+        plt.xlabel('Epoch')
+        plt.ylabel('F1 (%) on Adversarial Test Set')
+        plt.ylim(0, 100)
+        plt.xticks(range(min(list(range(len(adv_test_F1_list)))), max(list(range(len(adv_test_F1_list))))+1, math.ceil(len(adv_test_F1_list)/10))      )                        
+        plt.xlim(left=0)
+        plt.ylim(bottom=0)            
+        # plt.legend()
+        plt.title(f'{adv_f1_png_name}')        
+        plt.savefig(f'{advtrain_adv_exp_result_dir}/{adv_f1_png_name}.png')
+        plt.close()                                 
+
+ 
+ 
+ 
+ 
+ 
+ 
 class Seq2Seq():
     def __init__(self, name, args):
         self.modelname = name

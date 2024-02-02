@@ -61,10 +61,13 @@ def get_args(jupyter_args = None):
     parser.add_argument('--targeted', action='store_true', help='default is False, targeted attack')
     parser.add_argument('--retrain_testset_mode', type=str, default= 'adv', help='retraining test set composition')
     
-    parser.add_argument('--advset_mode', type=str, default= 'advset1', help='retraining test set composition')
-    
-    
-    
+    # parser.add_argument('--advset_mode', type=str, default= 'advset1', help='retraining test set composition')
+    parser.add_argument('--advset_mode', type=str, default= None, help='retraining test set composition')
+
+    parser.add_argument('--advtrain_detector', action='store_true', help='default is False')
+    parser.add_argument('--onlyadvmail', action='store_true', help='default is False')
+    parser.add_argument('--advtrain_adv_cle', action='store_true', help='default is False')
+
     
         
         
