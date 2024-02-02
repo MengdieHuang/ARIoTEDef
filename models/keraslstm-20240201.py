@@ -46,27 +46,6 @@ import pandas as pd
 
 
 print("art库导入完成!", flush=True) 
-
-
-def set_memory_growth():
-    # Get GPU index from CUDA_VISIBLE_DEVICES environment variable
-    cuda_visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", None)
-
-    if cuda_visible_devices is not None:
-        gpu_index = int(cuda_visible_devices.split(',')[0])  # Take the first GPU if multiple are specified
-        print(f"Using GPU with index: {gpu_index}")
-
-        # Set GPU device
-        physical_devices = tf.config.list_physical_devices('GPU')
-        if len(physical_devices) > gpu_index:
-            tf.config.experimental.set_memory_growth(physical_devices[gpu_index], True)
-        else:
-            print(f"GPU index {gpu_index} is out of range. Using default GPU configuration.")
-    else:
-        print("CUDA_VISIBLE_DEVICES not set. Using default GPU configuration.")
-
-
-
 def apply_custom_threshold(predictions, threshold=0.5):
     return (predictions >= threshold).astype(int)
 
@@ -803,13 +782,104 @@ class PSDetector():
             
     
     def generate_advmailbenign(self,timesteps,cle_testset_x,cle_testset_y):        
+        # if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
+        #     print("Cuda and GPU are available")
+
+        # print(f"prepare test set for generating adversarial testset against {self.modelname} ")
+        # cle_testset_x = self.dataset['test'][0]
+        # cle_testset_y = self.dataset['test'][1]          
+        
+        # print("cle_testset_x.shape:",cle_testset_x.shape)
+        # print("cle_testset_y.shape:",cle_testset_y.shape)
+        # print("cle_testset_y[:10]:",cle_testset_y[:10])        
+        """
+        cle_testset_x.shape: (4224, 41)
+        cle_testset_y.shape: (4224,)
+        cle_testset_y[:10]: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+        """
+        # print(f"{self.modelname} cle_testset_min:{self.testset_min}")
+        # print(f"{self.modelname} cle_testset_max:{self.testset_max}")      
+       
+        """ 
+        attack-detector cle_testset_min:-3.30513966135273
+        attack-detector cle_testset_max:21.144568401380717
+        """
+        # benign 0 malicious 1
+        
+        
+        
+        # # extract malicious set
+        # condition = cle_testset_y.astype(bool)
+        # # print("condition.shape:",condition.shape)
+        # # print("condition[:10]:",condition[:10])
+        
+        # malicious_cle_testset_y = np.extract(condition,cle_testset_y)
+        # # print("malicious_cle_testset_y.shape:",malicious_cle_testset_y.shape)
+        # # print("malicious_cle_testset_y:",malicious_cle_testset_y)
+
+        # benign_cle_testset_y = np.extract(1-condition,cle_testset_y)
+        # # print("benign_cle_testset_y.shape:",benign_cle_testset_y.shape)
+        # # print("benign_cle_testset_y:",benign_cle_testset_y)                                   
+
+        # """ 
+        # condition.shape: (4233,)
+        # condition[:10]: [False False False False False False False False False False]
+        # malicious_cle_testset_y.shape: (123,)
+        # malicious_cle_testset_y: [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+        # 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+        # """
+        
+        # cond=np.expand_dims(condition,1)
+        # # print("cond.shape:",cond.shape)
+        # # 创建形状为(4233, 41)的全False数组
+        # cond_expend = np.full((cle_testset_x.shape[0], cle_testset_x.shape[1]), False, dtype=bool)
+        # # 将条件数组广播到result数组中
+        # cond = np.logical_or(cond_expend, cond)        
+        # # print("cond.shape:",cond.shape)        
+        # """
+        # cond.shape: (4233, 1)
+        # cond.shape: (4233, 41)
+        # """
+        
+        # malicious_cle_testset_x = np.extract(cond,cle_testset_x)
+        # # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)        
+
+        # """
+        # malicious_cle_testset_x.shape: (5043,)
+
+        # """        
+        # malicious_cle_testset_x = np.reshape(malicious_cle_testset_x, (malicious_cle_testset_y.shape[0], cle_testset_x.shape[1]))        
+        # # print("malicious_cle_testset_x.shape:",malicious_cle_testset_x.shape)
+        # """ 
+        # malicious_cle_testset_x.shape: (123, 41)
+        # """
+        
         
         cle_testset_x = cle_testset_x.reshape((cle_testset_x.shape[0], timesteps, int(math.ceil(cle_testset_x.shape[1] / timesteps))))
         # print("cle_testset_x.shape:",cle_testset_x.shape)
+        
         """ 
         cle_testset_x.shape: (123, 1, 41)
         """
+               
 
+        # print("self.testset_min:",self.testset_min)
+        # print("self.testset_max:",self.testset_max)
+        
+        # print("self.args.eps:",self.args.eps)
+        # print("self.args.eps_step:",self.args.eps_step)
+        # print("self.args.max_iter:",self.args.max_iter)
+        
+        # import sys
+        # sys.stdout.flush()
+        # print("正在导入art库...", flush=True)
+        # from art.estimators.classification.keras import KerasClassifier
+        # from art.attacks.evasion.projected_gradient_descent.projected_gradient_descent import ProjectedGradientDescent
+        # print("art库导入完成!", flush=True)   
+             
              
         if len(cle_testset_x) > 0:
             
@@ -885,10 +955,29 @@ class PSDetector():
         return adv_testset_x, adv_testset_y    
     
     def advtrain(self, timesteps, exp_result_dir):
-        print(">>>>>>>>>>>>>>>>>>>>>  PGD adversarial train  >>>>>>>>>>>>>>>>>>>>>")  
+        print("PGD adversarial train")  
         
         if tf.test.is_built_with_cuda() and tf.config.list_physical_devices('GPU'):
-            print("Cuda and GPU are available")        
+            print("Cuda and GPU are available")
+        
+        def set_memory_growth():
+            # Get GPU index from CUDA_VISIBLE_DEVICES environment variable
+            cuda_visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", None)
+
+            if cuda_visible_devices is not None:
+                gpu_index = int(cuda_visible_devices.split(',')[0])  # Take the first GPU if multiple are specified
+                print(f"Using GPU with index: {gpu_index}")
+
+                # Set GPU device
+                physical_devices = tf.config.list_physical_devices('GPU')
+                if len(physical_devices) > gpu_index:
+                    tf.config.experimental.set_memory_growth(physical_devices[gpu_index], True)
+                else:
+                    print(f"GPU index {gpu_index} is out of range. Using default GPU configuration.")
+            else:
+                print("CUDA_VISIBLE_DEVICES not set. Using default GPU configuration.")
+
+        # Call the function to set memory growth
         set_memory_growth()
 
 
@@ -940,22 +1029,11 @@ class PSDetector():
         
         # 配置模型的训练过程
         self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
-        early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
-        # timer_callback = EpochTimer()
-        callbacks = [early_stop]
-        # raise Exception("maggie")
-
-        # self.model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(lr=self.args.lr), metrics=['accuracy'])
         # early_stop = EarlyStopping(monitor='val_loss', patience=self.args.patience, verbose=1)    
         # timer_callback = EpochTimer()
         # callbacks = [early_stop, timer_callback]
-        
-        # print("trainset_x.shape:",trainset_x.shape)
-        # print("trainset_y.shape:",trainset_y.shape)
-
-
-        
-            
+        # raise Exception("maggie")
+    
         for epoch in range(self.args.ps_epochs):
             # for batch in self.dataset['train'][0]:
             print(f"{epoch} epoch / {self.args.ps_epochs} epochs")
@@ -968,8 +1046,8 @@ class PSDetector():
                 cle_batch_x = trainset_x[i:i + self.args.batchsize]
                 cle_batch_y = trainset_y[i:i + self.args.batchsize]
                 
-                print("cle_batch_x.shape:",cle_batch_x.shape)    
-                print("cle_batch_y.shape:",cle_batch_y.shape)    
+                # print("cle_batch_x.shape:",cle_batch_x.shape)    
+                # print("cle_batch_y.shape:",cle_batch_y.shape)    
                 """ 
                 cle_batch_x.shape: (32, 41)
                 cle_batch_y.shape: (32,)
@@ -992,67 +1070,37 @@ class PSDetector():
                 adv_batch_y.shape: (7,)
                 """
                 # raise Exception("maggie stop")
-
-                # adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = self.test(testset_x=adv_batch_x, testset_y=adv_batch_y, timesteps=self.args.timesteps)
-                # adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
-                
-                # batch_adv_metrics_dic = { 
-                #             'model': self.modelname,
-                #             'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
-                #             'adv test Loss': adv_test_los,
-                #             'adv test TP': adv_test_TP,
-                #             'adv test FP': adv_test_FP,
-                #             'adv test TN': adv_test_TN,
-                #             'adv test FN': adv_test_FN,
-                #             'adv test Recall': f'{adv_test_recall*100:.2f}%',
-                #             'adv test Precision': f'{adv_test_precision*100:.2f}%',
-                #             'adv test F1': f'{adv_test_F1*100:.2f}%',
-                #             'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
-                #             }
-                # print(f"current batch adv_metrics_dic:\n {batch_adv_metrics_dic}")                  
-                
-                
-                
-                            
+            
                 adv_batch_x = adv_batch_x.reshape((adv_batch_x.shape[0], timesteps, int(math.ceil(adv_batch_x.shape[1] / timesteps))))
                 # print("adv_batch_x.shape:",adv_batch_x.shape)    
                 """ 
                 adv_batch_x.shape: (7, 1, 41)
                 """ 
-
-                                
+                
+                # print("adv_batch_x.shape[0]:",adv_batch_x.shape[0])
+                # print("len(adv_batch_x):",len(adv_batch_x))
+                """ 
+                adv_batch_x.shape[0]: 7
+                len(adv_batch_x): 7
+                """
+                
                 if self.args.advtrain_adv_cle is True:
-                    print("train on adv+cle")                                        
+                    print("train adv+cle")                                        
                     cle_batch_x = cle_batch_x.reshape((cle_batch_x.shape[0], timesteps, int(math.ceil(cle_batch_x.shape[1] / timesteps))))
-                    train_batch_x = concatenate([cle_batch_x,adv_batch_x], axis=0) 
-                    train_batch_y = concatenate([cle_batch_y,adv_batch_y], axis=0)
+                    train_batch_x = concatenate([adv_batch_x, cle_batch_x], axis=0) 
+                    train_batch_y = concatenate([adv_batch_y, cle_batch_y], axis=0)
                     # print("train_batch_x.shape:",train_batch_x.shape)
                     # print("train_batch_y.shape:",train_batch_y.shape)
-                    # train_batch_x = cle_batch_x
-                    # train_batch_y = cle_batch_y                    
+                    
                 else:
-                    print("train only on adv")                    
+                    print("train only adv")                    
                     train_batch_x = adv_batch_x
                     train_batch_y = adv_batch_y
-
-                    # cle_batch_x = cle_batch_x.reshape((cle_batch_x.shape[0], timesteps, int(math.ceil(cle_batch_x.shape[1] / timesteps))))                    
-                    # train_batch_x = cle_batch_x
-                    # train_batch_y = cle_batch_y   
-                                        
+                    
                 if adv_batch_x.shape[0] > 0:
                     # self.model.train_on_batch(adv_batch_x, adv_batch_y)
-                    print("train_batch_x.shape:",train_batch_x.shape)
-                    # train_batch_x.shape: (6144, 1, 41)
-                    
-                    # self.model.train_on_batch(train_batch_x, train_batch_y)
-                    # self.model.fit(x=train_batch_x, y=train_batch_y, batch_size=self.args.batchsize, epochs=1, verbose=2, callbacks=[early_stop], validation_split=0.2)
-                    
-                    self.model.fit(x=train_batch_x, y=train_batch_y, epochs=1, steps_per_epoch=int(np.ceil(train_batch_x.shape[0] / self.args.batchsize)), verbose=2, callbacks=[early_stop])
-
-                    # self.model.fit(x=train_batch_x, y=train_batch_y, batch_size=train_batch_x.shape[0], epochs=1, verbose=2, callbacks=[early_stop], validation_split=0.2)
-                    
-                    
-                   
+                    self.model.train_on_batch(train_batch_x, train_batch_y)
+            
             
             epoch_end_time = time.time()
             epoch_adv_train_time = epoch_end_time - epoch_start_time               

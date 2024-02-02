@@ -41,6 +41,151 @@ multistep_dataset = loadnpydata()
 # -----------normalize sample values    
 multistep_dataset = normalize_multistep_dataset(multistep_dataset)
 
+
+
+
+   
+    
+#==================================================================
+if args.advtrain_detector is True:
+
+
+    # ----------------create per-step detectors----------------------
+    reconnaissance_detector, infection_detector, attack_detector = init_psdetector(multistep_dataset, args)
+    detector = infection_detector
+    
+    print_header("Start Adversarial Training Infection Detector")
+    
+    
+    
+    
+    # print(f">>>>>>>> Evaluate vanillia {detector.modelname} on clean test data >>>>>>>>")
+    # test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
+    # FPrate = round((test_FP/(test_FP+test_TN)), 4)
+    # FNrate = round((test_FN/(test_FN+test_TP)), 4)
+    
+    # metrics_dic = { 
+    #             'model': detector.modelname,
+    #             'clean test Accuracy': f'{test_acc*100:.2f}%',
+    #             'clean test Loss': test_los,
+    #             'clean test TP': test_TP,
+    #             'clean test FP': test_FP,
+    #             'clean test TN': test_TN,
+    #             'clean test FN': test_FN,
+    #             'clean test Recall': f'{test_recall*100:.2f}%',
+    #             'clean test Precision': f'{test_precision*100:.2f}%',
+    #             'clean test F1': f'{test_F1*100:.2f}%',
+    #             'clean test FPrate':f'{FPrate*100:.2f}%',
+    #             'clean test FNrate':f'{FNrate*100:.2f}%',
+    #             }
+    # print(f"vanillia {detector.modelname} metrics_dic:\n {metrics_dic}")    
+    
+    
+    
+    
+    
+    # print(f">>>>>>>> Evaluate vanillia {detector.modelname} on adversarial test data >>>>>>>>")
+    # adv_exp_result_dir = os.path.join(exp_result_dir,f'advattack')
+    # os.makedirs(adv_exp_result_dir, exist_ok=True)
+    # # adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
+    # adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps,cle_testset_x=detector.dataset['test'][0],cle_testset_y=detector.dataset['test'][1])
+    
+    # print("adv_testset_x.shape:",adv_testset_x.shape)    
+    # print("adv_testset_y.shape:",adv_testset_y.shape)   
+    
+    # adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
+    # adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+    
+    # adv_metrics_dic = { 
+    #             'model': detector.modelname,
+    #             'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
+    #             'adv test Loss': adv_test_los,
+    #             'adv test TP': adv_test_TP,
+    #             'adv test FP': adv_test_FP,
+    #             'adv test TN': adv_test_TN,
+    #             'adv test FN': adv_test_FN,
+    #             'adv test Recall': f'{adv_test_recall*100:.2f}%',
+    #             'adv test Precision': f'{adv_test_precision*100:.2f}%',
+    #             'adv test F1': f'{adv_test_F1*100:.2f}%',
+    #             'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
+    #             }
+    # print(f"Vanillia {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")   
+    
+    
+    advtrain_exp_result_dir = os.path.join(exp_result_dir,f'advtrain-psdetector')
+    os.makedirs(advtrain_exp_result_dir, exist_ok=True)
+
+    # detector.advtrain(timesteps=args.timesteps, exp_result_dir=advtrain_exp_result_dir)        
+    detector.advtrain(timesteps=args.timesteps, exp_result_dir=advtrain_exp_result_dir)                
+    
+    # raise Exception("maggie stop")
+
+    print(f">>>>>>>> Evaluate adversarial trained {detector.modelname} on clean test data >>>>>>>>")
+    test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
+    FPrate = round((test_FP/(test_FP+test_TN)), 4)
+    FNrate = round((test_FN/(test_FN+test_TP)), 4)
+    
+    metrics_dic = { 
+                'model': detector.modelname,
+                'clean test Accuracy': f'{test_acc*100:.2f}%',
+                'clean test Loss': test_los,
+                'clean test TP': test_TP,
+                'clean test FP': test_FP,
+                'clean test TN': test_TN,
+                'clean test FN': test_FN,
+                'clean test Recall': f'{test_recall*100:.2f}%',
+                'clean test Precision': f'{test_precision*100:.2f}%',
+                'clean test F1': f'{test_F1*100:.2f}%',
+                'clean test FPrate':f'{FPrate*100:.2f}%',
+                'clean test FNrate':f'{FNrate*100:.2f}%',
+                }
+    print(f"adversarial trained {detector.modelname} metrics_dic:\n {metrics_dic}")    
+    
+    
+    
+    
+    
+    print(f">>>>>>>> Evaluate adversarial trained {detector.modelname} on adversarial test data >>>>>>>>")
+    adv_exp_result_dir = os.path.join(exp_result_dir,f'advattack')
+    os.makedirs(adv_exp_result_dir, exist_ok=True)
+    # adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
+    adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps,cle_testset_x=detector.dataset['test'][0],cle_testset_y=detector.dataset['test'][1])
+    
+    print("adv_testset_x.shape:",adv_testset_x.shape)    
+    print("adv_testset_y.shape:",adv_testset_y.shape)   
+    
+    adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
+    adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
+    
+    adv_metrics_dic = { 
+                'model': detector.modelname,
+                'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
+                'adv test Loss': adv_test_los,
+                'adv test TP': adv_test_TP,
+                'adv test FP': adv_test_FP,
+                'adv test TN': adv_test_TN,
+                'adv test FN': adv_test_FN,
+                'adv test Recall': f'{adv_test_recall*100:.2f}%',
+                'adv test Precision': f'{adv_test_precision*100:.2f}%',
+                'adv test F1': f'{adv_test_F1*100:.2f}%',
+                'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
+                }
+    print(f"adversarial trained {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")           
+
+
+
+
+
+
+raise Exception("maggie stop")
+
+
+
+
+
+
+
+
 # ----------------create per-step detectors----------------------
 reconnaissance_detector, infection_detector, attack_detector = init_psdetector(multistep_dataset, args)
 
@@ -2736,125 +2881,4 @@ for detector in [infection_detector]:
             
     print(f"finish retrain the {detector.modelname}")
     
-    
-    
-    #==================================================================
-    if args.advtrain_detector is True:
-        
-        print_header("Start Adversarial Training Infection Detector")
-        
-        
-        
-        
-        print(f">>>>>>>> Evaluate vanillia {detector.modelname} on clean test data >>>>>>>>")
-        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
-        FPrate = round((test_FP/(test_FP+test_TN)), 4)
-        FNrate = round((test_FN/(test_FN+test_TP)), 4)
-        
-        metrics_dic = { 
-                    'model': detector.modelname,
-                    'clean test Accuracy': f'{test_acc*100:.2f}%',
-                    'clean test Loss': test_los,
-                    'clean test TP': test_TP,
-                    'clean test FP': test_FP,
-                    'clean test TN': test_TN,
-                    'clean test FN': test_FN,
-                    'clean test Recall': f'{test_recall*100:.2f}%',
-                    'clean test Precision': f'{test_precision*100:.2f}%',
-                    'clean test F1': f'{test_F1*100:.2f}%',
-                    'clean test FPrate':f'{FPrate*100:.2f}%',
-                    'clean test FNrate':f'{FNrate*100:.2f}%',
-                    }
-        print(f"vanillia {detector.modelname} metrics_dic:\n {metrics_dic}")    
-        
-        
-        
-        
-        
-        print(f">>>>>>>> Evaluate vanillia {detector.modelname} on adversarial test data >>>>>>>>")
-        adv_exp_result_dir = os.path.join(exp_result_dir,f'advattack')
-        os.makedirs(adv_exp_result_dir, exist_ok=True)
-        # adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
-        adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps,cle_testset_x=detector.dataset['test'][0],cle_testset_y=detector.dataset['test'][1])
-        
-        print("adv_testset_x.shape:",adv_testset_x.shape)    
-        print("adv_testset_y.shape:",adv_testset_y.shape)   
-        
-        adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
-        adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
-        
-        adv_metrics_dic = { 
-                    'model': detector.modelname,
-                    'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
-                    'adv test Loss': adv_test_los,
-                    'adv test TP': adv_test_TP,
-                    'adv test FP': adv_test_FP,
-                    'adv test TN': adv_test_TN,
-                    'adv test FN': adv_test_FN,
-                    'adv test Recall': f'{adv_test_recall*100:.2f}%',
-                    'adv test Precision': f'{adv_test_precision*100:.2f}%',
-                    'adv test F1': f'{adv_test_F1*100:.2f}%',
-                    'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
-                    }
-        print(f"Vanillia {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")   
-        
-        
-        advtrain_exp_result_dir = os.path.join(exp_result_dir,f'advtrain-psdetector')
-        os.makedirs(advtrain_exp_result_dir, exist_ok=True)
-
-        # detector.advtrain(timesteps=args.timesteps, exp_result_dir=advtrain_exp_result_dir)        
-        detector.advtrain(timesteps=args.timesteps, exp_result_dir=advtrain_exp_result_dir)                
-        
-        # raise Exception("maggie stop")
-
-        print(f">>>>>>>> Evaluate adversarial trained {detector.modelname} on clean test data >>>>>>>>")
-        test_acc, test_los, test_TP, test_FP, test_TN, test_FN, test_recall, test_precision, test_F1 = detector.test(testset_x=detector.dataset['test'][0], testset_y=detector.dataset['test'][1],timesteps=args.timesteps)
-        FPrate = round((test_FP/(test_FP+test_TN)), 4)
-        FNrate = round((test_FN/(test_FN+test_TP)), 4)
-        
-        metrics_dic = { 
-                    'model': detector.modelname,
-                    'clean test Accuracy': f'{test_acc*100:.2f}%',
-                    'clean test Loss': test_los,
-                    'clean test TP': test_TP,
-                    'clean test FP': test_FP,
-                    'clean test TN': test_TN,
-                    'clean test FN': test_FN,
-                    'clean test Recall': f'{test_recall*100:.2f}%',
-                    'clean test Precision': f'{test_precision*100:.2f}%',
-                    'clean test F1': f'{test_F1*100:.2f}%',
-                    'clean test FPrate':f'{FPrate*100:.2f}%',
-                    'clean test FNrate':f'{FNrate*100:.2f}%',
-                    }
-        print(f"adversarial trained {detector.modelname} metrics_dic:\n {metrics_dic}")    
-        
-        
-        
-        
-        
-        print(f">>>>>>>> Evaluate adversarial trained {detector.modelname} on adversarial test data >>>>>>>>")
-        adv_exp_result_dir = os.path.join(exp_result_dir,f'advattack')
-        os.makedirs(adv_exp_result_dir, exist_ok=True)
-        # adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps)
-        adv_testset_x, adv_testset_y = detector.generate_advmail(timesteps=args.timesteps,cle_testset_x=detector.dataset['test'][0],cle_testset_y=detector.dataset['test'][1])
-        
-        print("adv_testset_x.shape:",adv_testset_x.shape)    
-        print("adv_testset_y.shape:",adv_testset_y.shape)   
-        
-        adv_test_acc, adv_test_los, adv_test_TP, adv_test_FP, adv_test_TN, adv_test_FN, adv_test_recall, adv_test_precision, adv_test_F1 = detector.test(testset_x=adv_testset_x, testset_y=adv_testset_y, timesteps=args.timesteps)
-        adv_FNrate = round((adv_test_FN/(adv_test_FN+adv_test_TP)), 4)
-        
-        adv_metrics_dic = { 
-                    'model': detector.modelname,
-                    'adv test Accuracy': f'{adv_test_acc*100:.2f}%',
-                    'adv test Loss': adv_test_los,
-                    'adv test TP': adv_test_TP,
-                    'adv test FP': adv_test_FP,
-                    'adv test TN': adv_test_TN,
-                    'adv test FN': adv_test_FN,
-                    'adv test Recall': f'{adv_test_recall*100:.2f}%',
-                    'adv test Precision': f'{adv_test_precision*100:.2f}%',
-                    'adv test F1': f'{adv_test_F1*100:.2f}%',
-                    'adv test FNrate': f'{adv_FNrate*100:.2f}%',  
-                    }
-        print(f"adversarial trained {detector.modelname} adv_metrics_dic:\n {adv_metrics_dic}")           
+ 
