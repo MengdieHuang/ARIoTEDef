@@ -47,7 +47,11 @@ _, ax = plt.subplots(nrows=1, ncols=1, figsize=(6, 3.5), tight_layout=True, dpi=
 # 自定义调色板颜色
 # custom_palette = {'TP': 'blue', 'FN': 'red'}
 # sns_plot=sns.barplot(data=advset1_rounds204080_TPFN_on_advma_merge_df, x='round', y='Value', hue="TP_FN_label", palette=custom_palette)
-sns_plot=sns.barplot(data=advset1_rounds204080_FNRRecall_on_advma_merge_df, x='round', y='Value', hue="FNR_Recall_label", palette="tab10")
+
+
+colors = sns.color_palette("tab10", 2)
+# sns_plot=sns.barplot(data=advset1_rounds204080_FNRRecall_on_advma_merge_df, x='round', y='Value', hue="FNR_Recall_label", palette="tab10")
+sns_plot=sns.barplot(data=advset1_rounds204080_FNRRecall_on_advma_merge_df, x='round', y='Value', hue="FNR_Recall_label", palette=[colors[1],colors[0]])
 
 # sns_plot=sns.barplot(data=advset1_rounds204080_on_advmal_df, x='round', y='FN', label='FN', color='o')
 
@@ -75,7 +79,7 @@ ax.set_title('Adversarial Setting I', fontsize=14);
 # ax_legend.set_ylabel('')  # 清除新坐标轴的 y 标签
 
 
-savepath = f'/home/huan1932/ARIoTEDef/drawfigure/advset1/compare-rounds'
+savepath = f'/home/huan1932/ARIoTEDef-Actual/drawfigure/advset1/compare-rounds'
 savename = f'bar-figure-advset1-round204080-average-FNR-Recall-performance'
 plt.savefig(fname=f'{savepath}/{savename}.png',dpi=500)
 plt.close   
