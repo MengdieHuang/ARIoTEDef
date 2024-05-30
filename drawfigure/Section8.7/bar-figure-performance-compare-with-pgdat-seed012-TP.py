@@ -30,6 +30,17 @@ plt.style.use('seaborn')
 _, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 3.5), tight_layout=True, dpi=500) #dpi=100 分辨率
 
 sns_plot=sns.barplot(data=performance_compare_with_pgdat_seed012_adv_TP_df, x='Seed', y='Adv-TP', hue="Method", palette="Set1")
+# """ 
+# [
+# '#4c72b0',蓝
+# '#55a868', 绿
+# '#c44e52', 红
+# '#8172b2',紫 
+# '#ccb974',
+# '#64b5cd'
+# ]
+# """
+# palette=["#55a868","#4c72b0","#c44e52"]
 
 # ax.set_xlabel('Evolution Round', fontsize=12)
 ax.set_xlabel('') 

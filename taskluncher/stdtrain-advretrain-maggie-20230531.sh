@@ -1,1 +1,0 @@
-CUDA_VISIBLE_DEVICES=1 python stdtrain-advretrain-maggie-20230602.py --patience 10 --timesteps 1 --seed 0 --ps_epochs 2 --seq2seq_epochs 3 --relabel_rounds 20 --retrainset_mode advs1 > /home/huan1932/ARIoTEDef/result/log/advs1-advretrain-round20-infection-seq2seq-maggie-20230602.log 2>&1
